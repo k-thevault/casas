@@ -28,6 +28,10 @@
   .toggle{display:flex;align-items:center;gap:6px;font-size:13px;color:var(--muted);cursor:pointer;background:var(--chip);border:1px solid var(--line);padding:7px 11px;border-radius:9px;user-select:none}
   .toggle input{accent-color:var(--accent)}
   .count{margin-left:auto;color:var(--muted);font-size:13px}
+  .sync{font-size:12px;color:var(--muted);padding:4px 10px;border-radius:20px;background:var(--card2);transition:color .2s}
+  .sync:empty{display:none}
+  .sync.ok{color:#5CC392}
+  .sync.err{color:#ff8b8b;background:#3a1c1c}
   .note{background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--green);border-radius:10px;padding:11px 14px;font-size:12.7px;color:#cdd9e6;margin-bottom:16px}
   .citygroup h2{font-size:16px;margin:24px 0 12px;padding-bottom:7px;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:9px}
   .citygroup h2 .n{font-size:12px;color:var(--muted);font-weight:500}
@@ -137,8 +141,7 @@
       <option value="0.40">Entrada 40%</option>
     </select>
     <button id="btnAdd" class="toggle" style="cursor:pointer;background:var(--accent);color:#04121f;border-color:transparent;font-weight:600">➕ adicionar anúncio</button>
-    <button id="btnExport" class="toggle" style="cursor:pointer" title="Gera um código com seus favoritos, situações e casas adicionadas — pra colar em outro aparelho">⬆️ exportar</button>
-    <button id="btnImport" class="toggle" style="cursor:pointer" title="Cole aqui o código gerado em outro aparelho">⬇️ importar</button>
+    <span class="sync" id="sync" title="Seus favoritos, situações e anotações ficam salvos na nuvem e aparecem em qualquer aparelho"></span>
     <span class="count" id="count"></span>
   </div>
 
@@ -176,580 +179,68 @@
 </div>
 
 <script>
-const D = [
-/* ================= 4+ QUARTOS ================= */
-
-/* SALTO */
-{cat:"4q",city:"Salto",near:false,cond:"Cond. Zuleika Jabour",title:"Casa 4 quartos, 254 m² + casa de hóspedes",price:6000,fee:0,area:254,q:4,su:0,ba:4,vg:null,type:"cond",pet:"sim",office:false,
- ficha:"Casa + casa de hóspedes, piscina, área gourmet. Condomínio: portaria 24h, quadra de tênis, campo, lago. Cond. isento (IPTU R$130).",
- img:"https://resizedimgs.vivareal.com/img/vr-listing/03cbd75022c7fe8f9ca823ffbf8d3a04/casa-de-condominio-com-4-quartos-para-venda-ou-aluguel-254m-no-condominio-zuleika-jabour-salto.webp?action=fit-in&dimension=614x297",
- agency:"Maxximus Imóveis (via VivaReal)",tel:"contato pelo anúncio",wa:"",url:"https://www.vivareal.com.br/imovel/casa-de-condominio-4-quartos-condominio-zuleika-jabour-bairros-salto-com-garagem-254m2-venda-RS1200000-id-2896582979/"},
-{cat:"4q",city:"Salto",near:false,cond:"Cond. Terras de Mont Serrat",title:"Casa 5 quartos / 2 suítes com escritório",price:6500,fee:915,area:258,q:5,su:2,ba:null,vg:null,type:"cond",pet:"sim",office:true,
- ficha:"5 dormitórios, escritório privativo, cozinha planejada, ar-condicionado. Aceita pet. IPTU R$354.",
- img:"https://resizedimgs.vivareal.com/img/vr-listing/c29c0cc679ded8ca41a0a458129260c0/casa-de-condominio-com-5-quartos-para-alugar-258m-no-terras-de-mont-serrat-salto.webp?action=fit-in&dimension=614x297",
- agency:"Adore Imóveis (via VivaReal)",tel:"contato pelo anúncio",wa:"",url:"https://www.vivareal.com.br/imovel/casa-de-condominio-5-quartos-terras-de-mont-serrat-bairros-salto-com-garagem-258m2-aluguel-RS6500-id-2894992377/"},
-{cat:"4q",city:"Salto",near:false,cond:"Cond. Piccolo Paese",title:"Casa 4 suítes, 350 m², mobiliada + escritório",price:6481,fee:1500,area:350,q:4,su:4,ba:null,vg:null,type:"cond",pet:"sim",office:true,
- ficha:"Mobiliada, casa + ala de hóspedes, piscina, sauna, forno a lenha, canil (pet). Escritório. IPTU R$819.",
- img:"https://resizedimgs.vivareal.com/img/vr-listing/525df0fb9ff288f3e77668067da116a4/casa-de-condominio-com-4-quartos-para-alugar-350m-no-condominio-fechado-piccolo-paese-salto.webp?action=fit-in&dimension=614x297",
- agency:"Silvana Carvalho Imobiliária",tel:"(11) 98687-0110",wa:"5511986870110",url:"https://www.vivareal.com.br/imovel/casa-de-condominio-4-quartos-condominio-fechado-piccolo-paese-bairros-salto-350m2-aluguel-RS6481-id-2878240796/"},
-
-/* MONTE MOR */
-{cat:"4q",city:"Monte Mor",near:false,cond:"Cond. Reserva da Mata",title:"Casa 4 quartos, 250 m² (quarto extra p/ home office)",price:2900,fee:404,area:250,q:4,su:1,ba:3,vg:3,type:"cond",pet:"n/i",office:false,
- ficha:"3 quartos + 1 quarto nos fundos (ideal home office), sala estar/jantar integrada com cozinha, área gourmet, lavanderia. Condomínio: portaria 24h, campo society, quadra, quiosque, mata. IPTU R$180.",
- img:"https://imgs2.cdn-imobibrasil.com.br/imagens/imoveis/202607151257193305.jpg",
- agency:"Eduardo Imóveis Monte Mor",tel:"(19) 99373-4828",wa:"5519993734828",url:"https://www.eduardoimoveismontemor.com.br/imovel/4330961/casa-em-condominio-locacao-monte-mor-sp-condominio-reserva-da-mata-cond-reserva-da-mata"},
-{cat:"4q",city:"Monte Mor",near:false,cond:"Cond. Reserva da Mata (Jardim Itapoan)",title:"Casa 4 quartos, 174 m², recém-reformada",price:3800,fee:430,area:174,q:4,su:1,ba:2,vg:2,type:"cond",pet:"n/i",office:false,
- ficha:"3 dormitórios + 1 quarto superior, churrasqueira, 2 vagas cobertas. Marcada como 'valor abaixo do mercado', recém-reformada.",
- img:"https://resizedimgs.vivareal.com/img/vr-listing/10a0ae3108c5fab8e4642df6814a80fa/casa-de-condominio-com-4-quartos-para-alugar-174m-no-jardim-itapoan-monte-mor.webp?action=fit-in&dimension=614x297",
- agency:"C. R. de Almeida (via VivaReal)",tel:"contato pelo anúncio",wa:"",url:"https://www.vivareal.com.br/imovel/casa-de-condominio-4-quartos-jardim-itapoan-bairros-monte-mor-com-garagem-174m2-aluguel-RS3800-id-2819460136/"},
-
-/* TATUÍ */
-{cat:"4q",city:"Tatuí",near:false,cond:"Cond. Vila Monte Verde",title:"Casa 4 quartos, 220 m², piscina com cascata",price:6000,fee:0,area:220,q:4,su:1,ba:3,vg:4,type:"cond",pet:"n/i",office:false,
- ficha:"Piscina com cascata, área gourmet, jardim de inverno, garagem 2 cobertas + 2 descobertas. Condomínio: acesso 24h, câmeras/ronda, tênis, campo, academia, piscina aquecida, restaurante, capela. ~10 min do centro.",
- img:"https://cdn.imoview.com.br/veradiniz/Imoveis/446/202603181415152964.jpg",
- agency:"Vera Diniz Imóveis",tel:"(15) 3334-2488",wa:"",url:"https://www.veradinizimoveis.com.br/imovel/casa-em-condominio-para-locacao-em-tatui-sp/446"},
-{cat:"4q",city:"Tatuí",near:false,cond:"Cond. Bosques dos Ipês",title:"Sobrado 4 quartos / 2 suítes",price:4500,fee:358,area:null,q:4,su:2,ba:4,vg:null,type:"cond",pet:"n/i",office:false,
- ficha:"Sobrado amplo, cozinha planejada, espaço gourmet. Condomínio: portaria 24h, quadra, fitness, playground, salão de festas. Publicado 11/07/2026. (Área com erro de cadastro no anúncio.)",
- img:"https://resizedimgs.vivareal.com/img/vr-listing/3267ced52194c17551e54957262029a9/casa-de-condominio-com-4-quartos-para-alugar-10m-no-residencial-bosques-dos-ipes-tatui.webp?action=fit-in&dimension=614x297",
- agency:"Figueiredo Imóveis",tel:"(15) 98151-5845",wa:"5515981515845",url:"https://www.vivareal.com.br/imovel/casa-de-condominio-4-quartos-residencial-bosques-dos-ipes-tatui-10m2-aluguel-RS4500-id-2898219735/"},
-{cat:"4q",city:"Tatuí",near:false,cond:"Cond. Colina das Estrelas",title:"Casa 5 suítes, 385 m², alto padrão",price:6000,fee:1230,area:385,q:5,su:5,ba:null,vg:null,type:"cond",pet:"n/i",office:false,
- ficha:"Alto padrão, sala de TV, área gourmet com piscina, energia solar, terreno 1.000 m². Anúncio 'venda ou aluguel' — confirmar locação.",
- img:"https://resizedimgs.vivareal.com/img/vr-listing/9d5a3c9453cb4c4a2421635cb8790d91/casa-de-condominio-com-5-quartos-para-venda-ou-aluguel-385m-no-parque-residencial-colina-das-estrelas-tatui.webp?action=fit-in&dimension=614x297",
- agency:"Imóveis Lorenzetti",tel:"(15) 99115-8430",wa:"5515991158430",url:"https://www.vivareal.com.br/imovel/casa-de-condominio-5-quartos-parque-residencial-colina-das-estrelas-tatui-com-garagem-385m2-venda-RS1800000-id-2816394229/"},
-
-/* PIRACAIA */
-{cat:"4q",city:"Piracaia",near:false,cond:"Condomínio fechado",title:"Casa 5 quartos / 2 suítes, 250 m² — aceita pet",price:6500,fee:0,area:250,q:5,su:2,ba:3,vg:2,type:"cond",pet:"sim",office:false,
- ficha:"5 dormitórios (master c/ sacada), lareira, salão de festas com churrasqueira, área gourmet, piscina, quintal amplo. Aluguel já inclui condomínio + IPTU. Aceita animais.",
- img:"https://resizedimgs.vivareal.com/img/vr-listing/5d9b077f815d7f0b32653f4505bb5fe5/casa-de-condominio-com-5-quartos-para-venda-ou-aluguel-250m-no-piracaia.webp?action=fit-in&dimension=614x297",
- agency:"Impar Planejamento Imobiliário",tel:"(11) 98583-9538",wa:"5511985839538",url:"https://www.vivareal.com.br/imovel/casa-de-condominio-5-quartos-piracaia-com-garagem-250m2-venda-RS1600000-id-2559855715/"},
-{cat:"4q",city:"Piracaia",near:false,cond:"Cond. Jardim Alvorada I",title:"Casa 5 quartos, 535 m²",price:3800,fee:null,area:535,q:5,su:1,ba:4,vg:null,type:"cond",pet:"n/i",office:false,
- ficha:"Casa ampla (535 m²) em condomínio arborizado e tranquilo. 5 quartos, 4 banheiros. IPTU R$500. Anúncio de nov/2025, atualizado há ~1 mês.",
- img:"https://resizedimgs.vivareal.com/img/vr-listing/80505a3f127b07c0caa511c16ea1c41c/casa-de-condominio-com-5-quartos-para-alugar-10m-no-jardim-jose-ignacio-troster-piracaia.webp?action=fit-in&dimension=614x297",
- agency:"Boa Vista Imóveis",tel:"(11) 94337-2988",wa:"5511943372988",url:"https://www.vivareal.com.br/imovel/casa-de-condominio-5-quartos-jardim-jose-ignacio-troster-piracaia-10m2-aluguel-RS3800-id-2851216019/"},
-
-/* MORUNGABA */
-{cat:"4q",city:"Morungaba",near:false,cond:"Cond. A Montanha (40 casas)",title:"Casa 4 quartos / 2 suítes, 209 m²",price:6000,fee:1300,area:209,q:4,su:2,ba:3,vg:4,type:"cond",pet:"n/i",office:false,
- ficha:"Condomínio fechado de apenas 40 casas. Piscina, área gourmet, churrasqueira, sauna, hidromassagem, lareira, closet, quintal amplo. Portaria 24h, salão, quadra. Atualizado recentemente. IPTU R$1.100.",
- img:"https://resizedimgs.vivareal.com/img/vr-listing/ee069b2abb098c92273e25fb196806e3/casa-com-4-quartos-para-venda-ou-aluguel-209m-no-centro-morungaba.webp?action=fit-in&dimension=614x297",
- agency:"Galante Imóveis (via VivaReal)",tel:"contato pelo anúncio",wa:"",url:"https://www.vivareal.com.br/imovel/casa-4-quartos-centro-bairros-morungaba-com-garagem-209m2-venda-RS1100000-id-2760164950/"},
-
-/* MONTE ALEGRE DO SUL */
-{cat:"4q",city:"Monte Alegre do Sul",near:false,cond:"Cond. Fazenda Orypaba",title:"Casa 4 quartos / 2 suítes, 257 m²",price:4999,fee:630,area:257,q:4,su:2,ba:null,vg:null,type:"cond",pet:"n/i",office:false,
- ficha:"2 suítes com closet, piscina aquecida, sauna, área gourmet temática, cozinha planejada. Terreno amplo. IPTU R$187. Publicado 10/07/2026.",
- img:"https://resizedimgs.vivareal.com/img/vr-listing/cebb336ad3ec6d2a9986928fb2eaa7df/casa-de-condominio-com-4-quartos-para-alugar-257m-no-condominio-fazenda-orypaba-monte-alegre-do-sul.webp?action=fit-in&dimension=614x297",
- agency:"Imobiliária Jazz",tel:"(19) 2660-0142",wa:"",url:"https://www.vivareal.com.br/imovel/casa-de-condominio-4-quartos-condominio-fazenda-orypaba-bairros-monte-alegre-do-sul-com-garagem-257m2-aluguel-RS4999-id-2898031316/"},
-
-/* BOITUVA (vizinha) */
-{cat:"4q",city:"Boituva",near:true,cond:"Cond. Portal dos Pássaros I",title:"Casa 4 suítes, 350 m² com escritório",price:6350,fee:485,area:350,q:4,su:4,ba:null,vg:null,type:"cond",pet:"n/i",office:true,
- ficha:"Suítes com opção closet/escritório. Piscina aquecida com ofurô, rooftop, salão de jogos, sauna, mezanino. Segurança 24h, lazer completo. IPTU R$165.",
- img:"https://resizedimgs.vivareal.com/img/vr-listing/4382c9a7c0a2957d156adb0908b9a705/casa-de-condominio-com-4-quartos-para-alugar-350m-no-portal-dos-passaros-i-boituva.webp?action=fit-in&dimension=614x297",
- agency:"VEB Imóveis (via VivaReal)",tel:"contato pelo anúncio",wa:"",url:"https://www.vivareal.com.br/imovel/casa-de-condominio-4-quartos-portal-dos-passaros-i-boituva-com-garagem-350m2-aluguel-RS6350-id-2872060775/"},
-{cat:"4q",city:"Boituva",near:true,cond:"Cond. Fazenda Castelo (Vitassay)",title:"Casa 4 quartos / 3 suítes, 309 m²",price:4500,fee:439,area:309,q:4,su:3,ba:null,vg:null,type:"cond",pet:"n/i",office:false,
- ficha:"Cozinha gourmet com churrasqueira, lareira, piscina, pomar, canil. Portaria 24h, 2 min do centro. IPTU R$260.",
- img:"https://resizedimgs.vivareal.com/img/vr-listing/0ddb5577ba75c08ca6c15c33fe122c51/casa-de-condominio-com-4-quartos-para-alugar-309m-no-fazenda-castelo-boituva.webp?action=fit-in&dimension=614x297",
- agency:"VEB Imóveis (via VivaReal)",tel:"contato pelo anúncio",wa:"",url:"https://www.vivareal.com.br/imovel/casa-de-condominio-4-quartos-fazenda-castelo-boituva-com-garagem-309m2-aluguel-RS4500-id-2888127280/"},
-
-/* CESÁRIO LANGE (vizinha) */
-{cat:"4q",city:"Cesário Lange",near:true,cond:"Residencial Jatobá",title:"Casa 4 quartos, 363 m², terreno 2.000 m²",price:5800,fee:1342,area:363,q:4,su:null,ba:null,vg:null,type:"cond",pet:"n/i",office:false,
- ficha:"363 m² construídos em terreno de 2.000 m². IPTU R$184. Anúncio ativo na Lopes (corretor Edu Ferreira).",
- img:"https://betaimages.lopes.com.br/realestate/sml/REO1076919/294EC39E550979340DEF5BBF155E1183.JPEG",
- agency:"Lopes — Edu Ferreira",tel:"contato pelo anúncio",wa:"",url:"https://www.lopes.com.br/imovel/REO1076919/venda-condominio-4-quartos-cesario-lange-centro"},
-
-/* PEDREIRA (vizinha) */
-{cat:"4q",city:"Pedreira",near:true,cond:"Cond. Residencial Green Park",title:"Casa 4 quartos / 2 suítes, 200 m²",price:4300,fee:350,area:200,q:4,su:2,ba:null,vg:2,type:"cond",pet:"n/i",office:false,
- ficha:"Cozinha planejada, edícula com churrasqueira, 2 vagas. Portaria 24h. Aluguel sem fiador. IPTU R$150.",
- img:"https://resizedimgs.vivareal.com/img/vr-listing/858f321b7519055d8a37bd90ef995251/casa-de-condominio-com-4-quartos-para-alugar-200m-no-condominio-residencial-green-park-pedreira.webp?action=fit-in&dimension=614x297",
- agency:"Carval Imóveis (via VivaReal)",tel:"contato pelo anúncio",wa:"",url:"https://www.vivareal.com.br/imovel/casa-de-condominio-4-quartos-condominio-residencial-green-park-bairros-pedreira-com-garagem-200m2-aluguel-RS4300-id-2871219340/"},
-
-/* BOM JESUS DOS PERDÕES (vizinha) */
-{cat:"4q",city:"Bom Jesus dos Perdões",near:true,cond:"Cond. Marf II",title:"Casa 4 quartos / 2 suítes, 360 m² — aceita pet",price:6000,fee:600,area:360,q:4,su:2,ba:null,vg:5,type:"cond",pet:"sim",office:false,
- ficha:"Portaria 24h, cercado, ronda, câmeras. Piscina, churrasqueira com forno de pizza, campo gramado, vista privilegiada, terreno 1.000 m². Aceita pet. ~70 km de SP.",
- img:"https://img.kenlo.io/VWRCUkQ2Tnp3d1BJRDBJVe1szkhnWr9UfpZS9ftWwjXgr7v5Znen3XVcMHllDVRJJeIbi3YwVYEtu2lgi4l-9Awetus1Ur+ijnXaxd-LyNWmlUjLxK3suazh05z7Rfvc64Ex6LftTmKTnbB3ae4FPE0jasZ-QSHYY62sGCRtnSSMhx7vTetnTWUEx1A0nxpX-AarT8OPxgMg9ASjC67qgwqvXonMBG0HCrMNAdsz6EIJ9xa9SUxy8h8d4563vSCAaKyyLIOvkiMYDwYu6oa6APevm5PPedV-GacxP3wP61NeW6wcmvuVAupw6QEZovrFTQeShQjQiOM3eYWtXdZLnLwBkQ6SGbof6kvulIHB0aKoOxyPMFY69unL-PS4Ofv6EbSte2+jxctT4pjKPcsed9qkH2dWW3pIIz0B1APxt76b8ET8bD6VulgVHRPRztwnpXZ9YEsD8cMDpz2giMrx.jpg",
- agency:"Terra Brasil",tel:"(11) 99684-2177",wa:"5511996842177",url:"https://www.terrabrasilbjp.com.br/imovel/casa-bom-jesus-dos-perdoes-4-quartos-360-m/CA1083-TER9"},
-
-/* AMPARO — 4q com escritório, casa de rua (não condomínio) */
-{cat:"4q",city:"Amparo",near:false,cond:"Centro (casa de rua — alto padrão)",title:"Casa 4 quartos + escritório, 436 m²",price:5000,fee:null,area:436,q:4,su:1,ba:3,vg:8,type:"alt",pet:"n/i",office:true,
- ficha:"Escritório, 3 dormitórios com sacada + closet na suíte, cozinha planejada, sala com lareira, jardim de inverno, aquecimento solar, sótão, área gourmet com forno de pizza, vista panorâmica. Obs.: casa de rua, não é condomínio fechado.",
- img:"",
- agency:"Alameda Brokers",tel:"(19) 99673-2128",wa:"5519996732128",url:"https://alamedabrokers.com/detalhes_imovel/3657"},
-{cat:"4q",city:"Amparo",near:false,cond:"Jardim Itália (casa de rua — reformada)",title:"Casa 4 quartos, 300 m², reformada",price:4500,fee:null,area:300,q:4,su:1,ba:3,vg:2,type:"alt",pet:"n/i",office:false,
- ficha:"Casa plana reformada, ótimo acabamento, jardim de inverno, quintal, edícula nos fundos. IPTU R$350. Obs.: casa de rua, não é condomínio fechado.",
- img:"",
- agency:"Alameda Brokers",tel:"(19) 99673-2128",wa:"5519996732128",url:"https://alamedabrokers.com/detalhes_imovel/3616"},
-
-/* ================= 3 QUARTOS + ESCRITÓRIO / OUTRAS 3 QUARTOS ================= */
-
-/* SALTO 3q */
-{cat:"3q",city:"Salto",near:false,cond:"Cond. Residencial Primavera",title:"Casa térrea 3 suítes + escritório, 245 m²",price:6000,fee:0,area:245,q:3,su:3,ba:null,vg:4,type:"cond",pet:"sim",office:true,
- ficha:"Casa térrea, escritório, quintal amplo, piscina, churrasqueira integrada, suíte master com hidromassagem e ar, sala 2 ambientes com lareira, cozinha planejada, despensa, 4 vagas (2 cobertas). Aceita pet. Terreno 1.055 m².",
- img:"",
- agency:"Costa Rocha",tel:"(11) 4028-1983",wa:"551140281983",url:"https://www.imobiliariacostarocha.com.br/imovel/casa-salto-3-quartos-245-m/CA5405-COX3"},
-{cat:"3q",city:"Salto",near:false,cond:"Cond. Costa das Areias",title:"Casa 3 quartos, 171 m² com piscina",price:6000,fee:null,area:171,q:3,su:1,ba:null,vg:4,type:"cond",pet:"n/i",office:false,
- ficha:"Piscina privativa, cozinha planejada, 4 vagas, terreno 350 m². Portaria 24h.",
- img:"https://img.kenlo.io/VWRCUkQ2Tnp3d1BJRDBJVe1szkhnWr9UfpZS9ftWwjXgr7v5Znen3XVcMHllDVRJJeIbi3YwVYEtux9d6P12yDs-qO82Ypy-gnfc34uau8rIgESv487TmazB9eDCeOjBwr9kiYzOA2eTuf5dQYcfAXcpPtEnSxLvbd+OBX0LgT+Nim7vZYtqX1JW+CEiuzhX3VGZX5Sr7FIi1Ci7NdL69Qm-K5-w.jpg",
- agency:"Costa Rocha",tel:"(11) 4028-1983",wa:"551140281983",url:"https://www.imobiliariacostarocha.com.br/imovel/casa-salto-3-quartos-171-m/CA6525-COX3"},
-{cat:"3q",city:"Salto",near:false,cond:"Cond. Village Moutonnée",title:"Casa 3 quartos, 128 m²",price:6500,fee:298,area:128,q:3,su:1,ba:3,vg:3,type:"cond",pet:"n/i",office:false,
- ficha:"Arquitetura moderna, 2 salas integradas, área gourmet, quintal, varanda, porcelanato, aquecimento solar, 1 vaga coberta + 2. Clube: piscina, quadra, campo, portaria 24h. IPTU R$75.",
- img:"https://img.kenlo.io/VWRCUkQ2Tnp3d1BJRDBJVe1szkhnWr9UfpZS9ftWwjXgr7v5Znen3XVcMHllDVRJJeIbi3YwVYEtu1pt2sp81CYH1+8FY5OT4C+FgqDOvsbCjxScoLX2urDg-pnBYPb79t8BgaeuF378jIRpXNMMClIpaeMrHyX4BdigY0pR+j-dmF3sZr9jczZN9B0NkRlsx1Kdf6ShqEBvyRmrCs3hkXC2FbD5JHpDQPlLCdkx8QdQ8Bi1SUxy8h8d4563vSCAaKyyLIOvkiMYDwYu6oa6SeKv15TFJsonDqooL34J41sRFqAe2beFX6J24QkLuOfUB1+EkBnHl+8kYMGwW9tLmqMcxFySSLtO6h7oz9GUg-f-akTUYgE8-buX+-O1afr2Sf3sUG2-iZ4Ns8+IPM9WYNj2A2lIVzMlcHdBs0ax6KKHsEzuIHbY5F0WWAvfj45k9Ds3YBIX7Zw=.jpg",
- agency:"Grupo Kaion",tel:"(11) 98843-2339",wa:"5511988432339",url:"https://www.grupokaion.com.br/imovel/casa-salto-3-quartos-128-m/CA2535-GK"},
-{cat:"3q",city:"Salto",near:false,cond:"Cond. Village Moutonnée",title:"Casa mobiliada 3 quartos, 105 m² — aceita pet",price:5200,fee:298,area:105,q:3,su:1,ba:null,vg:2,type:"cond",pet:"sim",office:false,
- ficha:"Mobiliada, sala estar/jantar integrada, espaço gourmet, ar-condicionado, churrasqueira, 2 vagas. Clube com piscina, quadra, campo, portaria 24h. IPTU R$98. Aceita pet.",
- img:"",
- agency:"Grupo Kaion",tel:"(11) 98843-2339",wa:"5511988432339",url:"https://www.grupokaion.com.br/imovel/casa-salto-3-quartos-105-m/CA1382-GK"},
-{cat:"3q",city:"Salto",near:false,cond:"Cond. Village Moutonnée",title:"Casa 3 quartos, 106 m² — aceita pet",price:5787,fee:293,area:106,q:3,su:1,ba:null,vg:2,type:"cond",pet:"sim",office:false,
- ficha:"3 quartos, 1 suíte, no condomínio mais procurado de Salto. Pet friendly. Total com taxas ~R$6.200.",
- img:"",
- agency:"Silvana Carvalho Imobiliária",tel:"(11) 98687-0110",wa:"5511986870110",url:"https://silvanacarvalho.com.br/imovel/33035/casa-em-condominio-3-quartos-condominio-village-moutonnee-–-salto-village-moutonnee-salto/"},
-{cat:"3q",city:"Salto",near:false,cond:"Cond. Village Moutonnée",title:"Casa 3 quartos, 110 m²",price:5500,fee:null,area:110,q:3,su:1,ba:null,vg:2,type:"cond",pet:"n/i",office:false,
- ficha:"3 quartos, 1 suíte, 2 vagas, no Village Moutonnée (clube completo, portaria 24h).",
- img:"",
- agency:"Grupo Kaion",tel:"(11) 98843-2339",wa:"5511988432339",url:"https://www.grupokaion.com.br/imovel/casa-salto-3-quartos-110-m/CA2728-GK"},
-{cat:"3q",city:"Salto",near:false,cond:"Cond. Residencial Central Parque",title:"Casa 3 quartos, 149 m² — aceita pet",price:6472,fee:648,area:149,q:3,su:1,ba:null,vg:4,type:"cond",pet:"sim",office:false,
- ficha:"Projeto moderno, piscina, área gourmet na varanda, 3 dorm. com marcenaria, 4 vagas. Clube completo (beach tennis, academia, quadra), portaria 24h/guarita blindada. IPTU R$405. Aceita pet.",
- img:"",
- agency:"Grupo Kaion",tel:"(11) 98843-2339",wa:"5511988432339",url:"https://www.grupokaion.com.br/imovel/casa-salto-3-quartos-149-m/CA0817-GK"},
-{cat:"3q",city:"Salto",near:false,cond:"Cond. Jardim Guarujá",title:"Casa 3 quartos, 205 m²",price:6000,fee:null,area:205,q:3,su:1,ba:3,vg:2,type:"cond",pet:"n/i",office:false,
- ficha:"205 m², 3 quartos (1 suíte), 3 banheiros, 2 vagas, em condomínio fechado.",
- img:"",
- agency:"Costa Rocha",tel:"(11) 4028-1983",wa:"551140281983",url:"https://www.imobiliariacostarocha.com.br/imovel/casa-salto-3-quartos-205-m/CA6347-COX3"},
-
-/* JARINU 3q + escritório */
-{cat:"3q",city:"Jarinu",near:false,cond:"Residencial Cambarah",title:"Sobrado 3 suítes + escritório, 235 m²",price:6500,fee:425,area:235,q:3,su:3,ba:3,vg:4,type:"cond",pet:"n/i",office:true,
- ficha:"Sobrado alto padrão. Superior: 3 dorms (suíte, sacada, closet, planejados). Inferior: lavabo, sala 2 ambientes, cozinha, escritório, área gourmet com banheiro, lavanderia, garagem 2+2. Ar-condicionado, porcelanato. Segurança 24h, 15 min de Jundiaí. IPTU R$180.",
- img:"https://img.kenlo.io/VWRCUkQ2Tnp3d1BJRDBJVe1szkhnWr9UfpZS9ftWwjXgr7v5Znen3XVcMHllDVRJJeIbi3YwVYEtu0xg9ddqwDVug+xDQ4KvjiWmwL2ey9ei-X+P4rjdnq78-8rDTcjzkIEO7Yn5IHyusJ58GtIAIWBQS+QjHDvPW9+DECVLijaNvhvnU+ZmHGEQ0FogyTRK8x69aqWX9mFphSCYNvTq8j6SZ6zKPFgMFrMNAdsz6EIJ9xa9SUxy8h8d4563vSCAaKyyLIOvkiMYDwYu6oa6APevm5PPedV-GacxP3wP61NeW6wcmvuVAupw6QEZovrFTQeShQjQiOM3eYWsW9dBmbwEwVrHSeMYvxi-kILH0q2vakyDN1I+p72WrvDjbf2kTLSDdXrpo8pG187XfYRLK43kQSRVXWU1enAQqVy2teuL+hu5fw==.jpg",
- agency:"Barão Imóveis de Jundiaí",tel:"(11) 95020-0044",wa:"5511950200044",url:"https://www.baraoimoveisjundiai.com.br/imovel/casa-jarinu-3-quartos-235-m/CA2517-BASR"},
-
-/* PORTO FELIZ 3q */
-{cat:"3q",city:"Porto Feliz",near:false,cond:"Cond. Rafael Alcalá",title:"Casa 3 quartos + escritório, 261 m²",price:4000,fee:null,area:261,q:3,su:1,ba:null,vg:null,type:"cond",pet:"n/i",office:true,
- ficha:"Escritório, piscina, varanda gourmet, churrasqueira, ar-condicionado, edícula. 261 m² úteis.",
- img:"https://static.arboimoveis.com.br/CA0290_BAND/640x480/casa-com-3-dormitorios-261-m-venda-por-r-1-250-000-00-ou-aluguel-por-r-4-320-00-mes-parque-residencial-rafael-alcala-porto-feliz-sp1741038538062wcsxu.jpg",
- agency:"Bandimóveis Consultoria",tel:"(15) 99625-5903",wa:"5515996255903",url:"https://www.bandimoveis.com.br/imovel/casa/locacao/porto-feliz/sp/parque-residencial-rafael-alcala/CA0290_BAND"},
-{cat:"3q",city:"Porto Feliz",near:false,cond:"Cond. Portal Vale do Sol",title:"Casa moderna 3 quartos, 250 m² com piscina",price:4500,fee:580,area:250,q:3,su:1,ba:null,vg:2,type:"cond",pet:"n/i",office:false,
- ficha:"Moderna, pé-direito duplo, suíte com closet e sacada, piscina, aquecimento solar, ar-condicionado, 2 vagas cobertas. IPTU R$315.",
- img:"https://static.arboimoveis.com.br/CA0126_BAND/640x480/casa-com-3-dormitorios-a-venda-250-m-por-r-1-100-000-00-portal-vale-do-sol-porto-feliz-sp1741037765778qmzud.jpg",
- agency:"Bandimóveis Consultoria",tel:"(15) 99625-5903",wa:"5515996255903",url:"https://www.bandimoveis.com.br/imovel/casa/locacao/porto-feliz/sp/condominio-portal-vale-do-sol/CA0126_BAND"},
-{cat:"3q",city:"Porto Feliz",near:false,cond:"Cond. Rafael Alcalá",title:"Casa 3 quartos, 300 m², melhor preço",price:3500,fee:672,area:300,q:3,su:1,ba:null,vg:null,type:"cond",pet:"n/i",office:false,
- ficha:"Suíte com hidromassagem, 300 m² úteis. Condomínio com portaria 24h, quadra, churrasqueira comum. IPTU R$246.",
- img:"https://static.arboimoveis.com.br/CA1617_BAND/640x480/whatsapp-image-2026-02-03-at-16-09-15-21770213860621.jpeg",
- agency:"Bandimóveis Consultoria",tel:"(15) 99625-5903",wa:"5515996255903",url:"https://www.bandimoveis.com.br/imovel/casa/locacao/porto-feliz/sp/rafael-alcala/CA1617_BAND"},
-{cat:"3q",city:"Porto Feliz",near:false,cond:"Cond. Rafael Alcalá",title:"Casa mobiliada 3 quartos, 281 m²",price:5600,fee:null,area:281,q:3,su:1,ba:null,vg:null,type:"cond",pet:"n/i",office:false,
- ficha:"Mobília completa, piscina com hidromassagem, portaria 24h. 281 m² úteis.",
- img:"https://static.arboimoveis.com.br/CA1620_BAND/640x480/whatsapp-image-2026-02-20-at-09-22-17-11771592741548.jpeg",
- agency:"Bandimóveis Consultoria",tel:"(15) 99625-5903",wa:"5515996255903",url:"https://www.bandimoveis.com.br/imovel/casa/locacao/porto-feliz/sp/rafael-alcala/CA1620_BAND"},
-
-/* MONTE MOR 3q */
-{cat:"3q",city:"Monte Mor",near:false,cond:"Cond. Monterrey",title:"Casa 3 suítes — aceita pet (espaço pet)",price:5000,fee:null,area:null,q:3,su:3,ba:null,vg:4,type:"cond",pet:"sim",office:false,
- ficha:"3 suítes, sala estar/jantar integrada, cozinha ampla, área gourmet, lavanderia, 4 vagas (2 cobertas). Condomínio Monterrey: portaria 24h, academia, piscina semiolímpica, quadras, pista de skate, salão, Espaço Zen, Espaço Pet, Monte Mall em frente.",
- img:"https://imgs2.cdn-imobibrasil.com.br/imagens/imoveis/202606230001246067.jpg",
- agency:"Eduardo Imóveis Monte Mor",tel:"(19) 99373-4828",wa:"5519993734828",url:"https://www.eduardoimoveismontemor.com.br/imovel/4296400/casa-em-condominio-locacao-monte-mor-sp-condominio-monterrey-condominio-monterrey"},
-{cat:"3q",city:"Monte Mor",near:false,cond:"Cond. Reserva da Mata",title:"Casa 3 quartos, 170 m², planejados",price:3800,fee:404,area:170,q:3,su:1,ba:1,vg:2,type:"cond",pet:"n/i",office:false,
- ficha:"Móveis planejados, cozinha planejada com torre quente, sala estar/jantar/cozinha integradas, lavabo, área gourmet, suíte master com closet. IPTU R$150.",
- img:"https://imgs2.cdn-imobibrasil.com.br/imagens/imoveis/202603200926412554.jpg",
- agency:"Eduardo Imóveis Monte Mor",tel:"(19) 99373-4828",wa:"5519993734828",url:"https://www.eduardoimoveismontemor.com.br/imovel/4133169/casa-em-condominio-locacao-monte-mor-sp-condominio-reserva-da-mata-condominio-reserva-da-mata"},
-{cat:"3q",city:"Monte Mor",near:false,cond:"Cond. Reserva da Mata",title:"Casa 3 quartos, 150 m²",price:2800,fee:404,area:150,q:3,su:1,ba:2,vg:4,type:"cond",pet:"n/i",office:false,
- ficha:"Sala de estar, sala de jantar + cozinha, área gourmet, lavanderia, banheiro social, ambientes amplos, 4 vagas. Condomínio: portaria 24h, campo society, quadra, quiosque, mata. IPTU R$180.",
- img:"https://imgs2.cdn-imobibrasil.com.br/imagens/imoveis/202509292118201235.jpg",
- agency:"Eduardo Imóveis Monte Mor",tel:"(19) 99373-4828",wa:"5519993734828",url:"https://www.eduardoimoveismontemor.com.br/imovel/3829471/casa-em-condominio-locacao-monte-mor-sp-condominio-reserva-da-mata"},
-
-/* TATUÍ 3q + escritório */
-{cat:"3q",city:"Tatuí",near:false,cond:"Cond. Vila Monte Verde",title:"Sobrado 3 quartos + escritório, 217 m²",price:6000,fee:0,area:217,q:3,su:1,ba:4,vg:4,type:"cond",pet:"n/i",office:true,
- ficha:"Escritório com sacada, suíte master com closet e hidromassagem, piscina com cascata, área gourmet, ar-condicionado, armários planejados, 4 vagas (2 cobertas). Condomínio: portaria 24h, academia, quadras de tênis, piscina, salão de festas.",
- img:"https://cdn.imoview.com.br/veradiniz/Imoveis/465/koh8r-img-5057-1781709665.jpg",
- agency:"Vera Diniz Imóveis",tel:"(15) 3334-2488",wa:"",url:"https://www.veradinizimoveis.com.br/imovel/belo-sobrado-para-locacao-em-condominio-em-tatui-sp/465"},
-
-/* MONTE ALEGRE DO SUL / ORYPABA 3q */
-{cat:"3q",city:"Monte Alegre do Sul",near:false,cond:"Cond. Orypaba",title:"Casa 3 quartos / 2 suítes, 530 m² — pet (canil)",price:5000,fee:688,area:530,q:3,su:2,ba:5,vg:3,type:"cond",pet:"sim",office:false,
- ficha:"2 suítes master com hidromassagem, ampla sala com varanda e vista panorâmica, sala de TV, cozinha americana, piscina com deck, churrasqueira, canil (favorável a pet), garagem coberta 3 carros. Terreno 1.150 m². IPTU R$280.",
- img:"https://meusiteimobiliario.com.br/painel/subdominios/3175/fotos/3085/400_DSCN0611.JPG",
- agency:"Alameda Brokers",tel:"(19) 99673-2128",wa:"5519996732128",url:"https://alamedabrokers.com/detalhes_imovel/3085"},
-{cat:"3q",city:"Monte Alegre do Sul",near:false,cond:"Cond. Orypaba",title:"Casa mobiliada e plana, 3 quartos",price:4800,fee:0,area:null,q:3,su:1,ba:null,vg:null,type:"cond",pet:"n/i",office:false,
- ficha:"Plana, mobiliada, sala de lareira, sala de jantar, varanda com vista para a cidade, jardim amplo, churrasqueira. Condomínio + IPTU já inclusos. Terreno 1.000 m².",
- img:"https://meusiteimobiliario.com.br/painel/subdominios/3175/fotos/2497/400_WhatsAppImage20230414at10123124.jpeg",
- agency:"Alameda Brokers",tel:"(19) 99673-2128",wa:"5519996732128",url:"https://alamedabrokers.com/detalhes_imovel/2497"},
-{cat:"3q",city:"Monte Alegre do Sul",near:false,cond:"Cond. Orypaba",title:"Casa 3 quartos / 2 suítes (Lucem)",price:5000,fee:null,area:null,q:3,su:2,ba:4,vg:2,type:"cond",pet:"n/i",office:false,
- ficha:"3 dormitórios com 2 suítes, 2 salas, cozinha, 4 banheiros, 2 vagas, em condomínio fechado Orypaba (lazer e segurança). Aluguel + condomínio + IPTU.",
- img:"https://vault.imob.online/resized/u4740/properties/photos/17543427/1yquX54lBh7bE2dVQe53Q9ki-1718722087141.jpg/kxlarge.jpg",
- agency:"Lucem Imóveis",tel:"(19) 99842-0149",wa:"5519998420149",url:"https://lucemimoveis.com.br/detalhes/imovel/casa/amparo/orypaba/codigo/2465"},
-
-/* CAPIVARI 3q */
-{cat:"3q",city:"Capivari",near:false,cond:"Vivva Residencial Clube",title:"Casa nova 3 quartos, 145 m²",price:5500,fee:450,area:145,q:3,su:1,ba:2,vg:3,type:"cond",pet:"n/i",office:false,
- ficha:"Casa nova, sala ampla pé-direito duplo, churrasqueira, 3 vagas. Condomínio clube: portaria 24h, piscina, quadra, salão, ~30 mil m² de verde.",
- img:"https://img.kenlo.io/VWRCUkQ2Tnp3d1BJRDBJVe1szkhnWr9UfpZS9ftWwjXgr7v5Znen3XVcMHllDVRJJeIbi3YwVYEtuxZd9uIrxRFjiJArYaSBji3chYGq7tGGj2WP+5LRhqrK7srUd+7d5rk934XvFnCgmJRbXe55aH5eQdJ1FDu7WbCaLEFQn2iRqB3GSr0WGE1w7REpvzcPwwK2RpL13GRoggSCB8j6+ye7Q6LaIWJjELtHR9ox7ltMqBezU0J8p0oF7J6yoS7TO7S-K5+hxzlXFx5k9oa+SuKv15TFJsonDqooL34J41sRFqAe2beFX6J24QkLuOfUB1+EkBnHl+8kYMGwX99Nm6QcxVzGGrBGvxjqwofBhfP4bBmEZgFv-bjN-fO5P6j1G-zseGerj9xRppzRYpoKa5qoCiQJEGZ4M3BJqQPx+LeLr1KrOGnK6Q==.jpg",
- agency:"Gonçalves Imóveis",tel:"(19) 99253-1024",wa:"5519992531024",url:"https://www.goncalvesimoveiscapivari.com.br/imovel/casa-capivari-3-quartos-145-m/CA1145-GONC"},
-{cat:"3q",city:"Capivari",near:false,cond:"Vivva Residencial Clube",title:"Casa nova 3 quartos, 116 m²",price:4750,fee:null,area:116,q:3,su:1,ba:2,vg:2,type:"cond",pet:"n/i",office:false,
- ficha:"Casa nova, porcelanato, 2 banheiros, 2 vagas. Condomínio clube Vivva: piscina, playground, quadra, fitness, salão, portaria 24h, CFTV.",
- img:"https://img.kenlo.io/VWRCUkQ2Tnp3d1BJRDBJVe1szkhnWr9UfpZS9ftWwjXgr7v5Znen3XVcMHllDVRJJeIbi3YwVYEtu01ljY5NyTEZwtU3Aa2ciyjZ-p-N6NjHjmq1+aOKoITV-MrDZMbMzKQ88a2qHn62mYlKHId+dk8jWs5VZhX0eq6qAyFLnzuci2-zVJUaH3V1jgEsnwxXxwS+RLKS1EEN9XmeVaLckCGtEfzhO1lNGMFHR9ox7ltMqBezU0J8p0oF7J6yoS7TO7S-K5+hxzlXFx5k9oa+SuKv15TFJsonDqooL34J41sRFqAe2beFX6J24QkLuOfUB1+EkBnHl+8kYMGwX99Nm6QcxVzGGrBGvxjqwofBhfP4bBmEZgFv-bjN-fO5P6j1G-zseGerj9xRppzRYpoKa5qoCiQJEGZ4M3BJqQPx+LeLr1KrOGnK6Q==.jpg",
- agency:"Gonçalves Imóveis",tel:"(19) 99253-1024",wa:"5519992531024",url:"https://www.goncalvesimoveiscapivari.com.br/imovel/casa-capivari-3-quartos-116-m/CA1611-GONC"},
-
-/* MORUNGABA 3q */
-{cat:"3q",city:"Morungaba",near:false,cond:"Cond. A Montanha",title:"Casa 3 quartos, 200 m²",price:5500,fee:1300,area:200,q:3,su:1,ba:2,vg:null,type:"cond",pet:"n/i",office:false,
- ficha:"Varanda gourmet, dormitório+WC de empregada. Condomínio A Montanha: vigilância 24h, piscina adulto/infantil, quadras, campo, salão de festas/jogos, playground. IPTU R$110.",
- img:"https://static.arboimoveis.com.br/CA0111_FORP/640x480/7DVm7A76psNTUwujllNkF1X-LnBi2-3jdgIazR2qXNZnaOIK87sXJTcVBPrhMXZDwIlK6fSEclQJck-SMCbFBtjusLnV-kxM4PZv8QksTRKdCyg=w1920-h1080.jpg",
- agency:"Forpus Soluções Imobiliárias",tel:"(11) 91106-5678",wa:"5511911065678",url:"https://www.forpussolucoes.com/imovel/casa/venda-e-locacao/morungaba/sp/dos-silvas/CA0111_FORP"},
-
-/* COSMÓPOLIS 3q */
-{cat:"3q",city:"Cosmópolis",near:false,cond:"Cond. Recanto dos Colibris",title:"Casa 3 quartos, 220 m²",price:5000,fee:973,area:220,q:3,su:null,ba:3,vg:null,type:"cond",pet:"n/i",office:false,
- ficha:"220 m², 3 banheiros, copa, cozinha, em condomínio fechado. IPTU R$180. Anúncio atualizado recentemente.",
- img:"https://resizedimgs.vivareal.com/img/vr-listing/ea79d1d9beae7767874edd24cbc1a8b3/casa-com-3-quartos-para-alugar-220m-no-recanto-dos-colibris-cosmopolis.webp?action=fit-in&dimension=614x297",
- agency:"ABC Consultoria",tel:"(19) 3872-1046",wa:"",url:"https://www.vivareal.com.br/imovel/casa-3-quartos-recanto-dos-colibris-cosmopolis-220m2-aluguel-RS5000-id-2859529012/"},
-
-/* ARTUR NOGUEIRA 3q */
-{cat:"3q",city:"Artur Nogueira",near:false,cond:"Residencial Manhattan",title:"Casa 3 quartos, 333 m², mudança imediata",price:6000,fee:525,area:333,q:3,su:1,ba:null,vg:null,type:"cond",pet:"n/i",office:false,
- ficha:"Ampla, moderna, desocupada (mudança imediata), portaria 24h. 333,55 m² úteis.",
- img:"https://static.arboimoveis.com.br/CA1923_OLAN/640x480/whatsapp-image-2026-06-02-at-10-42-421780409837139.jpeg",
- agency:"Imobiliária Olandini",tel:"(19) 99212-4190",wa:"5519992124190",url:"https://www.imobiliariaolandini.com.br/imovel/casa/locacao/artur-nogueira/sp/residencial-manhattan/CA1923_OLAN"},
-{cat:"3q",city:"Artur Nogueira",near:false,cond:"Portal dos Manacás",title:"Sobrado 3 quartos, 232 m²",price:4000,fee:430,area:232,q:3,su:1,ba:null,vg:null,type:"cond",pet:"n/i",office:false,
- ficha:"Sobrado em condomínio estruturado, não mobiliado. 232 m² úteis. IPTU R$310.",
- img:"https://static.arboimoveis.com.br/SO0156_OLAN/640x480/11777996947865.jpeg",
- agency:"Imobiliária Olandini",tel:"(19) 99212-4190",wa:"5519992124190",url:"https://www.imobiliariaolandini.com.br/imovel/sobrado/venda-e-locacao/artur-nogueira/sp/portal-dos-manacas/SO0156_OLAN"},
-
-/* BOITUVA 3q (vizinha) */
-{cat:"3q",city:"Boituva",near:true,cond:"Cond. Portal das Estrelas I",title:"Casa 3 quartos / 2 suítes + escritório, 525 m²",price:6200,fee:400,area:525,q:3,su:2,ba:null,vg:null,type:"cond",pet:"n/i",office:true,
- ficha:"Escritório, 525 m². Condomínio fechado. IPTU R$200.",
- img:"https://resizedimgs.vivareal.com/img/vr-listing/9e3eb0aae8fe860f04ffb99009721415/casa-de-condominio-com-3-quartos-para-alugar-525m-no-portal-das-estrelas-boituva.webp?action=fit-in&dimension=614x297",
- agency:"Viva Bem Neg. Imob. (via VivaReal)",tel:"contato pelo anúncio",wa:"",url:"https://www.vivareal.com.br/imovel/casa-de-condominio-3-quartos-portal-das-estrelas-i-boituva-com-garagem-525m2-aluguel-RS6200-id-2890179032/"},
-{cat:"3q",city:"Boituva",near:true,cond:"Cond. Vivendas do Parque",title:"Casa 3 quartos / 1 suíte, 215 m²",price:5300,fee:null,area:215,q:3,su:1,ba:null,vg:null,type:"cond",pet:"n/i",office:false,
- ficha:"215 m² em condomínio fechado.",
- img:"https://resizedimgs.vivareal.com/img/vr-listing/020985c23253732bb02fa615a41a4dcf/casa-de-condominio-com-3-quartos-para-alugar-215m-no-vivendas-do-parque-boituva.webp?action=fit-in&dimension=614x297",
- agency:"Viva Bem Neg. Imob. (via VivaReal)",tel:"contato pelo anúncio",wa:"",url:"https://www.vivareal.com.br/imovel/casa-de-condominio-3-quartos-vivendas-do-parque-boituva-com-garagem-215m2-aluguel-RS5300-id-2865125881/"},
-{cat:"3q",city:"Boituva",near:true,cond:"Cond. Residencial Green Ville II",title:"Casa 3 quartos, 450 m²",price:5800,fee:0,area:450,q:3,su:null,ba:4,vg:null,type:"cond",pet:"n/i",office:false,
- ficha:"450 m², 4 banheiros, condomínio isento. Terreno amplo.",
- img:"https://resizedimgs.vivareal.com/img/vr-listing/d0d07803925f5cd5ac4fcc2377986dfb/casa-de-condominio-com-3-quartos-para-alugar-450m-no-residencial-green-ville-boituva.webp?action=fit-in&dimension=614x297",
- agency:"Barrilari Imóveis (via VivaReal)",tel:"contato pelo anúncio",wa:"",url:"https://www.vivareal.com.br/imovel/casa-de-condominio-3-quartos-residencial-green-ville-ii-boituva-com-garagem-450m2-aluguel-RS5800-id-2886819402/"},
-{cat:"3q",city:"Boituva",near:true,cond:"Cond. Tropicália Garden",title:"Casa 3 quartos, 164 m²",price:5960,fee:420,area:164,q:3,su:null,ba:4,vg:null,type:"cond",pet:"n/i",office:false,
- ficha:"164 m², 4 banheiros, condomínio fechado. IPTU R$120.",
- img:"https://resizedimgs.vivareal.com/img/vr-listing/5de6279cd380575a096bb860178d6619/casa-de-condominio-com-3-quartos-para-alugar-164m-no-tropicalia-garden-boituva.webp?action=fit-in&dimension=614x297",
- agency:"VEB Imóveis (via VivaReal)",tel:"contato pelo anúncio",wa:"",url:"https://www.vivareal.com.br/imovel/casa-de-condominio-3-quartos-tropicalia-garden-boituva-com-garagem-164m2-aluguel-RS5960-id-2886519187/"},
-
-/* BOM JESUS DOS PERDÕES 3q (vizinha) */
-{cat:"3q",city:"Bom Jesus dos Perdões",near:true,cond:"Cond. Colinas do Sol",title:"Casa térrea 3 quartos, 168 m²",price:6300,fee:0,area:168,q:3,su:2,ba:null,vg:4,type:"cond",pet:"n/i",office:false,
- ficha:"Casa térrea, sala pé-direito alto, piscina preparada p/ aquecimento, churrasqueira, porcelanato/travertino, móveis planejados, 4 vagas. Condomínio + IPTU inclusos. Anúncio de 02/07/2026.",
- img:"https://resizedimgs.vivareal.com/img/vr-listing/3cf4488ec973273caa29974279027b6b/casa-de-condominio-com-3-quartos-para-venda-ou-aluguel-300m-no-colinas-do-sol-bom-jesus-dos-perdoes.webp?action=fit-in&dimension=614x297",
- agency:"Imobiatibaia (via VivaReal)",tel:"contato pelo anúncio",wa:"",url:"https://www.vivareal.com.br/imovel/casa-de-condominio-3-quartos-colinas-do-sol-bom-jesus-dos-perdoes-com-garagem-300m2-venda-RS1090000-id-2896330326/"},
-{cat:"3q",city:"Bom Jesus dos Perdões",near:true,cond:"Cond. Alpes D'Ouro",title:"Casa 3 quartos, 120 m² + edícula",price:4500,fee:680,area:120,q:3,su:1,ba:null,vg:5,type:"cond",pet:"n/i",office:false,
- ficha:"Piscina, varanda, quintal, pomar, churrasqueira, edícula com suíte, 5 vagas. Terreno 1.200 m². IPTU R$105. Atualizado há 2 dias.",
- img:"https://resizedimgs.vivareal.com/img/vr-listing/7fdf22ccba842719b68d3bd8a62a99c9/casa-de-condominio-com-3-quartos-para-venda-ou-aluguel-120m-no-alpes-d-ouro-bom-jesus-dos-perdoes.webp?action=fit-in&dimension=614x297",
- agency:"Alugue-Já Imóveis (via VivaReal)",tel:"contato pelo anúncio",wa:"",url:"https://www.vivareal.com.br/imovel/casa-de-condominio-3-quartos-alpes-d-ouro-bom-jesus-dos-perdoes-com-garagem-120m2-venda-RS980000-id-2881128877/"},
-
-/* ============ ACHADOS RECENTES 2026 (rodada extra — VivaReal / Chaves na Mão) ============ */
-
-/* MONTE MOR */
-{cat:"3q",city:"Monte Mor",near:false,cond:"Cond. fechado (Jardim Itapoan)",title:"Casa 3 quartos, 142 m²",price:3500,fee:430,area:142,q:3,su:1,ba:null,vg:2,type:"cond",pet:"n/i",office:false,
- ficha:"Casa em condomínio fechado, suíte, 2 vagas. Publicado há ~4 semanas (recente).",
- img:"https://resizedimgs.vivareal.com/img/vr-listing/2a884e82c2cb7c5661f26c4e979de6c8/casa-de-condominio-com-3-quartos-para-alugar-142m-no-jardim-itapoan-monte-mor.webp?action=fit-in&dimension=614x297",
- agency:"via VivaReal",tel:"contato pelo anúncio",wa:"",url:"https://www.vivareal.com.br/imovel/casa-de-condominio-3-quartos-jardim-itapoan-monte-mor-com-garagem-142m2-aluguel-RS3500-id-2893413533/"},
-
-/* HOLAMBRA (vizinha pequena) */
-{cat:"4q",city:"Holambra",near:true,cond:"Jardim Holanda (residencial)",title:"Casa 4 quartos + escritório, 167 m² — aceita pet",price:6000,fee:null,area:167,q:4,su:1,ba:null,vg:null,type:"cond",pet:"sim",office:true,
- ficha:"Escritório, 4 quartos, aceita animais. Publicado há ~2 semanas. Confirmar se o residencial é fechado.",
- img:"https://resizedimgs.vivareal.com/img/vr-listing/54f7122ed5a5787fe836a77e2c457e32/casa-com-4-quartos-para-alugar-167m-no-jardim-holanda-holambra.webp?action=fit-in&dimension=614x297",
- agency:"via VivaReal",tel:"contato pelo anúncio",wa:"",url:"https://www.vivareal.com.br/imovel/casa-4-quartos-jardim-holanda-holambra-com-garagem-167m2-aluguel-RS6000-id-2895349293/"},
-{cat:"3q",city:"Holambra",near:true,cond:"Moinho Residencial",title:"Sobrado 3 quartos / 2 suítes + escritório, 200 m²",price:5300,fee:null,area:200,q:3,su:2,ba:null,vg:null,type:"cond",pet:"n/i",office:true,
- ficha:"Escritório, 2 suítes, 200 m². IPTU R$150. Atualizado recentemente.",
- img:"https://resizedimgs.vivareal.com/img/vr-listing/5be02b3fae65d08543391081b2da4e6b/sobrado-com-3-quartos-para-alugar-200m-no-moinho-residencial-holambra.webp?action=fit-in&dimension=614x297",
- agency:"via VivaReal",tel:"contato pelo anúncio",wa:"",url:"https://www.vivareal.com.br/imovel/sobrado-3-quartos-moinho-residencial-holambra-200m2-aluguel-RS5300-id-2857698183/"},
-{cat:"3q",city:"Holambra",near:true,cond:"Residencial Florabella",title:"Casa 3 quartos + escritório, 195 m² — aceita pet",price:6050,fee:null,area:195,q:3,su:1,ba:null,vg:null,type:"cond",pet:"sim",office:true,
- ficha:"Escritório, 195 m², aceita animais. IPTU R$1.760.",
- img:"https://resizedimgs.vivareal.com/img/vr-listing/4ab8662b8fc6f1a393223c727c383e37/casa-com-3-quartos-para-alugar-195m-no-residencial-florabella-holambra.webp?action=fit-in&dimension=614x297",
- agency:"via VivaReal",tel:"contato pelo anúncio",wa:"",url:"https://www.vivareal.com.br/imovel/casa-3-quartos-residencial-florabella-holambra-com-garagem-195m2-aluguel-RS6050-id-2884822390/"},
-{cat:"3q",city:"Holambra",near:true,cond:"Jardim das Tulipas",title:"Casa 3 quartos, 152 m²",price:5000,fee:null,area:152,q:3,su:1,ba:null,vg:null,type:"alt",pet:"n/i",office:false,
- ficha:"152 m², 1 suíte. IPTU R$1.586. Confirmar se é condomínio fechado.",
- img:"https://resizedimgs.vivareal.com/img/vr-listing/cc83c4712b2b4e1a3d2e9ba440809581/casa-com-3-quartos-para-alugar-152m-no-jardim-das-tulipas-holambra.webp?action=fit-in&dimension=614x297",
- agency:"via VivaReal",tel:"contato pelo anúncio",wa:"",url:"https://www.vivareal.com.br/imovel/casa-3-quartos-jardim-das-tulipas-holambra-com-garagem-152m2-aluguel-RS5000-id-2882549109/"},
-
-/* JAGUARIÚNA (vizinha média) */
-{cat:"4q",city:"Jaguariúna",near:true,cond:"Nova Jaguariúna (residencial)",title:"Casa 4 quartos + escritório, 300 m²",price:4500,fee:null,area:300,q:4,su:1,ba:null,vg:null,type:"cond",pet:"n/i",office:true,
- ficha:"Escritório, 300 m². IPTU R$154. Atualizado há ~13h. Confirmar se o residencial é fechado.",
- img:"https://resizedimgs.vivareal.com/img/vr-listing/86b50f01161bd63e3bed2d00c7155376/casa-com-4-quartos-para-alugar-300m-no-nova-jaguariuna-jaguariuna.webp?action=fit-in&dimension=614x297",
- agency:"via VivaReal",tel:"contato pelo anúncio",wa:"",url:"https://www.vivareal.com.br/imovel/casa-4-quartos-nova-jaguariuna-jaguariuna-com-garagem-300m2-aluguel-RS4500-id-2893795142/"},
-{cat:"4q",city:"Jaguariúna",near:true,cond:"Nova Jaguariúna (residencial)",title:"Casa 4 quartos / 2 suítes, 183 m²",price:4500,fee:null,area:183,q:4,su:2,ba:null,vg:null,type:"cond",pet:"n/i",office:false,
- ficha:"2 suítes, churrasqueira, 183 m². IPTU R$144. Atualizado há ~13h.",
- img:"https://resizedimgs.vivareal.com/img/vr-listing/5d03c294b7b1f3e3cbf083aaef2cca53/casa-com-4-quartos-para-alugar-183m-no-nova-jaguariuna-jaguariuna.webp?action=fit-in&dimension=614x297",
- agency:"via VivaReal",tel:"contato pelo anúncio",wa:"",url:"https://www.vivareal.com.br/imovel/casa-4-quartos-nova-jaguariuna-jaguariuna-com-garagem-183m2-aluguel-RS4500-id-2885292801/"},
-{cat:"4q",city:"Jaguariúna",near:true,cond:"Jardim Botânico",title:"Casa 5 quartos + escritório, 200 m² — aceita pet",price:5000,fee:null,area:200,q:5,su:1,ba:null,vg:null,type:"alt",pet:"sim",office:true,
- ficha:"5 quartos, escritório, aceita animais, 200 m². IPTU R$1.180. Confirmar se é condomínio fechado.",
- img:"https://resizedimgs.vivareal.com/img/vr-listing/a4ab50c6d491285c23c8cb64394b6bac/casa-com-5-quartos-para-alugar-200m-no-jardim-botanico-jaguariuna.webp?action=fit-in&dimension=614x297",
- agency:"via VivaReal",tel:"contato pelo anúncio",wa:"",url:"https://www.vivareal.com.br/imovel/casa-5-quartos-jardim-botanico-jaguariuna-com-garagem-200m2-aluguel-RS5000-id-2881928995/"},
-{cat:"3q",city:"Jaguariúna",near:true,cond:"Loteamento Capotuna (cond. fechado)",title:"Casa 3 quartos, 180 m² — aceita pet",price:4000,fee:350,area:180,q:3,su:1,ba:null,vg:4,type:"cond",pet:"sim",office:false,
- ficha:"Casa de condomínio, 4 vagas, aceita animais. Publicado há 3 dias (muito recente). IPTU R$150.",
- img:"https://resizedimgs.vivareal.com/img/vr-listing/0b315f33b25dadfcbe316d47a0b888e5/casa-de-condominio-com-3-quartos-para-alugar-180m-no-loteamento-capotuna-jaguariuna.webp?action=fit-in&dimension=614x297",
- agency:"via VivaReal",tel:"contato pelo anúncio",wa:"",url:"https://www.vivareal.com.br/imovel/casa-de-condominio-3-quartos-loteamento-capotuna-jaguariuna-com-garagem-180m2-aluguel-RS4000-id-2898630076/"},
-
-/* SERRA NEGRA (vizinha pequena) */
-{cat:"4q",city:"Serra Negra",near:true,cond:"Estância Suíça (taxa de condomínio)",title:"Casa 4 quartos + escritório, 150 m²",price:2500,fee:532,area:150,q:4,su:1,ba:null,vg:null,type:"alt",pet:"n/i",office:true,
- ficha:"Escritório, 4 quartos, 150 m². Possui taxa de condomínio (indica área fechada — confirmar portaria). IPTU R$153. Publicado há 6 dias.",
- img:"https://resizedimgs.vivareal.com/img/vr-listing/1f274b0cc8817414a0964b4acba96f55/casa-com-4-quartos-para-alugar-150m-no-centro-serra-negra.webp?action=fit-in&dimension=614x297",
- agency:"via VivaReal",tel:"contato pelo anúncio",wa:"",url:"https://www.vivareal.com.br/imovel/casa-4-quartos-estancia-suica-serra-negra-com-garagem-150m2-aluguel-RS2500-id-2898029054/"},
-
-/* ATIBAIA (vizinha média — confirmar se aceita) */
-{cat:"3q",city:"Atibaia",near:true,cond:"Vila Santista (cond. fechado)",title:"Casa 3 suítes + escritório, 179 m²",price:6500,fee:380,area:179,q:3,su:3,ba:null,vg:null,type:"cond",pet:"n/i",office:true,
- ficha:"3 suítes, escritório, lavabo. IPTU R$215. Publicado 16/06/2026 (recente). Obs.: Atibaia é cidade média.",
- img:"https://www.chavesnamao.com.br/imn/0850x0450/N/60/imoveis/615418/43729715/sp-atibaia-vila-santista-rua-lamartine-fagundes-casa-sobrado-em-condominio-para-alugar-3-quartos-6a43e7db-1.jpg",
- agency:"Unyk Home (via Chaves na Mão)",tel:"contato pelo anúncio",wa:"",url:"https://www.chavesnamao.com.br/imovel/casa-em-condominio-para-alugar-3-quartos-com-garagem-sp-atibaia-vila-santista-310m2-RS6500/id-43729715/"},
-{cat:"3q",city:"Atibaia",near:true,cond:"Cond. Quintas da Boa Vista",title:"Casa 3 suítes + escritório, 200 m²",price:5850,fee:900,area:200,q:3,su:3,ba:null,vg:null,type:"cond",pet:"n/i",office:true,
- ficha:"3 suítes, mezanino usado como escritório/sala de TV, 200 m². IPTU R$250. Publicado 29/06/2026. Obs.: Atibaia é cidade média.",
- img:"https://www.chavesnamao.com.br/imn/0850x0450/N/60/imoveis/579764/44173988/sp-atibaia-condominio-quintas-da-boa-vista-nao-encontrado-casa-sobrado-em-condominio-para-alugar-3-quartos-6a42ea5f-1.jpg",
- agency:"Galeb Imóveis (via Chaves na Mão)",tel:"contato pelo anúncio",wa:"",url:"https://www.chavesnamao.com.br/imovel/casa-em-condominio-para-alugar-3-quartos-com-garagem-sp-atibaia-condominio-quintas-da-boa-vista-200m2-RS5850/id-44173988/"},
-{cat:"3q",city:"Atibaia",near:true,cond:"Ribeirão dos Porcos (cond. fechado)",title:"Casa 3 quartos / 2 suítes + escritório, 200 m²",price:3500,fee:null,area:200,q:3,su:2,ba:null,vg:null,type:"cond",pet:"n/i",office:true,
- ficha:"2 suítes, escritório (ambiente reservado), 200 m². Ótimo preço. Obs.: Atibaia é cidade média.",
- img:"https://www.chavesnamao.com.br/imn/0850x0450/N/60/imoveis/211180/36308908/sp-atibaia-ribeirao-dos-porcos-nao-encontrado-casa-sobrado-em-condominio-para-alugar-3-quartos.jpg",
- agency:"Flórido Imóveis (via Chaves na Mão)",tel:"contato pelo anúncio",wa:"",url:"https://www.chavesnamao.com.br/imovel/casa-em-condominio-para-alugar-3-quartos-com-garagem-sp-atibaia-ribeirao-dos-porcos-200m2-RS3500/id-36308908/"},
-
-/* ITATIBA (vizinha média — confirmar se aceita) */
-{cat:"4q",city:"Itatiba",near:true,cond:"Jardim Santa Rosa (cond. fechado)",title:"Casa 4 quartos / 2 suítes + escritório, 500 m²",price:5800,fee:550,area:500,q:4,su:2,ba:null,vg:null,type:"cond",pet:"n/i",office:true,
- ficha:"Sala de TV, escritório, 4 dormitórios, 500 m². Publicado 20/02/2026. Obs.: Itatiba é cidade média.",
- img:"https://www.chavesnamao.com.br/imn/0850x0450/N/60/imoveis/197099/39717741/sp-itatiba-jardim-santa-rosa-rua-narciso-polli-casa-sobrado-em-condominio-para-alugar-4-quartos-69c6ab6a-1.jpg",
- agency:"Unique Brokers (via Chaves na Mão)",tel:"contato pelo anúncio",wa:"",url:"https://www.chavesnamao.com.br/imovel/casa-em-condominio-para-alugar-4-quartos-com-garagem-sp-itatiba-jardim-santa-rosa-500m2-RS5800/id-39717741/"},
-{cat:"3q",city:"Itatiba",near:true,cond:"Parque da Fazenda (cond. fechado)",title:"Casa 3 quartos + escritório, 268 m²",price:6500,fee:null,area:268,q:3,su:null,ba:null,vg:null,type:"cond",pet:"n/i",office:true,
- ficha:"Cômodo usado como escritório, 268 m². Publicado 09/07/2026 (o mais recente). Obs.: Itatiba é cidade média.",
- img:"https://www.chavesnamao.com.br/imn/0850x0450/N/60/imoveis/504348/44514162/sp-itatiba-parque-da-fazenda-alameda-das-paineiras-casa-sobrado-em-condominio-para-alugar-3-quartos-6a4f8f1e-1.jpg",
- agency:"L4S (via Chaves na Mão)",tel:"contato pelo anúncio",wa:"",url:"https://www.chavesnamao.com.br/imovel/casa-em-condominio-para-alugar-3-quartos-com-garagem-sp-itatiba-parque-da-fazenda-1124m2-RS6500/id-44514162/"},
-
-/* BRAGANÇA PAULISTA (vizinha média — confirmar se aceita) */
-{cat:"3q",city:"Bragança Paulista",near:true,cond:"Cond. Portal da Serra",title:"Casa 3 quartos + escritório, 250 m²",price:5573,fee:340,area:250,q:3,su:1,ba:null,vg:null,type:"cond",pet:"n/i",office:true,
- ficha:"Escritório, 250 m², em condomínio fechado. Publicado 22/06/2026. Obs.: Bragança Paulista é cidade média.",
- img:"https://www.chavesnamao.com.br/imn/0850x0450/N/60/imoveis/910022/43938549/sp-braganca-paulista-condominio-portal-da-serra-alameda-dos-jatobas-casa-sobrado-em-condominio-para-alugar-3-quartos.jpg",
- agency:"Hauzen (via Chaves na Mão)",tel:"contato pelo anúncio",wa:"",url:"https://www.chavesnamao.com.br/imovel/casa-em-condominio-para-alugar-3-quartos-com-garagem-sp-braganca-paulista-condominio-portal-da-serra-250m2-RS5573/id-43938549/"},
-
-/* ================= À VENDA ATÉ R$ 850 MIL (cat: "buy") — verificadas 16/07/2026 ================= */
-
-/* 4 QUARTOS À VENDA */
-{cat:"buy",city:"Monte Mor",near:false,cond:"Cond. Reserva da Mata",title:"Casa 4 quartos, 180 m² — R$ 630 mil",price:630000,fee:380,area:180,q:4,su:1,ba:null,vg:3,type:"cond",pet:"n/i",office:false,
- ficha:"4 dormitórios (1 suíte), 180 m² construídos / 250 m² terreno, área gourmet, 3 vagas. Aceita financiamento. Condomínio: portaria 24h, campo society, quadra, quiosque.",
- img:"https://imgs2.cdn-imobibrasil.com.br/imagens/imoveis/202506112119099327.jpg",
- agency:"Eduardo Imóveis Monte Mor",tel:"(19) 99373-4828",wa:"5519993734828",url:"https://www.eduardoimoveismontemor.com.br/imovel/3473559/casa-em-condominio-venda-monte-mor-sp-condominio-reserva-da-mata-cond-reserva-da-mata"},
-{cat:"buy",city:"Bom Jesus dos Perdões",near:true,cond:"Alpes de Bom Jesus (loteamento fechado)",title:"Chácara 4 quartos / 2 suítes, 300 m² — R$ 630 mil",price:630000,fee:150,area:300,q:4,su:2,ba:null,vg:null,type:"cond",pet:"n/i",office:false,
- ficha:"Chácara em loteamento fechado com portaria 24h. 4 quartos, 2 suítes, 300 m². Taxa associativa baixa (R$150/mês).",
- img:"https://www.rodrigosayaoimoveis.com.br/admin/imovel/mini/20211206T1712170300-510315920.jpg",
- agency:"Sayão Imóveis",tel:"(11) 93217-3896",wa:"5511932173896",url:"https://www.rodrigosayaoimoveis.com.br/1290/imoveis/venda-chacara-em-condominio-4-quartos-alpes-de-bom-jesus-bom-jesus-dos-perdoes-sp"},
-{cat:"buy",city:"Bom Jesus dos Perdões",near:true,cond:"Alpes de Bom Jesus",title:"Chácara 4 quartos com piscina, 400 m² — R$ 690 mil",price:690000,fee:160,area:400,q:4,su:1,ba:null,vg:null,type:"cond",pet:"n/i",office:false,
- ficha:"4 quartos, 400 m² construídos, terreno 1.500 m², piscina e área gourmet. Loteamento fechado com portaria 24h.",
- img:"https://www.rodrigosayaoimoveis.com.br/admin/imovel/mini/20240405T1733480300-839828008.jpg",
- agency:"Sayão Imóveis",tel:"(11) 97478-4957",wa:"5511974784957",url:"https://www.rodrigosayaoimoveis.com.br/1973/imoveis/venda-chacara-em-condominio-4-quartos-alpes-de-bom-jesus-bom-jesus-dos-perdoes-sp"},
-{cat:"buy",city:"Morungaba",near:false,cond:"Cond. A Montanha (40 casas)",title:"Casa 4 quartos com sauna e piscina — R$ 700 mil",price:700000,fee:1300,area:209,q:4,su:2,ba:null,vg:null,type:"cond",pet:"n/i",office:false,
- ficha:"Lareira, sauna, hidromassagem, piscina 8x4, terreno 3.285 m². Condomínio de só 40 casas com portaria 24h. Obs.: mesma casa aparece em outras imobiliárias por R$850-900 mil — negocie por aqui.",
- img:"https://imgbr.imovelwebcdn.com/avisos/2/29/77/50/40/85/360x266/4240855684.jpg",
- agency:"Evolução-Ouro Casas",tel:"(11) 99110-9640",wa:"5511991109640",url:"https://www.evolucaoourocasas.com.br/imovel/casa-de-185-m-condominio-a-montanha-40-casas-morungaba-a-venda-por-r-700-000/CA4961-EVC"},
-{cat:"buy",city:"Boituva",near:true,cond:"Cond. Portal dos Pássaros",title:"Casa 4 quartos + escritório, 243 m² — R$ 849 mil",price:849000,fee:507,area:243,q:4,su:1,ba:null,vg:4,type:"cond",pet:"n/i",office:true,
- ficha:"ESCRITÓRIO confirmado. Suíte com closet e hidro, cozinha americana planejada com granito, sala 3 ambientes, mezanino com terraço e vista, área gourmet, edícula, 4 vagas. Condomínio: academia, piscina, quadras (tênis, beach tennis, society), pet place, portaria 24h.",
- img:"https://imgs1.cdn-imobibrasil.com.br/imagens/imoveis/202501291208275635.jpg",
- agency:"VEB Imóveis (Carlos Toffoli)",tel:"(15) 99762-4927",wa:"5515997624927",url:"https://www.vebimoveis.com.br/imovel/3557781/casa-em-condominio-venda-boituva-sp-portal-dos-passaros"},
-
-/* 3 QUARTOS + ESCRITÓRIO À VENDA */
-{cat:"buy",city:"Monte Mor",near:false,cond:"Cond. Reserva da Mata",title:"Casa 3 quartos + escritório planejado, piscina — R$ 690 mil",price:690000,fee:380,area:null,q:3,su:1,ba:null,vg:4,type:"cond",pet:"n/i",office:true,
- ficha:"Escritório com mesa planejada, suíte com closet, piscina, área gourmet, 4 vagas. Obs.: imóvel está alugado no momento — negociar ciente disso.",
- img:"https://imgs2.cdn-imobibrasil.com.br/imagens/imoveis/20230905153617133.jpg",
- agency:"Eduardo Imóveis Monte Mor",tel:"(19) 99373-4828",wa:"5519993734828",url:"https://www.eduardoimoveismontemor.com.br/imovel/2519008/casa-em-condominio-venda-monte-mor-sp-condominio-reserva-da-mata"},
-{cat:"buy",city:"Santo Antônio de Posse",near:false,cond:"Colina das Paineiras",title:"Casa 3 suítes + 2 escritórios, 411 m² — R$ 850 mil",price:850000,fee:null,area:411,q:3,su:3,ba:null,vg:4,type:"alt",pet:"n/i",office:true,
- ficha:"3 dormitórios TODOS suítes com closet + 2 salas de escritório. 411 m² construídos / 1.000 m² terreno, 4 vagas, churrasqueira com forno de pizza, aquecimento central. Obs.: confirmar se há portaria de condomínio fechado (ficha cita murado/portão eletrônico).",
- img:"https://cdn5.uso.com.br/11707/2024/01/mini_bb1183ea7959f10b53af3ac17c5cd2b1.jpg",
- agency:"Stato Imóveis (Alexandre)",tel:"(19) 99545-6069",wa:"5519995456069",url:"https://statoimoveis.com.br/comprar/sp/santo-antonio-de-posse/colina-da-paineira/casa/3092937"},
-
-/* 3 QUARTOS À VENDA — MONTE MOR */
-{cat:"buy",city:"Monte Mor",near:false,cond:"Cond. Reserva da Mata",title:"Casa 3 quartos com piscina — R$ 700 mil",price:700000,fee:380,area:165,q:3,su:1,ba:null,vg:null,type:"cond",pet:"n/i",office:false,
- ficha:"165 m² construídos / 250 m² terreno, piscina privativa, suíte. Condomínio com portaria 24h e lazer.",
- img:"",
- agency:"Eduardo Imóveis Monte Mor",tel:"(19) 99373-4828",wa:"5519993734828",url:"https://www.eduardoimoveismontemor.com.br/imovel/3359212/casa-em-condominio-venda-monte-mor-sp-condominio-reserva-da-mata"},
-{cat:"buy",city:"Monte Mor",near:false,cond:"Cond. Reserva da Mata",title:"Casa térrea 3 quartos / 2 suítes, 166 m² — R$ 840 mil",price:840000,fee:380,area:166,q:3,su:2,ba:null,vg:null,type:"cond",pet:"n/i",office:false,
- ficha:"Térrea, 2 suítes, 166 m² / 250 m² terreno.",
- img:"",
- agency:"Eduardo Imóveis Monte Mor",tel:"(19) 99373-4828",wa:"5519993734828",url:"https://www.eduardoimoveismontemor.com.br/imovel/4317463/casa-em-condominio-venda-monte-mor-sp-condominio-reserva-da-mata"},
-{cat:"buy",city:"Monte Mor",near:false,cond:"Cond. Reserva da Mata",title:"Casa moderna 3 quartos — R$ 800 mil",price:800000,fee:380,area:null,q:3,su:1,ba:null,vg:null,type:"cond",pet:"n/i",office:false,
- ficha:"Anunciada como moderna, suíte, no Reserva da Mata.",
- img:"",
- agency:"Eduardo Imóveis Monte Mor",tel:"(19) 99373-4828",wa:"5519993734828",url:"https://www.eduardoimoveismontemor.com.br/imovel/4178430/casa-em-condominio-venda-monte-mor-sp-condominio-reserva-da-mata"},
-{cat:"buy",city:"Monte Mor",near:false,cond:"Cond. Reserva da Mata",title:"Casa 3 quartos, 150 m² — R$ 630 mil",price:630000,fee:380,area:150,q:3,su:1,ba:null,vg:null,type:"cond",pet:"n/i",office:false,
- ficha:"150 m² construídos / 250 m² terreno, suíte, área gourmet.",
- img:"",
- agency:"Eduardo Imóveis Monte Mor",tel:"(19) 99373-4828",wa:"5519993734828",url:"https://www.eduardoimoveismontemor.com.br/imovel/4330966/casa-em-condominio-venda-monte-mor-sp-condominio-reserva-da-mata"},
-
-/* 3 QUARTOS À VENDA — TATUÍ */
-{cat:"buy",city:"Tatuí",near:false,cond:"Cond. Ypês 3",title:"Casa alto padrão 3 quartos, 125 m² — R$ 750 mil",price:750000,fee:null,area:125,q:3,su:1,ba:null,vg:null,type:"cond",pet:"n/i",office:false,
- ficha:"Alto padrão: gourmet com churrasqueira, porcelanato, fechadura eletrônica, infra de ar em 4 ambientes. Condomínio terá salão de festas e academia.",
- img:"",
- agency:"Alti Imóveis",tel:"(15) 99768-7264",wa:"5515997687264",url:"https://altiimoveis.com.br/imovel/casa-de-condominio-a-venda-3-quartos-ypes3-tatui-sp-125m2-id-257"},
-{cat:"buy",city:"Tatuí",near:false,cond:"Cond. Ypês 3",title:"Casa nova com planejados, 115 m² — R$ 700 mil",price:700000,fee:null,area:115,q:3,su:1,ba:null,vg:null,type:"cond",pet:"n/i",office:false,
- ficha:"Fase final de acabamento, entregue com planejados em cozinha/banheiros/gourmet. Suíte com closet. Aceita financiamento.",
- img:"",
- agency:"Alti Imóveis",tel:"(15) 99768-7264",wa:"5515997687264",url:"https://altiimoveis.com.br/imovel/casa-de-condominio-a-venda-3-quartos-ypes-3-tatui-sp-115m2-id-391"},
-{cat:"buy",city:"Tatuí",near:false,cond:"Reserva dos Ypês II",title:"Casa 3 quartos com piscina, 128 m² — R$ 780 mil",price:780000,fee:null,area:128,q:3,su:1,ba:null,vg:null,type:"cond",pet:"n/i",office:false,
- ficha:"Piscina, gourmet com churrasqueira, cozinha planejada.",
- img:"",
- agency:"Alti Imóveis",tel:"(15) 99768-7264",wa:"5515997687264",url:"https://altiimoveis.com.br/imovel/casa-de-condominio-a-venda-3-quartos-reserva-dos-ypes-ii-tatui-sp-128m2-id-404"},
-{cat:"buy",city:"Tatuí",near:false,cond:"Reserva dos Ypês II",title:"Casa térrea nova, 111 m² — R$ 680 mil",price:680000,fee:null,area:111,q:3,su:1,ba:null,vg:2,type:"cond",pet:"n/i",office:false,
- ficha:"Térrea nova, pronta para morar, suíte com closet, gourmet com churrasqueira, 2 vagas.",
- img:"",
- agency:"Alti Imóveis",tel:"(15) 99768-7264",wa:"5515997687264",url:"https://altiimoveis.com.br/imovel/casa-de-condominio-a-venda-3-quartos-reserva-dos-ypes-ii-tatui-sp-111m2-id-349"},
-
-/* 3 QUARTOS À VENDA — BOITUVA */
-{cat:"buy",city:"Boituva",near:true,cond:"Reserva dos Ipês",title:"Casa térrea nova (2026) com piscina — R$ 800 mil",price:800000,fee:264,area:122,q:3,su:1,ba:null,vg:null,type:"cond",pet:"n/i",office:false,
- ficha:"Construída em 2026, pé-direito alto, cozinha planejada, área gourmet planejada com churrasqueira, piscina integrada, em frente ao playground. Condomínio: portaria 24h, quadras, campo, pet place.",
- img:"https://imgs1.cdn-imobibrasil.com.br/imagens/imoveis/202606171230209457.jpeg",
- agency:"VEB Imóveis",tel:"(11) 99012-2594",wa:"5511990122594",url:"https://www.vebimoveis.com.br/imovel/4266642/casa-em-condominio-venda-boituva-sp-loteamento-reserva-dos-ipes"},
-{cat:"buy",city:"Boituva",near:true,cond:"Colina Nova Boituva",title:"Casa térrea em lote de 1.000 m² — R$ 599 mil",price:599000,fee:null,area:167,q:3,su:1,ba:null,vg:null,type:"cond",pet:"n/i",office:false,
- ficha:"Térrea, 167 m², lote de 1.000 m² com jardim e vista rural, varanda, gourmet. Condomínio fechado a 3 km do centro.",
- img:"https://imgs1.cdn-imobibrasil.com.br/imagens/imoveis/202502031147582920.jpg",
- agency:"VEB Imóveis",tel:"(15) 99762-4927",wa:"5515997624927",url:"https://www.vebimoveis.com.br/imovel/3567581/casa-em-condominio-venda-boituva-sp-colina-nova-boituva"},
-{cat:"buy",city:"Boituva",near:true,cond:"Reserva dos Ipês",title:"Casa pronta para morar, 106 m² — R$ 760 mil",price:760000,fee:null,area:106,q:3,su:1,ba:null,vg:null,type:"cond",pet:"n/i",office:false,
- ficha:"Pronta para morar. Condomínio: portaria 24h, quadras, campo society, gourmet, playground, pet place. Anúncio de jul/2026.",
- img:"https://imgs1.cdn-imobibrasil.com.br/imagens/imoveis/202607031221188230.jpeg",
- agency:"VEB Imóveis",tel:"(15) 99762-4927",wa:"5515997624927",url:"https://www.vebimoveis.com.br/imovel/4280883/casa-em-condominio-venda-boituva-sp-loteamento-reserva-dos-ipes"},
-
-/* 3 QUARTOS À VENDA — PORTO FELIZ / SALTO / CERQUILHO */
-{cat:"buy",city:"Porto Feliz",near:false,cond:"Cond. Portal Vale do Sol",title:"Casa 170 m² com gourmet — R$ 850 mil",price:850000,fee:null,area:170,q:3,su:1,ba:null,vg:null,type:"cond",pet:"n/i",office:false,
- ficha:"Suíte com closet e planejados, cozinha ampla, sala 2 ambientes, lavanderia coberta, gourmet com churrasqueira e banheiro. Anúncio de jun/2026.",
- img:"https://www.iportofeliz.com.br/wp-content/uploads/jet-engine-forms/20/2026/06/WhatsApp-Image-2026-06-18-at-10.47.37-4-1.jpeg",
- agency:"iPortoFeliz",tel:"(15) 99789-5604",wa:"5515997895604",url:"https://www.iportofeliz.com.br/imoveis/casa-a-venda-no-condominio-vale-do-sol-em-porto-feliz-sp-v569/"},
-{cat:"buy",city:"Porto Feliz",near:false,cond:"Cond. Portal Vale do Sol",title:"Casa com 4 vagas — R$ 850 mil",price:850000,fee:null,area:null,q:3,su:1,ba:null,vg:4,type:"cond",pet:"n/i",office:false,
- ficha:"Salas amplas de estar e TV, cozinha planejada, área gourmet, garagem para 4 carros. Terreno 276 m².",
- img:"https://www.iportofeliz.com.br/wp-content/uploads/jet-engine-forms/20/2026/02/WhatsApp-Image-2026-02-23-at-08.55.25-1-1.jpeg",
- agency:"iPortoFeliz",tel:"(15) 99789-5604",wa:"5515997895604",url:"https://www.iportofeliz.com.br/imoveis/casa-a-venda-no-condominio-portal-vale-do-sol-em-porto-feliz-sp-v504/"},
-{cat:"buy",city:"Porto Feliz",near:false,cond:"Cond. Bona Nova",title:"Casa 127 m² alto padrão — R$ 500 mil",price:500000,fee:null,area:127,q:3,su:1,ba:null,vg:2,type:"cond",pet:"n/i",office:false,
- ficha:"Suíte climatizada, cozinha/sala alto padrão, cooktop com coifa, 2 vagas cobertas. Melhor preço da lista.",
- img:"",
- agency:"iPortoFeliz",tel:"(15) 99789-5604",wa:"5515997895604",url:"https://www.iportofeliz.com.br/imoveis/casa-a-venda-no-condominio-bona-nova-em-porto-feliz-sp-v520/"},
-{cat:"buy",city:"Salto",near:false,cond:"Cond. Village Moutonnée",title:"Casa 3 quartos, 105 m² — R$ 810 mil",price:810000,fee:320,area:105,q:3,su:1,ba:null,vg:null,type:"cond",pet:"n/i",office:false,
- ficha:"Sala 2 ambientes integrada à cozinha, gourmet com churrasqueira, infra p/ ar e aquecimento solar. Condomínio: portaria 24h com reconhecimento facial, piscinas, quadras, academia, espaço pet, minimercado.",
- img:"",
- agency:"Costa Rocha",tel:"(11) 4028-1983",wa:"551140281983",url:"https://www.imobiliariacostarocha.com.br/imovel/casa-salto-3-quartos-105-m/CA6138-COX3"},
-{cat:"buy",city:"Cerquilho",near:true,cond:"Cittá Bellucci (bairro planejado)",title:"Casa 157 m² com piscina e hidro — R$ 850 mil",price:850000,fee:null,area:157,q:3,su:1,ba:null,vg:null,type:"alt",pet:"n/i",office:false,
- ficha:"Pé-direito alto, suíte com closet e ar, gourmet com churrasqueira a gás, piscina com hidro e LEDs. Obs.: Cittá Bellucci é bairro planejado com segurança — confirmar se há portaria fechada.",
- img:"",
- agency:"Talita Imóveis",tel:"(15) 99650-0770",wa:"5515996500770",url:"https://talitaimoveiscerquilho.com.br/imovel/casa-a-venda-3-quartos-citta-bellucci-cerquilho-sp-157m2-id-957"},
-
-/* 3 QUARTOS À VENDA — SERRA / VIZINHAS */
-{cat:"buy",city:"Serra Negra",near:true,cond:"Condomínio fechado (portaria 24h)",title:"Casa nova 187 m² — R$ 550 mil",price:550000,fee:288,area:187,q:3,su:1,ba:null,vg:null,type:"cond",pet:"n/i",office:false,
- ficha:"Casa nova em fase final de acabamento, 2 salas, 187 m². Condomínio: portaria/segurança 24h, quadra, lago. Melhor custo/m² da lista.",
- img:"https://www.imoveisserrano.com.br/up/img/1565276435.jpg",
- agency:"Imóveis Serrano",tel:"(19) 99796-7690",wa:"5519997967690",url:"https://www.imoveisserrano.com.br/57/casa-em-fase-final-de-acabamento-condominio-fechado"},
-{cat:"buy",city:"Serra Negra",near:true,cond:"Cond. Belvedere do Lago",title:"Casa 140 m², lazer completo — R$ 600 mil",price:600000,fee:700,area:140,q:3,su:1,ba:null,vg:null,type:"cond",pet:"n/i",office:false,
- ficha:"2 salas (uma vira home office), lazer completo do condomínio com piscina e área gourmet.",
- img:"https://www.imobiliariacisne.com.br/up/img/1776104375.jpg",
- agency:"Imobiliária Cisne",tel:"(19) 98952-9124",wa:"5519989529124",url:"https://www.imobiliariacisne.com.br/2401/casa-140m2-3-dormitorios-1-suite-2-salas-lazer-completo-com-piscina-e-area-gourmet-em-serra-negra-sp"},
-{cat:"buy",city:"Serra Negra",near:true,cond:"Cond. Place de Geneve",title:"Casa 140 m² — R$ 700 mil",price:700000,fee:700,area:140,q:3,su:1,ba:null,vg:null,type:"cond",pet:"n/i",office:false,
- ficha:"Sala 3 ambientes, condomínio fechado com piscina e área de lazer completa, ótima localização.",
- img:"https://www.imobiliariacisne.com.br/up/img/1694033105.jpeg",
- agency:"Imobiliária Cisne",tel:"(19) 98952-9124",wa:"5519989529124",url:"https://www.imobiliariacisne.com.br/2084/casa-condominio-fechado-piscina-3-dormitorios-1-suite-otima-localizacao-area-de-lazer-completa-em-serra-negra-sp"},
-{cat:"buy",city:"Piracaia",near:false,cond:"Cond. Greenvillage (Canedos)",title:"Chácara térrea com piscina, 367 m² — R$ 780 mil",price:780000,fee:500,area:367,q:3,su:1,ba:null,vg:null,type:"cond",pet:"n/i",office:false,
- ficha:"Térrea, piscina e gourmet, terreno 1.153 m². Portaria 24h. Escritura ok, aceita financiamento. Exclusividade.",
- img:"https://www.stimobiliario.com.br/admin/imovel/mini/20240617T1418010300-339976176.jpg",
- agency:"ST Imobiliário (Pedro)",tel:"(11) 94301-7783",wa:"5511943017783",url:"https://www.stimobiliario.com.br/679/imoveis/venda-chacara-3-quartos-canedos-piracaia-sp"},
-{cat:"buy",city:"Piracaia",near:false,cond:"Condomínio fechado (10 min do centro)",title:"Casa 3 quartos, ~300 m² — R$ 650 mil",price:650000,fee:null,area:300,q:3,su:1,ba:null,vg:null,type:"cond",pet:"n/i",office:false,
- ficha:"~300 m² em terreno de 1.241 m², portaria 24h. Obs.: não aceita financiamento (à vista/recursos próprios).",
- img:"https://www.stimobiliario.com.br/admin/imovel/mini/20250604T1710200300-594679142.jpg",
- agency:"ST Imobiliário (Giovana)",tel:"(11) 91632-7423",wa:"5511916327423",url:"https://www.stimobiliario.com.br/951/imoveis/venda-chacara-3-quartos-piracaia-sp"},
-{cat:"buy",city:"Jarinu",near:false,cond:"Cond. Quinta dos Resedás",title:"Sobrado 3 quartos, 150 m² — R$ 760 mil",price:760000,fee:500,area:150,q:3,su:1,ba:null,vg:null,type:"cond",pet:"n/i",office:false,
- ficha:"Sobrado 150 m², gourmet ampliado. Condomínio: guarita 24h, piscina, salão, a 600 m do centro de Jarinu.",
- img:"https://imgbr.imovelwebcdn.com/avisos/2/30/37/22/08/54/720x532/6792990289.jpg",
- agency:"Proprietário (via ImovelWeb)",tel:"contato pelo anúncio",wa:"",url:"https://www.imovelweb.com.br/propriedades/casa-sobrado-em-condominio-quinta-dos-resedas-jarinu-3037220854.html"},
-{cat:"buy",city:"Jarinu",near:false,cond:"Cond. Quinta dos Resedás",title:"Sobrado planejado com ar nos 3 dorms — R$ 640 mil",price:640000,fee:487,area:95,q:3,su:1,ba:null,vg:null,type:"cond",pet:"n/i",office:false,
- ficha:"Planejados e ar-condicionado nos 3 dormitórios. 95 m² úteis (compacta). Condomínio fechado com lazer.",
- img:"https://imgbr.imovelwebcdn.com/avisos/2/30/25/46/05/39/720x532/5935586916.jpg",
- agency:"RE/MAX Pioneira (via ImovelWeb)",tel:"contato pelo anúncio",wa:"",url:"https://www.imovelweb.com.br/propriedades/lindo-sobrado-em-condominio-fechado-quinta-dos-3025460539.html"},
-{cat:"buy",city:"Morungaba",near:false,cond:"Cond. A Montanha",title:"Casa 3 quartos + hóspedes, lareira e piscina — R$ 850 mil",price:850000,fee:null,area:null,q:3,su:1,ba:null,vg:null,type:"cond",pet:"n/i",office:false,
- ficha:"Terreno 1.500 m², lareira, piscina, gourmet, quarto de hóspedes com banheiro.",
- img:"https://vault.imob.online/u6165/properties/photos/17271120/ALGis3Av8DzdrP7TGSbeaBdc-00.jpg",
- agency:"Alvorada Imóveis",tel:"(11) 94068-6793",wa:"5511940686793",url:"https://alvoradaimoveis.com.br/473-casa-de-condominio-em-morungaba-bairro-condominio-a-montanha.html"},
-{cat:"buy",city:"Bom Jesus dos Perdões",near:true,cond:"Cond. Marf III",title:"Casa semi-mobiliada com edícula — R$ 560 mil",price:560000,fee:199,area:109,q:3,su:1,ba:null,vg:null,type:"cond",pet:"n/i",office:false,
- ficha:"Semi-mobiliada, edícula (adaptável a escritório), hidromassagem. 109 m² (compacta). Portão eletrônico + câmeras.",
- img:"",
- agency:"Terra Brasil",tel:"(11) 99684-2177",wa:"5511996842177",url:"https://www.terrabrasilbjp.com.br/imovel/casa-bom-jesus-dos-perdoes-3-quartos-109-m/CA0919-TER9"},
-{cat:"buy",city:"Amparo",near:false,cond:"Cond. fechado — Jardim Brasil",title:"Casa 3 quartos, 120 m² — R$ 640 mil",price:640000,fee:null,area:120,q:3,su:1,ba:null,vg:null,type:"cond",pet:"n/i",office:false,
- ficha:"120 m², suíte, em condomínio fechado no Jardim Brasil. Um quarto adaptado como closet (reversível).",
- img:"https://www.chavesnamao.com.br/imn/0850x0450/N/60/imoveis/1052152/41425210/sp-amparo-jardim-brasil-avenida-francisco-morato-de-oliveira-casa-em-condominio-fechado-a-venda-3-quartos-69d9023f-00.jpg",
- agency:"Vicente Bronzeado (via Chaves na Mão)",tel:"contato pelo anúncio",wa:"",url:"https://www.chavesnamao.com.br/imovel/casa-em-condominio-a-venda-3-quartos-com-garagem-sp-amparo-jardim-brasil-RS640000/id-41425210/"},
-{cat:"buy",city:"Jaguariúna",near:true,cond:"Cond. Vila Toscana",title:"Casa com piscina privativa, 160 m² — R$ 700 mil",price:700000,fee:300,area:160,q:3,su:1,ba:null,vg:4,type:"cond",pet:"n/i",office:false,
- ficha:"Piscina privativa, 4 vagas, cozinha americana, terreno 390 m². Condomínio fechado. IPTU R$81/mês.",
- img:"https://cdn.uso.com.br/11384/2024/09/4fc0e1953f9ba315fd667624222ecc51.jpg",
- agency:"Patrimônio Soluções",tel:"(19) 98258-3007",wa:"5519982583007",url:"https://patrimoniosolucoesimob.com.br/comprar/sp/jaguariuna/condominio-vila-toscana/casa/73011084"},
-{cat:"buy",city:"Jaguariúna",near:true,cond:"Cond. Vila Toscana",title:"Casa 120 m² em condomínio fechado — R$ 780 mil",price:780000,fee:350,area:120,q:3,su:1,ba:null,vg:2,type:"cond",pet:"n/i",office:false,
- ficha:"120 m² construídos / 231 m² terreno, lavabo, 2 vagas. Condomínio fechado confirmado na ficha.",
- img:"",
- agency:"Lotus Imobiliária",tel:"(19) 97405-8348",wa:"5519974058348",url:"https://www.imoveislotus.com.br/imovel/casa-jaguariuna-3-quartos-120-m/CA1617-DZT"},
-{cat:"buy",city:"Engenheiro Coelho",near:true,cond:"Cond. Jacarandá",title:"Casa 150 m², pé-direito alto — R$ 800 mil",price:800000,fee:null,area:150,q:3,su:1,ba:null,vg:4,type:"cond",pet:"n/i",office:false,
- ficha:"Pé-direito alto, porcelanato, mármore/granito, suíte com closet, 4 vagas (2 cobertas). Condomínio fechado com portaria 24h, ao lado do UNASP.",
- img:"https://www.brunonunesimoveis.com/admin/imovel/mini/20230904T1343240300-517989881.jpg",
- agency:"Bruno Nunes Imóveis",tel:"(19) 99682-0964",wa:"5519996820964",url:"https://www.brunonunesimoveis.com/1804/imoveis/venda-casa-3-quartos-jacaranda-engenheiro-coelho-sp"},
-{cat:"buy",city:"Holambra",near:true,cond:"Morada das Flores (bairro nobre)",title:"Casa 179 m² com ar em todos os cômodos — R$ 850 mil",price:850000,fee:null,area:179,q:3,su:1,ba:3,vg:null,type:"alt",pet:"n/i",office:false,
- ficha:"Ar-condicionado nos quartos e sala, cozinha planejada, regularizada com Habite-se, aceita financiamento/FGTS. Obs.: bairro nobre aberto, não condomínio fechado.",
- img:"https://cdn.uso.com.br/1154/2025/10/mini_bb5e375322dfac3f951cb351ea11a3d3.jpg",
- agency:"Holambra Imóveis",tel:"(19) 99256-3574",wa:"5519992563574",url:"https://holambraimoveis.com.br/comprar/sp/holambra/morada-das-flores/casa/77653680"},
-{cat:"buy",city:"Cosmópolis",near:false,cond:"Cond. Village Monte Cristo",title:"Casa sustentável 145 m² / 2 suítes — R$ 850 mil",price:850000,fee:null,area:145,q:3,su:2,ba:null,vg:2,type:"cond",pet:"n/i",office:false,
- ficha:"Aquecimento solar + fotovoltaico, planejados por toda a casa, carregador de carro elétrico. Também disponível para alugar (R$3.900). Confirmar detalhes por WhatsApp.",
- img:"",
- agency:"Imobiliária Olandini",tel:"(19) 99212-4190",wa:"5519992124190",url:"https://www.imobiliariaolandini.com.br/imovel/casa-cosmopolis-3-quartos-145-m/CA1934-OLAN"},
-
-/* ===== INDICADOS POR VOCÊ (aba ⭐ Minhas casas) ===== */
-{cat:"mine",city:"Tatuí",near:false,cond:"Residencial Ecopark (chácara em condomínio)",title:"Chácara 4 quartos / 2 suítes com piscina",price:3000,fee:604,area:300,q:4,su:2,ba:2,vg:null,type:"cond",pet:"n/i",office:false,sale:false,
- ficha:"Você indicou. Chácara em condomínio: 4 dormitórios (2 suítes), sala 3 ambientes, área gourmet com churrasqueira, piscina, ambiente arborizado. Condomínio: 2 quadras de beach tennis, pista de caminhada 1km, campo de futebol, praça e parquinhos, eventos quinzenais. IPTU R$256.",
- img:"https://imgbr.imovelwebcdn.com/avisos/2/30/34/11/89/07/720x532/6630592749.jpg",
- agency:"Você indicou (ImovelWeb)",tel:"",wa:"",url:"https://www.imovelweb.com.br/propriedades/chacara-para-locacao-com-4-dormitorios-sendo-2-suites-3034118907.html"},
-{cat:"mine",city:"Porto Feliz",near:false,cond:"Cond. Terras de San Thomé",title:"Chácara 4 suítes, 483 m², condomínio fechado",price:4500,fee:700,area:483,q:4,su:4,ba:2,vg:12,type:"cond",pet:"n/i",office:false,sale:false,
- ficha:"Você indicou. 4 suítes, sala de estar, sala de TV com lareira, espaço gourmet, piscina, pomar, canil, casa para caseiro, poço artesiano. Terreno 5.000 m². Condomínio fechado. IPTU R$600.",
- img:"https://imgbr.imovelwebcdn.com/avisos/2/30/12/99/28/80/720x532/6584543123.jpg",
- agency:"Você indicou (ImovelWeb)",tel:"",wa:"",url:"https://www.imovelweb.com.br/propriedades/chacara-disponivel-para-locacao-terras-de-san-thome-3012992880.html"},
-{cat:"mine",city:"Santa Bárbara d'Oeste",near:true,cond:"Condomínio De Cillo",title:"Casa 4 suítes, 460 m² (condomínio caro)",price:3000,fee:3237,area:460,q:4,su:4,ba:2,vg:2,type:"cond",pet:"n/i",office:false,sale:false,
- ficha:"Você indicou. 4 suítes, 2 banheiros sociais, cozinha com armários e cooktop, 3 salas (1 com sacada), quintal amplo, piscina, espaço gourmet. Condomínio fechado, segurança 24h. ATENÇÃO: condomínio alto (R$3.237) — total ~R$7.110/mês. Atualizado 13/07. IPTU R$873.",
- img:"https://img.olx.com.br/images/37/376610063588885.jpg",
- agency:"Você indicou (OLX)",tel:"(19) 3406-4...",wa:"",url:"https://sp.olx.com.br/grande-campinas/imoveis/casa-residencial-para-alugar-no-condominio-de-cillo-em-santa-barbara-d-oeste-1517949420"},
-{cat:"mine",city:"Americana",near:true,cond:"Cond. Village das Américas",title:"Casa 4 quartos / 1 suíte, 118 m² — aceita pet",price:4500,fee:780,area:118,q:4,su:1,ba:2,vg:2,type:"cond",pet:"sim",office:false,sale:false,
- ficha:"Você indicou. 4 dormitórios com planejados (1 suíte com sacada), sala de estar com painel de TV e ar-condicionado, cozinha totalmente planejada, lavabo, espaço gourmet com churrasqueira, depósito, quintal, 2 vagas. Condomínio fechado, permite animais. Total ~R$5.390/mês. IPTU R$110.",
- img:"https://img.olx.com.br/images/44/447603182476518.jpg",
- agency:"Você indicou (OLX)",tel:"(19) 3621-3...",wa:"",url:"https://sp.olx.com.br/grande-campinas/imoveis/casa-com-4-dormitorios-para-alugar-118-m-por-r-5-360-00-mes-nova-americana-american-1518235845"},
-{cat:"mine",city:"Rio Claro",near:true,cond:"Cond. Residencial Florença",title:"Casa térrea 4 suítes, 315 m² — aceita pet",price:4500,fee:615,area:315,q:4,su:4,ba:4,vg:5,type:"cond",pet:"sim",office:false,sale:false,
- ficha:"Você indicou. Casa térrea, 4 suítes (1 com closet), estilo rústico com bastante madeira e teto de madeira, cozinha planejada com porcelanato, espaço gourmet com churrasqueira, quintal com árvores frutíferas, garagem 3 cobertas + descobertas. Condomínio fechado com áreas verdes, porteiro 24h, permite animais. Também à venda por R$1.500.000. Total ~R$5.400/mês. IPTU R$285.",
- img:"https://img.olx.com.br/images/51/516642303044623.jpg",
- agency:"Você indicou (OLX)",tel:"(19) 3526-3...",wa:"",url:"https://sp.olx.com.br/grande-campinas/imoveis/casa-com-4-dormitorios-315-m-venda-por-r-1-500-000-00-ou-aluguel-por-r-5-400-00-mes-1418467384"},
-
-/* ===== NOVAS (rodada extra — VivaReal, ativas jul/2026) ===== */
-{cat:"3q",city:"Jaguariúna",near:true,cond:"Cond. Chácara Primavera",title:"Casa 3 quartos / 2 suítes + escritório, 300 m² — pet",price:4000,fee:530,area:300,q:3,su:2,ba:null,vg:null,type:"cond",pet:"sim",office:true,
- ficha:"Escritório, porcelanato, armários planejados, churrasqueira, cozinha equipada. Condomínio fechado com portaria 24h, campo e playground. Aceita animais. IPTU R$135.",
- img:"https://resizedimgs.vivareal.com/img/vr-listing/b062094c8349492e16bb0fc61a01ff69/casa-de-condominio-com-3-quartos-para-alugar-300m-no-chacara-primavera-jaguariuna.webp?action=fit-in&dimension=614x297",
- agency:"Capital Invest (via VivaReal)",tel:"contato pelo anúncio",wa:"",url:"https://www.vivareal.com.br/imovel/casa-de-condominio-3-quartos-jardim-primavera-jaguariuna-com-garagem-300m2-aluguel-RS4000-id-2893146416/"},
-{cat:"3q",city:"Jaguariúna",near:true,cond:"Cond. Chácara Primavera",title:"Casa 3 quartos + home office, 150 m²",price:4000,fee:530,area:150,q:3,su:1,ba:null,vg:4,type:"cond",pet:"n/i",office:true,
- ficha:"Quarto extra nos fundos usado como home office, área gourmet coberta com churrasqueira, cozinha planejada, 4 vagas. Condomínio fechado com portaria 24h, bosque e 2 quadras. IPTU R$160.",
- img:"https://resizedimgs.vivareal.com/img/vr-listing/1c09755e4ccf3bccebe1a9c5cf9a53ea/casa-de-condominio-com-3-quartos-para-alugar-150m-no-chacara-primavera-jaguariuna.webp?action=fit-in&dimension=614x297",
- agency:"Nova Vila Imóveis (via VivaReal)",tel:"contato pelo anúncio",wa:"",url:"https://www.vivareal.com.br/imovel/casa-de-condominio-3-quartos-jardim-primavera-jaguariuna-com-garagem-150m2-aluguel-RS4000-id-2891657587/"},
-{cat:"3q",city:"Cosmópolis",near:false,cond:"Centro (condomínio — confirmar)",title:"Casa 3 quartos + escritório, 254 m², mobiliada",price:6000,fee:0,area:254,q:3,su:null,ba:null,vg:7,type:"alt",pet:"n/i",office:true,
- ficha:"Escritório, mobiliada, 3 salas, cozinha planejada, área gourmet com churrasqueira, 7 vagas. Condomínio isento. Obs.: uso residencial/comercial — confirmar se é condomínio fechado.",
- img:"https://resizedimgs.vivareal.com/img/vr-listing/fbf8dc39ff52ff1c733062610d54be74/casa-de-condominio-com-3-quartos-para-venda-ou-aluguel-254m-no-centro-cosmopolis.webp?action=fit-in&dimension=614x297",
- agency:"Hermes Adm. de Bens (via VivaReal)",tel:"contato pelo anúncio",wa:"",url:"https://www.vivareal.com.br/imovel/casa-de-condominio-3-quartos-centro-bairros-cosmopolis-com-garagem-254m2-venda-RS950000-id-2641752692/"},
-{cat:"4q",city:"Jaguariúna",near:true,cond:"Cond. Estância das Flores",title:"Casa 5 quartos + escritório, 200 m², piscina",price:6500,fee:451,area:200,q:5,su:1,ba:null,vg:3,type:"cond",pet:"n/i",office:true,
- ficha:"Escritório planejado + sótão ~30m², suíte master com closet e hidro, área gourmet completa, piscina 3x8, aquecimento solar, cerca elétrica, 3 vagas. Portaria 24h. IPTU R$292.",
- img:"https://resizedimgs.vivareal.com/img/vr-listing/87c897293b1c493102b7969d187d2208/casa-de-condominio-com-5-quartos-para-alugar-200m-no-estancia-das-flores-jaguariuna.webp?action=fit-in&dimension=614x297",
- agency:"Nova Vila Imóveis (via VivaReal)",tel:"contato pelo anúncio",wa:"",url:"https://www.vivareal.com.br/imovel/casa-de-condominio-5-quartos-estancia-das-flores-jaguariuna-com-garagem-200m2-aluguel-RS6500-id-2894825312/"},
-{cat:"4q",city:"Bom Jesus dos Perdões",near:true,cond:"Cond. fechado (Guaxinduva)",title:"Casa 4 quartos / 2 suítes, 330 m², mobiliada",price:6000,fee:640,area:330,q:4,su:2,ba:null,vg:null,type:"cond",pet:"n/i",office:false,
- ficha:"Mobiliada, piscina, mezanino, espaço gourmet. Condomínio fechado com portaria 24h. Marcada como 'abaixo do mercado'.",
- img:"https://resizedimgs.vivareal.com/img/vr-listing/488f9c77ab2f920ed6fab658d003b24b/casa-com-4-quartos-para-alugar-330m-no-guaxinduva-bom-jesus-dos-perdoes.webp?action=fit-in&dimension=614x297",
- agency:"Imobiliária Sonina (via VivaReal)",tel:"contato pelo anúncio",wa:"",url:"https://www.vivareal.com.br/imovel/casa-4-quartos-guaxinduva-bairros-bom-jesus-dos-perdoes-com-garagem-330m2-aluguel-RS6000-id-2802605417/"},
-{cat:"4q",city:"Jaguariúna",near:true,cond:"Cond. Chácara Long Island",title:"Chácara 4 quartos, piscina — aceita pet",price:3500,fee:880,area:null,q:4,su:1,ba:null,vg:8,type:"cond",pet:"sim",office:false,
- ficha:"Piscina privativa, cozinha gourmet, 8 vagas, terreno 1.566 m². Condomínio fechado com lago de pesca e campo. Aceita animais. Obs.: casa estilo rústico (não moderna). IPTU alto (R$2.281).",
- img:"https://resizedimgs.vivareal.com/img/vr-listing/055ee4b3896a116666919bbfc3b481e5/casa-de-condominio-com-4-quartos-para-venda-ou-aluguel-1566m-no-chacara-long-island-jaguariuna.webp?action=fit-in&dimension=614x297",
- agency:"José Roberto Corretor (via VivaReal)",tel:"(19) 99933-3015",wa:"5519999333015",url:"https://www.vivareal.com.br/imovel/casa-de-condominio-4-quartos-chacara-long-island-jaguariuna-com-garagem-1566m2-venda-RS780000-id-2898839617/"},
-{cat:"3q",city:"Holambra",near:true,cond:"Cond. Parque dos Ipês",title:"Casa nova 3 quartos, 180 m² — aceita pet",price:5500,fee:400,area:180,q:3,su:1,ba:null,vg:null,type:"cond",pet:"sim",office:false,
- ficha:"Casa nova, suíte com closet, salas integradas à cozinha, área gourmet integrada. Condomínio fechado. Aceita animais. IPTU R$295.",
- img:"https://resizedimgs.vivareal.com/img/vr-listing/eef2b099d21696dd716cc8c0202f5f2e/casa-de-condominio-com-3-quartos-para-venda-ou-aluguel-180m-no-parque-dos-ipes-holambra.webp?action=fit-in&dimension=614x297",
- agency:"Sirena Soluções (via VivaReal)",tel:"contato pelo anúncio",wa:"",url:"https://www.vivareal.com.br/imovel/casa-de-condominio-3-quartos-parque-dos-ipes-bairros-holambra-180m2-venda-RS1300000-id-2892350612/"},
-{cat:"3q",city:"Jaguariúna",near:true,cond:"Cond. Sítio Vargeão",title:"Casa 3 quartos / 2 suítes, 300 m²",price:6000,fee:247,area:300,q:3,su:2,ba:null,vg:3,type:"cond",pet:"n/i",office:false,
- ficha:"Cozinha planejada com cooktop, sacada para a piscina, área gourmet, 3 vagas. Condomínio fechado com portões automatizados.",
- img:"https://resizedimgs.vivareal.com/img/vr-listing/eb78b05294e58d1997d14c135c71a0d6/casa-de-condominio-com-3-quartos-para-alugar-300m-no-sitio-vargeao-jaguariuna.webp?action=fit-in&dimension=614x297",
- agency:"Nova Vila Imóveis (via VivaReal)",tel:"contato pelo anúncio",wa:"",url:"https://www.vivareal.com.br/imovel/casa-de-condominio-3-quartos-sitio-vargeao-bairros-jaguariuna-com-garagem-300m2-aluguel-RS6000-id-2893110730/"}
-];
+/* os anúncios agora vêm do Baserow (via /api/casas) */
+let D=[], MINE=[], ROWID={};
 
 /* ---------- render ---------- */
 const $=s=>document.querySelector(s);
 const list=$("#list"), fCity=$("#fCity");
 let CAT="4q";
-/* favoritos e ocultos — salvos no navegador (localStorage) */
-function loadSet(k){try{return new Set(JSON.parse(localStorage.getItem(k)||"[]"));}catch(e){return new Set();}}
-function saveSet(k,s){try{localStorage.setItem(k,JSON.stringify([...s]));}catch(e){}}
-let FAVS=loadSet("imob_favs"), HIDDEN=loadSet("imob_hidden");
-function loadArr(k){try{return JSON.parse(localStorage.getItem(k)||"[]");}catch(e){return [];}}
-function saveArr(k,a){try{localStorage.setItem(k,JSON.stringify(a));}catch(e){}}
-D.forEach((d,i)=>d.uid="d"+i);
-let MINE=loadArr("imob_mine"); MINE.forEach(m=>{m.cat="mine"; if(!m.uid)m.uid="m"+Math.random().toString(36).slice(2);});
-function loadObj(k){try{return JSON.parse(localStorage.getItem(k)||"{}");}catch(e){return {};}}
-let ST=loadObj("imob_status");
+let FAVS=new Set(), HIDDEN=new Set(), ST={};
+
+/* ---------- sincronia com o Baserow ---------- */
+const API="/api/casas";
+
+function sync(txt,cls){
+  const el=$("#sync"); if(!el)return;
+  el.textContent=txt; el.className="sync "+(cls||"");
+}
+
+/* Carrega tudo e reconstrói o estado que o resto da tela já esperava. */
+async function loadAll(){
+  const r=await fetch(API,{cache:"no-store"});
+  if(!r.ok) throw new Error("api");
+  const rows=await r.json();
+  ROWID={}; FAVS=new Set(); HIDDEN=new Set(); ST={};
+  D=[]; MINE=[];
+  rows.forEach(x=>{
+    ROWID[x.uid]=x.rowId;
+    (x.cat==="mine"?MINE:D).push(x);
+    if(x.fav)FAVS.add(x.uid);
+    if(x.hidden)HIDDEN.add(x.uid);
+    if(x.status||x.nota)ST[x.uid]={s:x.status||"",n:x.nota||""};
+  });
+}
+
+/* Grava um campo. A tela já foi atualizada antes de chamar isto (otimista),
+   então aqui só avisamos se falhar — e recarregamos pra não mentir na tela. */
+async function patchRow(uid,patch){
+  const id=ROWID[uid];
+  if(!id){sync("erro: anúncio sem id","err");return;}
+  /* um salvamento imediato torna o agendado obsoleto — ele já leva os valores atuais */
+  clearTimeout(debounced[uid]); delete debounced[uid];
+  sync("salvando…","");
+  try{
+    const r=await fetch(`${API}?rowId=${id}`,{
+      method:"PATCH",headers:{"Content-Type":"application/json"},body:JSON.stringify(patch)
+    });
+    if(!r.ok)throw new Error("patch");
+    sync("salvo ✓","ok");
+  }catch(e){
+    sync("não salvou — recarregando","err");
+    try{ await loadAll(); fillCities(); setStats(); apply(); }catch(_){}
+  }
+}
+
+/* Anotação: espera parar de digitar pra não gravar a cada tecla.
+   Recebe uma função, não um valor: os campos são lidos na hora de disparar.
+   Se congelasse o valor aqui, um salvamento feito nesse meio-tempo (trocar a
+   situação, por ex.) seria desfeito quando este disparasse com dado velho. */
+const debounced={};
+function patchDebounced(uid,lerPatch,ms=700){
+  clearTimeout(debounced[uid]);
+  debounced[uid]=setTimeout(()=>{ delete debounced[uid]; patchRow(uid,lerPatch()); },ms);
+}
 function allItems(){return D.concat(MINE);}
 const cityOrder=["Salto","Tatuí","Jarinu","Monte Mor","Monte Alegre do Sul","Piracaia","Morungaba","Cosmópolis","Capivari","Porto Feliz","Artur Nogueira","Amparo","Santo Antônio de Posse","Boituva","Cesário Lange","Cerquilho","Pedreira","Bom Jesus dos Perdões","Holambra","Jaguariúna","Engenheiro Coelho","Serra Negra","Atibaia","Itatiba","Bragança Paulista","Santa Bárbara d'Oeste","Americana","Rio Claro"];
 function inCat(d){return CAT==="3qoff" ? (d.cat==="3q"&&d.office) : d.cat===CAT;}
@@ -837,26 +328,42 @@ list.addEventListener("click",e=>{
   const card=e.target.closest(".card"); if(!card)return;
   const id=card.dataset.id;
   if(e.target.closest("[data-fav]")){
-    FAVS.has(id)?FAVS.delete(id):FAVS.add(id); saveSet("imob_favs",FAVS); apply(); setStats();
+    const on=!FAVS.has(id);
+    on?FAVS.add(id):FAVS.delete(id); apply(); setStats();
+    patchRow(id,{fav:on});
   }else if(e.target.closest("[data-hide]")){
-    HIDDEN.has(id)?HIDDEN.delete(id):HIDDEN.add(id); saveSet("imob_hidden",HIDDEN); apply();
+    const on=!HIDDEN.has(id);
+    on?HIDDEN.add(id):HIDDEN.delete(id); apply();
+    patchRow(id,{hidden:on});
   }else if(e.target.closest("[data-edit]")){
     openForm(MINE.find(m=>m.uid===id));
   }else if(e.target.closest("[data-del]")){
-    if(confirm("Excluir esta casa da sua lista?")){ MINE=MINE.filter(m=>m.uid!==id); saveArr("imob_mine",MINE); apply(); setStats(); }
+    if(confirm("Excluir esta casa da sua lista?")){
+      const rid=ROWID[id];
+      MINE=MINE.filter(m=>m.uid!==id); apply(); setStats();
+      sync("excluindo…","");
+      fetch(`${API}?rowId=${rid}`,{method:"DELETE"})
+        .then(r=>{ if(!r.ok)throw new Error("del"); sync("excluído ✓","ok"); })
+        .catch(async()=>{ sync("não excluiu — recarregando","err"); try{await loadAll();fillCities();setStats();apply();}catch(_){} });
+    }
   }
 });
 /* salvar situação / anotação (acompanhamento) */
-function saveTrack(card){
+function saveTrack(card,imediato){
   const id=card.dataset.id;
-  const s=card.querySelector("[data-status]")?.value||"";
-  const n=card.querySelector("[data-note]")?.value||"";
-  if(s||n)ST[id]={s,n}; else delete ST[id];
-  try{localStorage.setItem("imob_status",JSON.stringify(ST));}catch(e){}
+  /* lê a situação e a anotação do card agora, e atualiza o estado local */
+  const ler=()=>{
+    const s=card.querySelector("[data-status]")?.value||"";
+    const n=card.querySelector("[data-note]")?.value||"";
+    if(s||n)ST[id]={s,n}; else delete ST[id];
+    return {status:s||null,nota:n};
+  };
+  if(imediato) patchRow(id,ler());
+  else { ler(); patchDebounced(id,ler); }
 }
 list.addEventListener("change",e=>{
   const card=e.target.closest(".card"); if(!card)return;
-  if(e.target.matches("[data-status]")){ saveTrack(card); card.className="card"+(FAVS.has(card.dataset.id)?" isfav":"")+(e.target.value?" st-"+e.target.value:""); }
+  if(e.target.matches("[data-status]")){ saveTrack(card,true); card.className="card"+(FAVS.has(card.dataset.id)?" isfav":"")+(e.target.value?" st-"+e.target.value:""); }
 });
 list.addEventListener("input",e=>{ if(e.target.matches("[data-note]")){const card=e.target.closest(".card"); if(card)saveTrack(card);} });
 function apply(){
@@ -897,7 +404,7 @@ function setNote(){
   if(CAT==="4q") t='<b>4+ quartos, verificadas.</b> Casas de 4 e 5 quartos conferidas uma a uma no site oficial da imobiliária ou no VivaReal recente. Algumas em cidades pequenas vizinhas (etiqueta laranja). Use "com escritório" para filtrar home office.';
   else if(CAT==="3qoff") t='<b>3 quartos + escritório, verificadas.</b> Casas de 3 quartos com escritório/home office confirmado no anúncio. É um nicho raro — por isso a lista é curta, mas todas são reais.';
   else if(CAT==="buy") t='<b>À venda até R$ 850 mil, verificadas em 16/07/2026.</b> Cada card mostra a parcela estimada do financiamento — ajuste a <b>entrada</b> no seletor acima (taxa Caixa ~11,19% a.a. + TR, 30 anos; a taxa real depende do seu perfil no banco). Custos extras na compra: ITBI + escritura/registro (~4-5% do valor). Não sou consultora financeira — use como base e simule no banco.';
-  else if(CAT==="mine") t='<b>Minhas casas.</b> Anúncios que você mesma adicionou (clique em "➕ adicionar anúncio" acima). Ficam salvos no seu navegador. Você pode favoritar, editar e excluir cada um.';
+  else if(CAT==="mine") t='<b>Minhas casas.</b> Anúncios que você mesma adicionou (clique em "➕ adicionar anúncio" acima). Ficam salvos na nuvem e aparecem em qualquer aparelho. Você pode favoritar, editar e excluir cada um.';
   else t='<b>Outras 3 quartos, verificadas.</b> Casas boas de 3 quartos em condomínio, conferidas no site oficial da imobiliária ou VivaReal recente.';
   $("#note").innerHTML=t;
   /* controles por aba */
@@ -924,29 +431,6 @@ document.querySelectorAll(".tab").forEach(t=>t.addEventListener("click",()=>{
   t.classList.add("active");CAT=t.dataset.cat;fillCities();setNote();apply();
 }));
 ["change","input"].forEach(ev=>document.querySelectorAll("#fCity,#fPrice,#fSort,#fCond,#fPet,#fOffice,#fFav,#fShowHidden,#fStatus,#fEntrada").forEach(el=>el.addEventListener(ev,apply)));
-
-/* Exportar / Importar (sincroniza entre aparelhos sem banco) */
-$("#btnExport").addEventListener("click",()=>{
-  const dump=JSON.stringify({favs:[...FAVS],hidden:[...HIDDEN],mine:MINE,status:ST});
-  const code=btoa(unescape(encodeURIComponent(dump)));
-  navigator.clipboard?.writeText(code).then(()=>{},()=>{});
-  window.prompt("Copie este código e cole no outro aparelho (no botão ⬇️ importar). Já tentei copiar pra você:",code);
-});
-$("#btnImport").addEventListener("click",()=>{
-  const code=window.prompt("Cole aqui o código que você exportou no outro aparelho:");
-  if(!code)return;
-  try{
-    const o=JSON.parse(decodeURIComponent(escape(atob(code.trim()))));
-    if(o.favs)FAVS=new Set([...FAVS,...o.favs]);
-    if(o.hidden)HIDDEN=new Set([...HIDDEN,...o.hidden]);
-    if(o.status)ST=Object.assign(ST,o.status);
-    if(o.mine){const have=new Set(MINE.map(m=>m.uid)); o.mine.forEach(m=>{if(!have.has(m.uid)){m.cat="mine";MINE.push(m);}});}
-    saveSet("imob_favs",FAVS);saveSet("imob_hidden",HIDDEN);saveArr("imob_mine",MINE);
-    try{localStorage.setItem("imob_status",JSON.stringify(ST));}catch(e){}
-    fillCities();setStats();apply();
-    alert("Importado! Seus favoritos, situações e casas adicionadas foram mesclados.");
-  }catch(e){alert("Código inválido. Confira se copiou tudo.");}
-});
 
 /* ===== Adicionar / editar meus anúncios ===== */
 const panel=$("#addPanel");
@@ -979,28 +463,53 @@ $("#aUrl").addEventListener("change",()=>{
   if(g.sale!=null)$("#aSale").value=String(g.sale);
   if(g.office)$("#aOffice").checked=true;
 });
-$("#aSave").addEventListener("click",()=>{
+$("#aSave").addEventListener("click",async()=>{
   const url=$("#aUrl").value.trim();
   if(!url && !$("#aTitle").value.trim()){alert("Cole pelo menos o link do anúncio.");return;}
   const obj={
-    cat:"mine", uid: editingUid||("m"+Math.random().toString(36).slice(2)),
     url, title:$("#aTitle").value.trim()||"Anúncio salvo", city:$("#aCity").value.trim()||"Sem cidade",
-    cond:"anúncio adicionado por você", price:$("#aPrice").value?+$("#aPrice").value:null, fee:null,
+    cond:"anúncio adicionado por você", price:$("#aPrice").value?+$("#aPrice").value:null,
     sale:$("#aSale").value==="1", q:$("#aQ").value?+$("#aQ").value:null, su:$("#aSu").value?+$("#aSu").value:null,
-    area:$("#aArea").value?+$("#aArea").value:null, ba:null, vg:null,
+    area:$("#aArea").value?+$("#aArea").value:null,
     type:$("#aCond").checked?"cond":"alt", pet:$("#aPet").checked?"sim":"n/i", office:$("#aOffice").checked,
     ficha:$("#aFicha").value.trim()||"Sem observações.", img:$("#aImg").value.trim()||"",
-    agency:"Você adicionou", tel:"", wa:"", near:false
+    agency:"Você adicionou", near:false
   };
-  if(editingUid){ const i=MINE.findIndex(m=>m.uid===editingUid); if(i>=0)MINE[i]=obj; }
-  else MINE.push(obj);
-  saveArr("imob_mine",MINE);
-  panel.style.display="none"; editingUid=null;
-  CAT="mine"; document.querySelectorAll(".tab").forEach(x=>x.classList.toggle("active",x.dataset.cat==="mine"));
-  fillCities(); setNote(); setStats(); apply();
+  const btn=$("#aSave"); btn.disabled=true; sync("salvando…","");
+  try{
+    if(editingUid){
+      const r=await fetch(`${API}?rowId=${ROWID[editingUid]}`,{
+        method:"PATCH",headers:{"Content-Type":"application/json"},body:JSON.stringify(obj)});
+      if(!r.ok)throw new Error("patch");
+    }else{
+      const r=await fetch(API,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(obj)});
+      if(!r.ok)throw new Error("post");
+    }
+    await loadAll();
+    sync("salvo ✓","ok");
+    panel.style.display="none"; editingUid=null;
+    CAT="mine"; document.querySelectorAll(".tab").forEach(x=>x.classList.toggle("active",x.dataset.cat==="mine"));
+    fillCities(); setNote(); setStats(); apply();
+  }catch(e){
+    sync("não salvou","err");
+    alert("Não consegui salvar. Confira a conexão e tente de novo — o que você digitou continua aí.");
+  }finally{ btn.disabled=false; }
 });
 
-setStats();fillCities();setNote();apply();
+/* ---------- início ---------- */
+(async function init(){
+  list.innerHTML='<div class="empty">Carregando suas casas…</div>';
+  sync("carregando…","");
+  try{
+    await loadAll();
+    sync("sincronizado ✓","ok");
+    setStats();fillCities();setNote();apply();
+  }catch(e){
+    sync("sem conexão","err");
+    list.innerHTML='<div class="empty">Não consegui carregar as casas agora.<br>'+
+      'Verifique sua internet e <a href="" onclick="location.reload();return false" style="color:var(--accent)">tente de novo</a>.</div>';
+  }
+})();
 </script>
 </body>
 </html>
