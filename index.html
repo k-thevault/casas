@@ -214,7 +214,7 @@ async function loadAll(){
 
 /* Grava um campo. A tela já foi atualizada antes de chamar isto (otimista),
    então aqui só avisamos se falhar — e recarregamos pra não mentir na tela. */
-async function patchRow(uid,patch){
+async function patchRow(uid,patch,desfazer){
   const id=ROWID[uid];
   if(!id){sync("erro: anúncio sem id","err");return;}
   /* um salvamento imediato torna o agendado obsoleto — ele já leva os valores atuais */
@@ -227,8 +227,17 @@ async function patchRow(uid,patch){
     if(!r.ok)throw new Error("patch");
     sync("salvo ✓","ok");
   }catch(e){
-    sync("não salvou — recarregando","err");
-    try{ await loadAll(); fillCities(); setStats(); apply(); }catch(_){}
+    /* A tela não pode mostrar o que o banco não tem. Primeiro tenta recarregar
+       a verdade; se nem isso vai (sem internet), desfaz o que acabou de mudar
+       — senão fica coração vermelho de favorito que não existe. */
+    try{
+      await loadAll();
+      sync("não salvou","err");
+    }catch(_){
+      if(desfazer) desfazer();
+      sync("sem conexão — desfeito","err");
+    }
+    fillCities(); setStats(); apply();
   }
 }
 
@@ -237,9 +246,9 @@ async function patchRow(uid,patch){
    Se congelasse o valor aqui, um salvamento feito nesse meio-tempo (trocar a
    situação, por ex.) seria desfeito quando este disparasse com dado velho. */
 const debounced={};
-function patchDebounced(uid,lerPatch,ms=700){
+function patchDebounced(uid,lerPatch,desfazer,ms=700){
   clearTimeout(debounced[uid]);
-  debounced[uid]=setTimeout(()=>{ delete debounced[uid]; patchRow(uid,lerPatch()); },ms);
+  debounced[uid]=setTimeout(()=>{ delete debounced[uid]; patchRow(uid,lerPatch(),desfazer); },ms);
 }
 function allItems(){return D.concat(MINE);}
 const cityOrder=["Salto","Tatuí","Jarinu","Monte Mor","Monte Alegre do Sul","Piracaia","Morungaba","Cosmópolis","Capivari","Porto Feliz","Artur Nogueira","Amparo","Santo Antônio de Posse","Boituva","Cesário Lange","Cerquilho","Pedreira","Bom Jesus dos Perdões","Holambra","Jaguariúna","Engenheiro Coelho","Serra Negra","Atibaia","Itatiba","Bragança Paulista","Santa Bárbara d'Oeste","Americana","Rio Claro"];
@@ -335,11 +344,11 @@ list.addEventListener("click",e=>{
   if(e.target.closest("[data-fav]")){
     const on=!FAVS.has(id);
     on?FAVS.add(id):FAVS.delete(id); apply(); setStats();
-    patchRow(id,{fav:on});
+    patchRow(id,{fav:on}, ()=>{ on?FAVS.delete(id):FAVS.add(id); });
   }else if(e.target.closest("[data-hide]")){
     const on=!HIDDEN.has(id);
     on?HIDDEN.add(id):HIDDEN.delete(id); apply();
-    patchRow(id,{hidden:on});
+    patchRow(id,{hidden:on}, ()=>{ on?HIDDEN.delete(id):HIDDEN.add(id); });
   }else if(e.target.closest("[data-edit]")){
     openForm(MINE.find(m=>m.uid===id));
   }else if(e.target.closest("[data-del]")){
@@ -356,6 +365,8 @@ list.addEventListener("click",e=>{
 /* salvar situação / anotação (acompanhamento) */
 function saveTrack(card,imediato){
   const id=card.dataset.id;
+  const antes=ST[id]?{...ST[id]}:null;
+  const desfazer=()=>{ if(antes)ST[id]=antes; else delete ST[id]; };
   /* lê a situação e a anotação do card agora, e atualiza o estado local */
   const ler=()=>{
     const s=card.querySelector("[data-status]")?.value||"";
@@ -363,8 +374,8 @@ function saveTrack(card,imediato){
     if(s||n)ST[id]={s,n}; else delete ST[id];
     return {status:s||null,nota:n};
   };
-  if(imediato) patchRow(id,ler());
-  else { ler(); patchDebounced(id,ler); }
+  if(imediato) patchRow(id,ler(),desfazer);
+  else { ler(); patchDebounced(id,ler,desfazer); }
 }
 list.addEventListener("change",e=>{
   const card=e.target.closest(".card"); if(!card)return;
