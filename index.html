@@ -74,6 +74,12 @@
   .card.isfav{border-color:#ff5a78;box-shadow:0 0 0 1px #ff5a78}
   .hidebtn{background:transparent;border:1px solid var(--line);color:var(--muted);font-size:11px;padding:7px 10px;border-radius:8px;cursor:pointer}
   .hidebtn:hover{border-color:#ff7a8f;color:#ff9ec9}
+  .track{display:flex;gap:6px;margin-top:8px;padding-top:8px;border-top:1px dashed var(--line)}
+  .tstatus{background:var(--card2);color:#cfe0f0;border:1px solid var(--line);border-radius:8px;padding:6px 8px;font-size:11.5px}
+  .tnote{flex:1;min-width:80px;background:var(--card2);color:#cfe0f0;border:1px solid var(--line);border-radius:8px;padding:6px 8px;font-size:11.5px}
+  .card.st-visita{border-color:#37c98a}
+  .card.st-gostei{border-color:#37c98a}
+  .card.st-descartei{opacity:.55}
   .empty{color:var(--muted);padding:30px;text-align:center}
   footer{margin-top:40px;color:var(--muted);font-size:11.5px;text-align:center;border-top:1px solid var(--line);padding-top:16px}
 </style>
@@ -117,12 +123,22 @@
     <label class="toggle"><input type="checkbox" id="fOffice"> com escritório</label>
     <label class="toggle"><input type="checkbox" id="fFav"> ❤️ só favoritas</label>
     <label class="toggle"><input type="checkbox" id="fShowHidden"> mostrar ocultas</label>
+    <select id="fStatus">
+      <option value="">Situação: todas</option>
+      <option value="contatar">📞 A contatar</option>
+      <option value="aguardando">⏳ Aguardando resposta</option>
+      <option value="visita">📅 Visita marcada</option>
+      <option value="gostei">💚 Gostei</option>
+      <option value="descartei">🚫 Descartei</option>
+    </select>
     <select id="fEntrada" style="display:none">
       <option value="0.20">Entrada 20%</option>
       <option value="0.30" selected>Entrada 30%</option>
       <option value="0.40">Entrada 40%</option>
     </select>
     <button id="btnAdd" class="toggle" style="cursor:pointer;background:var(--accent);color:#04121f;border-color:transparent;font-weight:600">➕ adicionar anúncio</button>
+    <button id="btnExport" class="toggle" style="cursor:pointer" title="Gera um código com seus favoritos, situações e casas adicionadas — pra colar em outro aparelho">⬆️ exportar</button>
+    <button id="btnImport" class="toggle" style="cursor:pointer" title="Cole aqui o código gerado em outro aparelho">⬇️ importar</button>
     <span class="count" id="count"></span>
   </div>
 
@@ -661,7 +677,63 @@ const D = [
 {cat:"buy",city:"Cosmópolis",near:false,cond:"Cond. Village Monte Cristo",title:"Casa sustentável 145 m² / 2 suítes — R$ 850 mil",price:850000,fee:null,area:145,q:3,su:2,ba:null,vg:2,type:"cond",pet:"n/i",office:false,
  ficha:"Aquecimento solar + fotovoltaico, planejados por toda a casa, carregador de carro elétrico. Também disponível para alugar (R$3.900). Confirmar detalhes por WhatsApp.",
  img:"",
- agency:"Imobiliária Olandini",tel:"(19) 99212-4190",wa:"5519992124190",url:"https://www.imobiliariaolandini.com.br/imovel/casa-cosmopolis-3-quartos-145-m/CA1934-OLAN"}
+ agency:"Imobiliária Olandini",tel:"(19) 99212-4190",wa:"5519992124190",url:"https://www.imobiliariaolandini.com.br/imovel/casa-cosmopolis-3-quartos-145-m/CA1934-OLAN"},
+
+/* ===== INDICADOS POR VOCÊ (aba ⭐ Minhas casas) ===== */
+{cat:"mine",city:"Tatuí",near:false,cond:"Residencial Ecopark (chácara em condomínio)",title:"Chácara 4 quartos / 2 suítes com piscina",price:3000,fee:604,area:300,q:4,su:2,ba:2,vg:null,type:"cond",pet:"n/i",office:false,sale:false,
+ ficha:"Você indicou. Chácara em condomínio: 4 dormitórios (2 suítes), sala 3 ambientes, área gourmet com churrasqueira, piscina, ambiente arborizado. Condomínio: 2 quadras de beach tennis, pista de caminhada 1km, campo de futebol, praça e parquinhos, eventos quinzenais. IPTU R$256.",
+ img:"https://imgbr.imovelwebcdn.com/avisos/2/30/34/11/89/07/720x532/6630592749.jpg",
+ agency:"Você indicou (ImovelWeb)",tel:"",wa:"",url:"https://www.imovelweb.com.br/propriedades/chacara-para-locacao-com-4-dormitorios-sendo-2-suites-3034118907.html"},
+{cat:"mine",city:"Porto Feliz",near:false,cond:"Cond. Terras de San Thomé",title:"Chácara 4 suítes, 483 m², condomínio fechado",price:4500,fee:700,area:483,q:4,su:4,ba:2,vg:12,type:"cond",pet:"n/i",office:false,sale:false,
+ ficha:"Você indicou. 4 suítes, sala de estar, sala de TV com lareira, espaço gourmet, piscina, pomar, canil, casa para caseiro, poço artesiano. Terreno 5.000 m². Condomínio fechado. IPTU R$600.",
+ img:"https://imgbr.imovelwebcdn.com/avisos/2/30/12/99/28/80/720x532/6584543123.jpg",
+ agency:"Você indicou (ImovelWeb)",tel:"",wa:"",url:"https://www.imovelweb.com.br/propriedades/chacara-disponivel-para-locacao-terras-de-san-thome-3012992880.html"},
+{cat:"mine",city:"Santa Bárbara d'Oeste",near:true,cond:"Condomínio De Cillo",title:"Casa 4 suítes, 460 m² (condomínio caro)",price:3000,fee:3237,area:460,q:4,su:4,ba:2,vg:2,type:"cond",pet:"n/i",office:false,sale:false,
+ ficha:"Você indicou. 4 suítes, 2 banheiros sociais, cozinha com armários e cooktop, 3 salas (1 com sacada), quintal amplo, piscina, espaço gourmet. Condomínio fechado, segurança 24h. ATENÇÃO: condomínio alto (R$3.237) — total ~R$7.110/mês. Atualizado 13/07. IPTU R$873.",
+ img:"https://img.olx.com.br/images/37/376610063588885.jpg",
+ agency:"Você indicou (OLX)",tel:"(19) 3406-4...",wa:"",url:"https://sp.olx.com.br/grande-campinas/imoveis/casa-residencial-para-alugar-no-condominio-de-cillo-em-santa-barbara-d-oeste-1517949420"},
+{cat:"mine",city:"Americana",near:true,cond:"Cond. Village das Américas",title:"Casa 4 quartos / 1 suíte, 118 m² — aceita pet",price:4500,fee:780,area:118,q:4,su:1,ba:2,vg:2,type:"cond",pet:"sim",office:false,sale:false,
+ ficha:"Você indicou. 4 dormitórios com planejados (1 suíte com sacada), sala de estar com painel de TV e ar-condicionado, cozinha totalmente planejada, lavabo, espaço gourmet com churrasqueira, depósito, quintal, 2 vagas. Condomínio fechado, permite animais. Total ~R$5.390/mês. IPTU R$110.",
+ img:"https://img.olx.com.br/images/44/447603182476518.jpg",
+ agency:"Você indicou (OLX)",tel:"(19) 3621-3...",wa:"",url:"https://sp.olx.com.br/grande-campinas/imoveis/casa-com-4-dormitorios-para-alugar-118-m-por-r-5-360-00-mes-nova-americana-american-1518235845"},
+{cat:"mine",city:"Rio Claro",near:true,cond:"Cond. Residencial Florença",title:"Casa térrea 4 suítes, 315 m² — aceita pet",price:4500,fee:615,area:315,q:4,su:4,ba:4,vg:5,type:"cond",pet:"sim",office:false,sale:false,
+ ficha:"Você indicou. Casa térrea, 4 suítes (1 com closet), estilo rústico com bastante madeira e teto de madeira, cozinha planejada com porcelanato, espaço gourmet com churrasqueira, quintal com árvores frutíferas, garagem 3 cobertas + descobertas. Condomínio fechado com áreas verdes, porteiro 24h, permite animais. Também à venda por R$1.500.000. Total ~R$5.400/mês. IPTU R$285.",
+ img:"https://img.olx.com.br/images/51/516642303044623.jpg",
+ agency:"Você indicou (OLX)",tel:"(19) 3526-3...",wa:"",url:"https://sp.olx.com.br/grande-campinas/imoveis/casa-com-4-dormitorios-315-m-venda-por-r-1-500-000-00-ou-aluguel-por-r-5-400-00-mes-1418467384"},
+
+/* ===== NOVAS (rodada extra — VivaReal, ativas jul/2026) ===== */
+{cat:"3q",city:"Jaguariúna",near:true,cond:"Cond. Chácara Primavera",title:"Casa 3 quartos / 2 suítes + escritório, 300 m² — pet",price:4000,fee:530,area:300,q:3,su:2,ba:null,vg:null,type:"cond",pet:"sim",office:true,
+ ficha:"Escritório, porcelanato, armários planejados, churrasqueira, cozinha equipada. Condomínio fechado com portaria 24h, campo e playground. Aceita animais. IPTU R$135.",
+ img:"https://resizedimgs.vivareal.com/img/vr-listing/b062094c8349492e16bb0fc61a01ff69/casa-de-condominio-com-3-quartos-para-alugar-300m-no-chacara-primavera-jaguariuna.webp?action=fit-in&dimension=614x297",
+ agency:"Capital Invest (via VivaReal)",tel:"contato pelo anúncio",wa:"",url:"https://www.vivareal.com.br/imovel/casa-de-condominio-3-quartos-jardim-primavera-jaguariuna-com-garagem-300m2-aluguel-RS4000-id-2893146416/"},
+{cat:"3q",city:"Jaguariúna",near:true,cond:"Cond. Chácara Primavera",title:"Casa 3 quartos + home office, 150 m²",price:4000,fee:530,area:150,q:3,su:1,ba:null,vg:4,type:"cond",pet:"n/i",office:true,
+ ficha:"Quarto extra nos fundos usado como home office, área gourmet coberta com churrasqueira, cozinha planejada, 4 vagas. Condomínio fechado com portaria 24h, bosque e 2 quadras. IPTU R$160.",
+ img:"https://resizedimgs.vivareal.com/img/vr-listing/1c09755e4ccf3bccebe1a9c5cf9a53ea/casa-de-condominio-com-3-quartos-para-alugar-150m-no-chacara-primavera-jaguariuna.webp?action=fit-in&dimension=614x297",
+ agency:"Nova Vila Imóveis (via VivaReal)",tel:"contato pelo anúncio",wa:"",url:"https://www.vivareal.com.br/imovel/casa-de-condominio-3-quartos-jardim-primavera-jaguariuna-com-garagem-150m2-aluguel-RS4000-id-2891657587/"},
+{cat:"3q",city:"Cosmópolis",near:false,cond:"Centro (condomínio — confirmar)",title:"Casa 3 quartos + escritório, 254 m², mobiliada",price:6000,fee:0,area:254,q:3,su:null,ba:null,vg:7,type:"alt",pet:"n/i",office:true,
+ ficha:"Escritório, mobiliada, 3 salas, cozinha planejada, área gourmet com churrasqueira, 7 vagas. Condomínio isento. Obs.: uso residencial/comercial — confirmar se é condomínio fechado.",
+ img:"https://resizedimgs.vivareal.com/img/vr-listing/fbf8dc39ff52ff1c733062610d54be74/casa-de-condominio-com-3-quartos-para-venda-ou-aluguel-254m-no-centro-cosmopolis.webp?action=fit-in&dimension=614x297",
+ agency:"Hermes Adm. de Bens (via VivaReal)",tel:"contato pelo anúncio",wa:"",url:"https://www.vivareal.com.br/imovel/casa-de-condominio-3-quartos-centro-bairros-cosmopolis-com-garagem-254m2-venda-RS950000-id-2641752692/"},
+{cat:"4q",city:"Jaguariúna",near:true,cond:"Cond. Estância das Flores",title:"Casa 5 quartos + escritório, 200 m², piscina",price:6500,fee:451,area:200,q:5,su:1,ba:null,vg:3,type:"cond",pet:"n/i",office:true,
+ ficha:"Escritório planejado + sótão ~30m², suíte master com closet e hidro, área gourmet completa, piscina 3x8, aquecimento solar, cerca elétrica, 3 vagas. Portaria 24h. IPTU R$292.",
+ img:"https://resizedimgs.vivareal.com/img/vr-listing/87c897293b1c493102b7969d187d2208/casa-de-condominio-com-5-quartos-para-alugar-200m-no-estancia-das-flores-jaguariuna.webp?action=fit-in&dimension=614x297",
+ agency:"Nova Vila Imóveis (via VivaReal)",tel:"contato pelo anúncio",wa:"",url:"https://www.vivareal.com.br/imovel/casa-de-condominio-5-quartos-estancia-das-flores-jaguariuna-com-garagem-200m2-aluguel-RS6500-id-2894825312/"},
+{cat:"4q",city:"Bom Jesus dos Perdões",near:true,cond:"Cond. fechado (Guaxinduva)",title:"Casa 4 quartos / 2 suítes, 330 m², mobiliada",price:6000,fee:640,area:330,q:4,su:2,ba:null,vg:null,type:"cond",pet:"n/i",office:false,
+ ficha:"Mobiliada, piscina, mezanino, espaço gourmet. Condomínio fechado com portaria 24h. Marcada como 'abaixo do mercado'.",
+ img:"https://resizedimgs.vivareal.com/img/vr-listing/488f9c77ab2f920ed6fab658d003b24b/casa-com-4-quartos-para-alugar-330m-no-guaxinduva-bom-jesus-dos-perdoes.webp?action=fit-in&dimension=614x297",
+ agency:"Imobiliária Sonina (via VivaReal)",tel:"contato pelo anúncio",wa:"",url:"https://www.vivareal.com.br/imovel/casa-4-quartos-guaxinduva-bairros-bom-jesus-dos-perdoes-com-garagem-330m2-aluguel-RS6000-id-2802605417/"},
+{cat:"4q",city:"Jaguariúna",near:true,cond:"Cond. Chácara Long Island",title:"Chácara 4 quartos, piscina — aceita pet",price:3500,fee:880,area:null,q:4,su:1,ba:null,vg:8,type:"cond",pet:"sim",office:false,
+ ficha:"Piscina privativa, cozinha gourmet, 8 vagas, terreno 1.566 m². Condomínio fechado com lago de pesca e campo. Aceita animais. Obs.: casa estilo rústico (não moderna). IPTU alto (R$2.281).",
+ img:"https://resizedimgs.vivareal.com/img/vr-listing/055ee4b3896a116666919bbfc3b481e5/casa-de-condominio-com-4-quartos-para-venda-ou-aluguel-1566m-no-chacara-long-island-jaguariuna.webp?action=fit-in&dimension=614x297",
+ agency:"José Roberto Corretor (via VivaReal)",tel:"(19) 99933-3015",wa:"5519999333015",url:"https://www.vivareal.com.br/imovel/casa-de-condominio-4-quartos-chacara-long-island-jaguariuna-com-garagem-1566m2-venda-RS780000-id-2898839617/"},
+{cat:"3q",city:"Holambra",near:true,cond:"Cond. Parque dos Ipês",title:"Casa nova 3 quartos, 180 m² — aceita pet",price:5500,fee:400,area:180,q:3,su:1,ba:null,vg:null,type:"cond",pet:"sim",office:false,
+ ficha:"Casa nova, suíte com closet, salas integradas à cozinha, área gourmet integrada. Condomínio fechado. Aceita animais. IPTU R$295.",
+ img:"https://resizedimgs.vivareal.com/img/vr-listing/eef2b099d21696dd716cc8c0202f5f2e/casa-de-condominio-com-3-quartos-para-venda-ou-aluguel-180m-no-parque-dos-ipes-holambra.webp?action=fit-in&dimension=614x297",
+ agency:"Sirena Soluções (via VivaReal)",tel:"contato pelo anúncio",wa:"",url:"https://www.vivareal.com.br/imovel/casa-de-condominio-3-quartos-parque-dos-ipes-bairros-holambra-180m2-venda-RS1300000-id-2892350612/"},
+{cat:"3q",city:"Jaguariúna",near:true,cond:"Cond. Sítio Vargeão",title:"Casa 3 quartos / 2 suítes, 300 m²",price:6000,fee:247,area:300,q:3,su:2,ba:null,vg:3,type:"cond",pet:"n/i",office:false,
+ ficha:"Cozinha planejada com cooktop, sacada para a piscina, área gourmet, 3 vagas. Condomínio fechado com portões automatizados.",
+ img:"https://resizedimgs.vivareal.com/img/vr-listing/eb78b05294e58d1997d14c135c71a0d6/casa-de-condominio-com-3-quartos-para-alugar-300m-no-sitio-vargeao-jaguariuna.webp?action=fit-in&dimension=614x297",
+ agency:"Nova Vila Imóveis (via VivaReal)",tel:"contato pelo anúncio",wa:"",url:"https://www.vivareal.com.br/imovel/casa-de-condominio-3-quartos-sitio-vargeao-bairros-jaguariuna-com-garagem-300m2-aluguel-RS6000-id-2893110730/"}
 ];
 
 /* ---------- render ---------- */
@@ -676,8 +748,10 @@ function loadArr(k){try{return JSON.parse(localStorage.getItem(k)||"[]");}catch(
 function saveArr(k,a){try{localStorage.setItem(k,JSON.stringify(a));}catch(e){}}
 D.forEach((d,i)=>d.uid="d"+i);
 let MINE=loadArr("imob_mine"); MINE.forEach(m=>{m.cat="mine"; if(!m.uid)m.uid="m"+Math.random().toString(36).slice(2);});
+function loadObj(k){try{return JSON.parse(localStorage.getItem(k)||"{}");}catch(e){return {};}}
+let ST=loadObj("imob_status");
 function allItems(){return D.concat(MINE);}
-const cityOrder=["Salto","Tatuí","Jarinu","Monte Mor","Monte Alegre do Sul","Piracaia","Morungaba","Cosmópolis","Capivari","Porto Feliz","Artur Nogueira","Amparo","Santo Antônio de Posse","Boituva","Cesário Lange","Cerquilho","Pedreira","Bom Jesus dos Perdões","Holambra","Jaguariúna","Engenheiro Coelho","Serra Negra","Atibaia","Itatiba","Bragança Paulista"];
+const cityOrder=["Salto","Tatuí","Jarinu","Monte Mor","Monte Alegre do Sul","Piracaia","Morungaba","Cosmópolis","Capivari","Porto Feliz","Artur Nogueira","Amparo","Santo Antônio de Posse","Boituva","Cesário Lange","Cerquilho","Pedreira","Bom Jesus dos Perdões","Holambra","Jaguariúna","Engenheiro Coelho","Serra Negra","Atibaia","Itatiba","Bragança Paulista","Santa Bárbara d'Oeste","Americana","Rio Claro"];
 function inCat(d){return CAT==="3qoff" ? (d.cat==="3q"&&d.office) : d.cat===CAT;}
 function catCities(){return [...new Set(allItems().filter(inCat).map(d=>d.city))].filter(Boolean);}
 /* financiamento: taxa Caixa jul/2026 ~11,19% a.a. + TR, 360 meses */
@@ -725,7 +799,7 @@ function card(d){
   const tel=(d.tel&&d.tel.startsWith('('))?`<span class="btn btn-tel">${d.tel}</span>`:'';
   const id=d.uid;
   const isFav=FAVS.has(id);
-  return `<div class="card${isFav?' isfav':''}" data-id="${id}">
+  return `<div class="card${isFav?' isfav':''}${ST[id]?.s?' st-'+ST[id].s:''}" data-id="${id}">
     <div class="photo">${photo}<span class="ph">🏡</span><span class="badge${d.q>=4?' q4':''}">${d.q?d.q+' quartos':'—'}</span><span class="ver">✓ verificado</span><button class="favbtn${isFav?' on':''}" data-fav title="Favoritar">${isFav?'❤️':'🤍'}</button></div>
     <div class="body">
       <div class="top">
@@ -740,9 +814,20 @@ function card(d){
         <span class="agency">🏢 ${d.agency}${d.tel&&!d.tel.startsWith('(')?' · '+d.tel:''}</span>
         ${d.url?`<a class="btn btn-ver" href="${d.url}" target="_blank" rel="noopener">Ver anúncio</a>`:''}
         ${wa}${tel}
-        ${d.cat==="mine"
+        ${(d.cat==="mine"&&MINE.some(m=>m.uid===id))
           ? `<button class="hidebtn" data-edit>editar</button><button class="hidebtn" data-del>excluir</button>`
           : `<button class="hidebtn" data-hide title="Ocultar da lista">${HIDDEN.has(id)?'↩︎ desocultar':'✕ ocultar'}</button>`}
+      </div>
+      <div class="track">
+        <select class="tstatus" data-status>
+          <option value="">Situação: a definir</option>
+          <option value="contatar"${ST[id]?.s==="contatar"?" selected":""}>📞 A contatar</option>
+          <option value="aguardando"${ST[id]?.s==="aguardando"?" selected":""}>⏳ Aguardando resposta</option>
+          <option value="visita"${ST[id]?.s==="visita"?" selected":""}>📅 Visita marcada</option>
+          <option value="gostei"${ST[id]?.s==="gostei"?" selected":""}>💚 Gostei</option>
+          <option value="descartei"${ST[id]?.s==="descartei"?" selected":""}>🚫 Descartei</option>
+        </select>
+        <input class="tnote" data-note placeholder="anotação (pet ok? valor negociado?...)" value="${(ST[id]?.n||"").replace(/"/g,'&quot;')}">
       </div>
     </div>
   </div>`;
@@ -761,6 +846,19 @@ list.addEventListener("click",e=>{
     if(confirm("Excluir esta casa da sua lista?")){ MINE=MINE.filter(m=>m.uid!==id); saveArr("imob_mine",MINE); apply(); setStats(); }
   }
 });
+/* salvar situação / anotação (acompanhamento) */
+function saveTrack(card){
+  const id=card.dataset.id;
+  const s=card.querySelector("[data-status]")?.value||"";
+  const n=card.querySelector("[data-note]")?.value||"";
+  if(s||n)ST[id]={s,n}; else delete ST[id];
+  try{localStorage.setItem("imob_status",JSON.stringify(ST));}catch(e){}
+}
+list.addEventListener("change",e=>{
+  const card=e.target.closest(".card"); if(!card)return;
+  if(e.target.matches("[data-status]")){ saveTrack(card); card.className="card"+(FAVS.has(card.dataset.id)?" isfav":"")+(e.target.value?" st-"+e.target.value:""); }
+});
+list.addEventListener("input",e=>{ if(e.target.matches("[data-note]")){const card=e.target.closest(".card"); if(card)saveTrack(card);} });
 function apply(){
   const city=fCity.value, maxP=+$("#fPrice").value, sort=$("#fSort").value;
   const onlyCond=$("#fCond").checked, onlyPet=$("#fPet").checked, onlyOff=$("#fOffice").checked;
@@ -776,6 +874,7 @@ function apply(){
     if(onlyCond&&d.type!=="cond")return false;
     if(onlyPet&&d.pet!=="sim")return false;
     if(onlyOff&&!d.office)return false;
+    const st=$("#fStatus").value; if(st&&(ST[id]?.s||"")!==st)return false;
     return true;
   });
   if(sort==="priceAsc")r.sort((a,b)=>(a.price??1e9)-(b.price??1e9));
@@ -785,8 +884,9 @@ function apply(){
   $("#count").textContent=r.length+" imóvel"+(r.length!==1?"is":"");
   if(!r.length){list.innerHTML='<div class="empty">Nenhum imóvel com esses filtros.</div>';return;}
   if(sort==="cityAsc"&&!city){
-    const g={};r.forEach(d=>{(g[d.city]=g[d.city]||[]).push(d)});
-    list.innerHTML=cityOrder.filter(c=>g[c]).map(c=>{
+    const g={};r.forEach(d=>{(g[d.city||"Outras"]=g[d.city||"Outras"]||[]).push(d)});
+    const ordered=[...cityOrder.filter(c=>g[c]),...Object.keys(g).filter(c=>!cityOrder.includes(c))];
+    list.innerHTML=ordered.map(c=>{
       const near=g[c][0].near?'<span class="near">cidade vizinha</span>':'';
       return `<div class="citygroup"><h2>${c} ${near}<span class="n">${g[c].length} opç${g[c].length>1?'ões':'ão'}</span></h2><div class="grid">${g[c].map(card).join("")}</div></div>`;
     }).join("");
@@ -797,6 +897,7 @@ function setNote(){
   if(CAT==="4q") t='<b>4+ quartos, verificadas.</b> Casas de 4 e 5 quartos conferidas uma a uma no site oficial da imobiliária ou no VivaReal recente. Algumas em cidades pequenas vizinhas (etiqueta laranja). Use "com escritório" para filtrar home office.';
   else if(CAT==="3qoff") t='<b>3 quartos + escritório, verificadas.</b> Casas de 3 quartos com escritório/home office confirmado no anúncio. É um nicho raro — por isso a lista é curta, mas todas são reais.';
   else if(CAT==="buy") t='<b>À venda até R$ 850 mil, verificadas em 16/07/2026.</b> Cada card mostra a parcela estimada do financiamento — ajuste a <b>entrada</b> no seletor acima (taxa Caixa ~11,19% a.a. + TR, 30 anos; a taxa real depende do seu perfil no banco). Custos extras na compra: ITBI + escritura/registro (~4-5% do valor). Não sou consultora financeira — use como base e simule no banco.';
+  else if(CAT==="mine") t='<b>Minhas casas.</b> Anúncios que você mesma adicionou (clique em "➕ adicionar anúncio" acima). Ficam salvos no seu navegador. Você pode favoritar, editar e excluir cada um.';
   else t='<b>Outras 3 quartos, verificadas.</b> Casas boas de 3 quartos em condomínio, conferidas no site oficial da imobiliária ou VivaReal recente.';
   $("#note").innerHTML=t;
   /* controles por aba */
@@ -822,7 +923,83 @@ document.querySelectorAll(".tab").forEach(t=>t.addEventListener("click",()=>{
   document.querySelectorAll(".tab").forEach(x=>x.classList.remove("active"));
   t.classList.add("active");CAT=t.dataset.cat;fillCities();setNote();apply();
 }));
-["change","input"].forEach(ev=>document.querySelectorAll("select,input").forEach(el=>el.addEventListener(ev,apply)));
+["change","input"].forEach(ev=>document.querySelectorAll("#fCity,#fPrice,#fSort,#fCond,#fPet,#fOffice,#fFav,#fShowHidden,#fStatus,#fEntrada").forEach(el=>el.addEventListener(ev,apply)));
+
+/* Exportar / Importar (sincroniza entre aparelhos sem banco) */
+$("#btnExport").addEventListener("click",()=>{
+  const dump=JSON.stringify({favs:[...FAVS],hidden:[...HIDDEN],mine:MINE,status:ST});
+  const code=btoa(unescape(encodeURIComponent(dump)));
+  navigator.clipboard?.writeText(code).then(()=>{},()=>{});
+  window.prompt("Copie este código e cole no outro aparelho (no botão ⬇️ importar). Já tentei copiar pra você:",code);
+});
+$("#btnImport").addEventListener("click",()=>{
+  const code=window.prompt("Cole aqui o código que você exportou no outro aparelho:");
+  if(!code)return;
+  try{
+    const o=JSON.parse(decodeURIComponent(escape(atob(code.trim()))));
+    if(o.favs)FAVS=new Set([...FAVS,...o.favs]);
+    if(o.hidden)HIDDEN=new Set([...HIDDEN,...o.hidden]);
+    if(o.status)ST=Object.assign(ST,o.status);
+    if(o.mine){const have=new Set(MINE.map(m=>m.uid)); o.mine.forEach(m=>{if(!have.has(m.uid)){m.cat="mine";MINE.push(m);}});}
+    saveSet("imob_favs",FAVS);saveSet("imob_hidden",HIDDEN);saveArr("imob_mine",MINE);
+    try{localStorage.setItem("imob_status",JSON.stringify(ST));}catch(e){}
+    fillCities();setStats();apply();
+    alert("Importado! Seus favoritos, situações e casas adicionadas foram mesclados.");
+  }catch(e){alert("Código inválido. Confira se copiou tudo.");}
+});
+
+/* ===== Adicionar / editar meus anúncios ===== */
+const panel=$("#addPanel");
+let editingUid=null;
+function tryParse(url){
+  const s=decodeURIComponent(url||"").toLowerCase().replace(/[-_+]/g," ");
+  const out={};
+  let m=s.match(/(\d+)\s*(dormitor|quarto|dorm|suite)/); if(m)out.q=+m[1];
+  m=s.match(/(\d+)\s*suite/); if(m)out.su=+m[1];
+  if(/venda|comprar|a-venda/.test(s)&&!/loca|aluguel/.test(s))out.sale=1;
+  if(/loca|aluguel/.test(s))out.sale=0;
+  if(/escritorio|home office|home-office/.test(s))out.office=true;
+  return out;
+}
+function openForm(item){
+  editingUid = item ? item.uid : null;
+  $("#aUrl").value=item?.url||""; $("#aTitle").value=item?.title||""; $("#aCity").value=item?.city||"";
+  $("#aPrice").value=item?.price||""; $("#aSale").value=item?.sale?"1":"0";
+  $("#aQ").value=item?.q||""; $("#aSu").value=item?.su||""; $("#aArea").value=item?.area||"";
+  $("#aImg").value=item?.img||""; $("#aFicha").value=item?.ficha||"";
+  $("#aCond").checked=item?item.type==="cond":true; $("#aPet").checked=item?item.pet==="sim":false; $("#aOffice").checked=item?!!item.office:false;
+  panel.style.display=""; panel.scrollIntoView({behavior:"smooth",block:"center"});
+}
+$("#btnAdd").addEventListener("click",()=>{ if(panel.style.display==="none"){openForm(null);}else{panel.style.display="none";} });
+$("#aCancel").addEventListener("click",()=>{panel.style.display="none";editingUid=null;});
+$("#aUrl").addEventListener("change",()=>{
+  const g=tryParse($("#aUrl").value);
+  if(g.q&&!$("#aQ").value)$("#aQ").value=g.q;
+  if(g.su&&!$("#aSu").value)$("#aSu").value=g.su;
+  if(g.sale!=null)$("#aSale").value=String(g.sale);
+  if(g.office)$("#aOffice").checked=true;
+});
+$("#aSave").addEventListener("click",()=>{
+  const url=$("#aUrl").value.trim();
+  if(!url && !$("#aTitle").value.trim()){alert("Cole pelo menos o link do anúncio.");return;}
+  const obj={
+    cat:"mine", uid: editingUid||("m"+Math.random().toString(36).slice(2)),
+    url, title:$("#aTitle").value.trim()||"Anúncio salvo", city:$("#aCity").value.trim()||"Sem cidade",
+    cond:"anúncio adicionado por você", price:$("#aPrice").value?+$("#aPrice").value:null, fee:null,
+    sale:$("#aSale").value==="1", q:$("#aQ").value?+$("#aQ").value:null, su:$("#aSu").value?+$("#aSu").value:null,
+    area:$("#aArea").value?+$("#aArea").value:null, ba:null, vg:null,
+    type:$("#aCond").checked?"cond":"alt", pet:$("#aPet").checked?"sim":"n/i", office:$("#aOffice").checked,
+    ficha:$("#aFicha").value.trim()||"Sem observações.", img:$("#aImg").value.trim()||"",
+    agency:"Você adicionou", tel:"", wa:"", near:false
+  };
+  if(editingUid){ const i=MINE.findIndex(m=>m.uid===editingUid); if(i>=0)MINE[i]=obj; }
+  else MINE.push(obj);
+  saveArr("imob_mine",MINE);
+  panel.style.display="none"; editingUid=null;
+  CAT="mine"; document.querySelectorAll(".tab").forEach(x=>x.classList.toggle("active",x.dataset.cat==="mine"));
+  fillCities(); setNote(); setStats(); apply();
+});
+
 setStats();fillCities();setNote();apply();
 </script>
 </body>
