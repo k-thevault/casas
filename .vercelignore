@@ -2,3 +2,6 @@
 # Sem framework, tudo que sobe pra raiz vira URL pública.
 dev-server.mjs
 .env*
+.github
+prompt-vigia.txt
+resultado.txt
