@@ -244,6 +244,9 @@ function patchDebounced(uid,lerPatch,ms=700){
 function allItems(){return D.concat(MINE);}
 const cityOrder=["Salto","Tatuí","Jarinu","Monte Mor","Monte Alegre do Sul","Piracaia","Morungaba","Cosmópolis","Capivari","Porto Feliz","Artur Nogueira","Amparo","Santo Antônio de Posse","Boituva","Cesário Lange","Cerquilho","Pedreira","Bom Jesus dos Perdões","Holambra","Jaguariúna","Engenheiro Coelho","Serra Negra","Atibaia","Itatiba","Bragança Paulista","Santa Bárbara d'Oeste","Americana","Rio Claro"];
 function inCat(d){return CAT==="3qoff" ? (d.cat==="3q"&&d.office) : d.cat===CAT;}
+/* Um anúncio é de venda se veio do catálogo "buy" ou se você marcou "à venda"
+   ao adicioná-lo. Importa porque R$ 700.000 e R$ 3.000/mês não se comparam. */
+function ehVenda(d){return d.cat==="buy"||(d.cat==="mine"&&!!d.sale);}
 function catCities(){return [...new Set(allItems().filter(inCat).map(d=>d.city))].filter(Boolean);}
 /* financiamento: taxa Caixa jul/2026 ~11,19% a.a. + TR, 360 meses */
 const TAXA_AA=0.1119, MESES=360, iMes=Math.pow(1+TAXA_AA,1/12)-1;
@@ -276,7 +279,7 @@ function card(d){
   if(d.office)chips.push('<span class="chip c-office">escritório</span>');
   const fee=d.fee?`<small>+ cond. R$ ${d.fee.toLocaleString("pt-BR")}</small>`:(d.fee===0?'<small>cond. incluso</small>':'');
   let finHtml='';
-  if((d.cat==="buy"||(d.cat==="mine"&&d.sale))&&d.price){
+  if(ehVenda(d)&&d.price){
     const e=parseFloat($("#fEntrada").value);
     const p=parcelas(d.price,e);
     finHtml=`<div style="background:var(--card2);border-radius:9px;padding:8px 10px;font-size:11.8px;color:#cfe0f0;line-height:1.5">
@@ -285,7 +288,9 @@ function card(d){
       <span style="color:var(--muted)">(taxa 11,19% a.a., 30 anos)</span>
     </div>`;
   }
-  const photo=d.img?`<img src="${d.img}" alt="${d.title}" loading="lazy" onerror="this.remove();">`:'';
+  /* referrerpolicy: VivaReal e OLX bloqueiam imagem pedida de fora do site deles.
+     Sem mandar o referer, servem normalmente — são 41 das 96 fotos. */
+  const photo=d.img?`<img src="${d.img}" alt="${d.title}" loading="lazy" referrerpolicy="no-referrer" onerror="this.remove();">`:'';
   const wa=d.wa?`<a class="btn btn-wa" href="https://wa.me/${d.wa}?text=${encodeURIComponent('Olá! Tenho interesse na casa em '+d.cond+' ('+d.city+'). Ainda está disponível?')}" target="_blank" rel="noopener">WhatsApp</a>`:'';
   const tel=(d.tel&&d.tel.startsWith('('))?`<span class="btn btn-tel">${d.tel}</span>`:'';
   const id=d.uid;
@@ -295,7 +300,7 @@ function card(d){
     <div class="body">
       <div class="top">
         <div><div class="title">${d.title}</div><div class="cond">${d.city} · ${d.cond}</div></div>
-        <div class="price">${money(d.price)}${d.price!=null?((d.cat==="buy"||(d.cat==="mine"&&d.sale))?'<small>venda</small>':'<small>/mês</small>'):''}${fee}</div>
+        <div class="price">${money(d.price)}${d.price!=null?(ehVenda(d)?'<small>venda</small>':'<small>/mês</small>'):''}${fee}</div>
       </div>
       <div class="specs">${specStr(d).map(s=>`<span class="spec">${s}</span>`).join("")}</div>
       <div class="chips">${chips.join("")}</div>
@@ -377,7 +382,10 @@ function apply(){
     if(showHidden&&!HIDDEN.has(id))return false;
     if(onlyFav&&!FAVS.has(id))return false;
     if(city&&d.city!==city)return false;
-    if(d.price!=null&&d.price>maxP)return false;
+    /* O teto vem em reais de aluguel ou de venda, conforme a aba. Só aplicar
+       quando for da mesma natureza — senão uma casa à venda some ao aparecer
+       numa aba de aluguel (via "só favoritas" ou "minhas casas"). */
+    if(d.price!=null&&ehVenda(d)===(CAT==="buy")&&d.price>maxP)return false;
     if(onlyCond&&d.type!=="cond")return false;
     if(onlyPet&&d.pet!=="sim")return false;
     if(onlyOff&&!d.office)return false;
@@ -388,7 +396,7 @@ function apply(){
   else if(sort==="priceDesc")r.sort((a,b)=>(b.price??-1)-(a.price??-1));
   else if(sort==="areaDesc")r.sort((a,b)=>(b.area??0)-(a.area??0));
   else r.sort((a,b)=>cityOrder.indexOf(a.city)-cityOrder.indexOf(b.city));
-  $("#count").textContent=r.length+" imóvel"+(r.length!==1?"is":"");
+  $("#count").textContent=r.length+(r.length===1?" imóvel":" imóveis");
   if(!r.length){list.innerHTML='<div class="empty">Nenhum imóvel com esses filtros.</div>';return;}
   if(sort==="cityAsc"&&!city){
     const g={};r.forEach(d=>{(g[d.city||"Outras"]=g[d.city||"Outras"]||[]).push(d)});
@@ -408,10 +416,14 @@ function setNote(){
   else t='<b>Outras 3 quartos, verificadas.</b> Casas boas de 3 quartos em condomínio, conferidas no site oficial da imobiliária ou VivaReal recente.';
   $("#note").innerHTML=t;
   /* controles por aba */
-  $("#fEntrada").style.display = CAT==="buy" ? "" : "none";
+  /* "minhas casas" também mostra a entrada: ela pode ter salvo casas à venda */
+  $("#fEntrada").style.display = (CAT==="buy"||CAT==="mine") ? "" : "none";
   const fp=$("#fPrice");
   if(CAT==="buy"){
     fp.innerHTML='<option value="99999999">Qualquer preço</option><option value="600000">até R$ 600 mil</option><option value="700000">até R$ 700 mil</option><option value="800000">até R$ 800 mil</option><option value="850000">até R$ 850 mil</option>';
+  }else if(CAT==="mine"){
+    /* aqui convivem aluguel e venda: faixa de aluguel confundiria */
+    fp.innerHTML='<option value="99999999">Qualquer preço</option>';
   }else{
     fp.innerHTML='<option value="99999">Qualquer aluguel</option><option value="4000">até R$ 4.000</option><option value="5000">até R$ 5.000</option><option value="6000">até R$ 6.000</option><option value="6500">até R$ 6.500</option>';
   }
