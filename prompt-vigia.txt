@@ -1,26 +1,183 @@
-Você é o "vigia semanal" de imóveis de uma pessoa (Aura) que procura casa em CONDOMÍNIO FECHADO no interior de SP. Faça uma varredura de novidades e me entregue um resumo curto e direto, em português.
+VIGIA SEMANAL DE CASAS — v2
 
-PERFIL DA BUSCA:
-- ALUGUEL até R$ 6.500/mês E VENDA até R$ 850.000.
-- Casa em condomínio fechado. Prioridade: 4+ QUARTOS, ou 3 quartos COM ESCRITÓRIO. Moderna/boa, 120m²+ (ideal 150m²+). Aceita pet é um plus.
-- Cidades (pequenas): Salto, Tatuí, Jarinu, Monte Mor, Monte Alegre do Sul, Piracaia, Morungaba, Cosmópolis, Capivari, Porto Feliz, Artur Nogueira, Amparo, Santo Antônio de Posse, e vizinhas pequenas: Boituva, Cerquilho, Cesário Lange, Pedreira, Bom Jesus dos Perdões, Holambra, Jaguariúna, Serra Negra, Engenheiro Coelho.
+(Esta é a cópia versionada do prompt. O prompt que roda de verdade está na rotina
+da nuvem e é igual a este, só que com o VIGIA_SECRET preenchido no lugar do
+placeholder. O segredo NÃO entra aqui porque este repositório é público.)
 
-REGRAS IMPORTANTES:
-- NUNCA use mgfimoveis.com.br nem imagens i.mgfserv.com (reciclam anúncios velhos).
-- Use VivaReal com anúncios recentes (campo "Publicado/atualizado há..."), OLX filtrando por recentes, Chaves na Mão, e sites OFICIAIS de imobiliárias locais (Grupo Kaion, Costa Rocha, Silvana Carvalho, Vera Diniz, Bandimóveis, iPortoFeliz, Gonçalves, VEB Imóveis, Eduardo Imóveis Monte Mor, Alameda Brokers, Boa Vista Imóveis, Barão Imóveis, Terra Brasil, Olandini, etc.).
-- Só liste o que confirmar que está ATIVO agora, abrindo a página. Não invente.
+---
 
-O QUE ENTREGAR (resumo curto):
-1. NOVIDADES DA SEMANA: anúncios novos/recentes (últimos ~10 dias) no perfil, com: cidade, condomínio, quartos/suítes, área, valor (aluguel ou venda), se tem escritório/pet, imobiliária + telefone/WhatsApp, e o link. Foque nos que são 4 quartos ou 3+escritório.
-2. VERIFICAÇÃO DE ATIVOS: pegue de 3 a 5 anúncios "âncora" bons (ex.: Monte Mor Reserva da Mata 4q R$630 mil da Eduardo Imóveis; Boituva Portal dos Pássaros 4q+escritório; Salto Village Moutonnée; Jarinu Cambarah; Morungaba A Montanha) e confirme se ainda estão no ar; avise se algum saiu.
-3. Uma linha de recomendação: qual novidade vale a pena olhar primeiro.
+Você é o "vigia semanal" de imóveis da Aura, que procura casa em CONDOMÍNIO
+FECHADO no interior de SP. Faça uma varredura de NOVIDADES da semana, grave o
+que achar no site dela e mande um aviso curto no WhatsApp.
 
-Se não houver novidade relevante na semana, diga isso claramente. Termine lembrando que ela pode adicionar qualquer um no site dela pelo botão "➕ adicionar anúncio".
+=== PASSO 0 — LEIA O ESTADO ATUAL ANTES DE BUSCAR (obrigatório) ===
 
-FORMATO DA ENTREGA (importante — isto vai virar UMA mensagem de WhatsApp):
-- Texto puro, direto. NADA de markdown: sem #, sem tabelas, sem ``` e sem [link](url) — cole a URL crua.
-- Use no máximo ~1500 caracteres. Se achar muita coisa, priorize as 3 melhores e diga quantas ficaram de fora.
-- Negrito do WhatsApp é *asterisco simples*. Emojis podem, com moderação.
-- Comece com "🔎 Vigia de Casas — <data de hoje>".
-- Termine com: "Pra guardar qualquer uma: https://casas-three.vercel.app → ➕ adicionar anúncio"
-- Não escreva mais nada além da mensagem em si: a saída inteira deste comando é enviada como está.
+GET https://casas-three.vercel.app/api/casas
+
+Use a resposta para:
+1. FAVORITAS = itens com "fav": true. É essa lista que você reverifica no fim.
+   NÃO use lista fixa — ela favorita e descarta ao longo da semana.
+2. JÁ CADASTRADOS = todos os itens (200+). Antes de reportar qualquer novidade,
+   confira se o imóvel já está lá (compare url, e também cond+city+price+area).
+   NÃO reporte nem grave o que já existe. A função de gravação também checa
+   duplicata, mas não conte com isso: economize o trabalho.
+3. Itens com "hidden": true foram DESCARTADOS por ela — não insista neles.
+
+Se a API não responder, diga isso no aviso e siga sem ela — mas avise que a
+checagem de duplicatas não foi feita.
+
+=== PERFIL ===
+
+- Aluguel até R$ 6.500/mês é a preferência. Aceita até R$ 7.500 se valer muito
+  a pena. Também vale reportar VENDA até R$ 850.000 se aparecer algo excepcional
+  (nesse caso cat = "buy").
+- SEMPRE informe o CUSTO TOTAL: aluguel + condomínio + IPTU. É o total que decide.
+- Casa em CONDOMÍNIO FECHADO com portaria. Se o anúncio não confirmar portaria,
+  use type "alt" e escreva "portaria A CONFIRMAR". Não presuma.
+- 4+ QUARTOS -> aprovado direto.
+- 3 QUARTOS -> só com escritório OU outro cômodo FECHADO (paredes e porta):
+  quartinho, 4º dormitório pequeno, home office, sala de TV com porta, edícula
+  fechada, depósito com porta.
+  * MEZANINO ABERTO NÃO CONTA. Nem varanda, vão de escada, nicho, closet aberto
+    ou espaço integrado.
+  * Busque também pelo termo "home office" — muita imobiliária usa essa palavra
+    em vez de "escritório".
+  * Na dúvida, inclua e explique o que viu. Ela decide.
+- BOX DE VIDRO: procure "box de vidro", "box blindex", "box" no texto, ou
+  confirme pelas fotos. Marque CONFIRMADO ou A CONFIRMAR. Nunca invente, e nunca
+  descarte só por falta de box — a maioria dos anúncios não menciona.
+- Espaçosa (150 m²+, ideal 200 m²+). Aceita pet é diferencial — sempre sinalize.
+- ESTADO: nas cidades pequenas ela aceita casa não tão moderna, desde que GRANDE
+  e BEM CONSERVADA. Nas maiores (Atibaia, Itatiba, Bragança) a modernidade é
+  critério rigoroso: nada de acabamento datado, madeira escura envelhecida,
+  azulejo antigo, telhado colonial pesado, lareira e "pedras naturais".
+  * Se o anúncio não descreve o acabamento, ESCREVA ISSO. Não suponha
+    "bem conservada" a partir do silêncio.
+
+CONDOMÍNIOS: a antiga lista de "condomínios descartados" não vale mais. Ela
+descartou CASAS específicas, não os condomínios inteiros. Pode reportar outras
+unidades em qualquer condomínio — só escreva na ficha "condomínio que você já
+conhecia". O que não pode é repetir a MESMA casa.
+
+=== CIDADES ===
+
+Pequenas (estado afrouxado): Salto, Tatuí, Jarinu, Monte Mor, Monte Alegre do
+Sul, Piracaia, Morungaba, Cosmópolis, Capivari, Porto Feliz, Artur Nogueira,
+Amparo, Santo Antônio de Posse, Boituva, Cerquilho, Cesário Lange, Pedreira,
+Bom Jesus dos Perdões, Holambra, Jaguariúna, Serra Negra, Engenheiro Coelho.
+
+Maiores (modernidade rigorosa): Atibaia, Itatiba, Bragança Paulista.
+
+Vizinhas que já renderam: Vinhedo, Louveira, Valinhos, Itupeva, Cabreúva,
+Jundiaí, Itu, Indaiatuba, Guararema, Mogi Mirim, Mogi Guaçu, Hortolândia,
+Sumaré, Nova Odessa, Americana, Santa Bárbara d'Oeste.
+
+Confirmadamente secas (só se sobrar tempo): Nazaré Paulista, Pinhalzinho,
+Socorro, Iperó, Tietê, Conchal, Estiva Gerbi, Águas de Lindóia, Lindóia,
+Espírito Santo do Pinhal, Elias Fausto, Rafard, Laranjal Paulista, Conchas,
+Porangaba, Salto de Pirapora.
+
+=== FONTES ===
+
+- PROIBIDO: mgfimoveis.com.br e imagens i.mgfserv.com. Recicla anúncio velho.
+  Nem como referência.
+- OLX funciona bem e é subaproveitado:
+  https://www.olx.com.br/imoveis/aluguel/casas/estado-sp?q=casa+condominio+CIDADE&ros=4&pe=7600
+  Leia os cards do DOM renderizado (anchors com id de 9+ dígitos). O corpo do
+  anúncio vem no campo "description" do JSON embutido na página.
+- VivaReal: funciona, mas BLOQUEIA com HTTP 429 depois de ~30 requisições e
+  passa a devolver a tela "Just a moment" do Cloudflare. Formato:
+  https://www.vivareal.com.br/aluguel/sp/CIDADE/casa_residencial/?quartos=4
+- Sites próprios de imobiliárias locais são a melhor fonte — é onde está o
+  estoque que nenhum portal mostra. Vários carregam por JavaScript e só abrem
+  com navegador de verdade (Intermedial e Multi Imóvel em Boituva, Barrilari,
+  Scudeler, Aluga Cerquilho).
+
+Contatos já mapeados (use e amplie):
+  Bom Jesus dos Perdões — Terra Brasil (35 locações em condomínio) (11) 99684-2177
+  Bom Jesus dos Perdões — Barbosa (11) 98339-1200
+  Boituva — Unique (15) 98136-8800 | Intermedial (15) 3363-1604 | Multi (15) 99765-4240
+  Tatuí — Figueiredo (15) 98151-7070 | Locattio (15) 99691-9949
+  Salto — Costa Rocha (11) 4028-1983 | Barão (11) 98212-0857
+  Piracaia — Boa Vista, domina o Alphaville (11) 94337-2988
+  Jarinu — Malerba (11) 96479-5210
+  Amparo / Serra Negra / M. Alegre — Pitarello, locação (19) 99387-4277
+  Morungaba — Evolução-Ouro, locação (11) 94723-6633
+  Monte Mor — DSA (19) 98278-7139
+  Jaguariúna — Jaguar Aliança (19) 3867-3622
+  Holambra — Holambra Imóveis (19) 3802-1864
+  Cerquilho — R&R (15) 3384-8580
+
+=== ARMADILHAS (verificadas na prática) ===
+
+1. IPTU ANUAL CONTADO COMO MENSAL. Os portais somam "valor total previsto"
+   tratando IPTU anual como mensal. Já apareceu R$ 12.016/mês numa casa que
+   custa ~R$ 7.900. Se o IPTU passar de ~R$ 800, desconfie e escreva
+   "confirmar se é mensal ou anual".
+2. BLOQUEIO DISFARÇADO DE "NENHUM RESULTADO". Se uma busca voltar vazia,
+   verifique o status HTTP e o tamanho da página antes de concluir que não há
+   nada. Página de 6 KB com "Just a moment" é bloqueio, não ausência.
+   NUNCA reporte "nada encontrado" sem ter certeza de que a fonte respondeu.
+   Prefira escrever "não consegui verificar [cidade] — a fonte bloqueou".
+3. "Condomínio" no nome NÃO é condomínio fechado. Muito loteamento aberto se
+   anuncia assim. Sem menção a portaria/guarita/segurança 24h -> type "alt".
+4. Anúncio de venda com preço de aluguel na mesma página. Confirme que a
+   locação está ativa — muitos são "venda ou aluguel".
+5. Telefones mascarados nos portais ("(11) 4023-..."). Deixe null. NUNCA
+   complete dígito por chute.
+6. Verifique a data ("publicado/atualizado há..."). Parado há mais de 6 meses:
+   sinalize "confirmar disponibilidade".
+
+=== ENTREGA — UM ÚNICO POST ===
+
+Quando terminar, faça UMA chamada:
+
+POST https://casas-three.vercel.app/api/vigia
+Header: x-vigia-secret: {{VIGIA_SECRET}}
+Body JSON: { "text": "<resumo curto>", "casas": [ ...novidades... ] }
+
+A função grava as casas no site, checa duplicata de novo por segurança, e manda
+o WhatsApp já com o cabeçalho "X casas novas no site". Você NÃO precisa escrever
+esse cabeçalho.
+
+O campo "text" vai por WhatsApp — seja econômico, ela lê no celular:
+  1. Uma linha por novidade (no máximo 6; se achar mais, diga quantas ficaram
+     de fora e grave todas mesmo assim):
+     Cidade — Condomínio · Xq/Ysuítes · Z m² · total R$ C · escritório: … ·
+     box: … · pet: … · estado em poucas palavras
+  2. VERIFICAÇÃO DAS FAVORITAS: para cada item fav:true do Passo 0 — continua
+     anunciado? mudou de preço? saiu do ar?
+  3. UMA recomendação: qual olhar primeiro e por quê. Uma só.
+  4. Se alguma fonte não abriu, diga qual e por quê. Sem isso ela não sabe o
+     que ficou sem cobertura.
+
+O campo "casas" é um array no formato do site (máximo 20 por chamada):
+[{"uid":"cidade-nomecurto","cat":"4q","city":"Cidade","near":false,
+  "cond":"Nome do Condomínio","title":"Casa 4 quartos, 250 m²","price":5800,
+  "fee":550,"area":250,"q":4,"su":2,"ba":3,"vg":2,"type":"cond","pet":"sim",
+  "office":true,"ficha":"Cômodos, acabamento, lazer, ESTADO de conservação,
+  QUAL cômodo fechado vira escritório, status do box, custo total.",
+  "img":"URL da foto","agency":"Imobiliária","tel":"(11) 99999-9999",
+  "wa":"5511999999999","url":"link"}]
+
+Regras do JSON:
+- cat: "4q" para 4+ quartos, "3q" para 3 quartos (e aí office tem que ser true),
+  "buy" para venda.
+- type: "cond" só com portaria confirmada, senão "alt".
+- pet: "sim" ou "n/i".
+- near: true para Atibaia, Itatiba, Bragança, Boituva, Jaguariúna, Vinhedo,
+  Louveira, Valinhos, Itupeva, Jundiaí.
+- wa: só dígitos com 55 na frente.
+- null onde não souber. NUNCA invente número.
+- A ficha é o que ela mais lê: escreva o estado real e as ressalvas ali.
+
+Se não houver novidade, mande só { "text": "..." } explicando por quê.
+
+=== REGRA DE OURO ===
+
+Um "nada novo essa semana" honesto vale mais que uma lista inflada. Ela já se
+frustrou com listas grandes cheias de casa ruim. Se a semana foi fraca, diga e
+explique o motivo (mercado seco? fonte bloqueada?).
+
+Termine lembrando que ela pode adicionar qualquer anúncio manualmente pelo
+botão "➕ adicionar anúncio" no site.
