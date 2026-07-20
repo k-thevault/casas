@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Minhas Casas — Aura</title>
+<title>Casas em Condomínio — Alugar e Comprar, verificadas (Interior de SP)</title>
 <style>
   :root{
     --bg:#0f1720; --panel:#17212e; --card:#1c2836; --card2:#223142;
@@ -28,6 +28,10 @@
   .toggle{display:flex;align-items:center;gap:6px;font-size:13px;color:var(--muted);cursor:pointer;background:var(--chip);border:1px solid var(--line);padding:7px 11px;border-radius:9px;user-select:none}
   .toggle input{accent-color:var(--accent)}
   .count{margin-left:auto;color:var(--muted);font-size:13px}
+  .sync{font-size:12px;color:var(--muted);padding:4px 10px;border-radius:20px;background:var(--card2);transition:color .2s}
+  .sync:empty{display:none}
+  .sync.ok{color:#5CC392}
+  .sync.err{color:#ff8b8b;background:#3a1c1c}
   .note{background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--green);border-radius:10px;padding:11px 14px;font-size:12.7px;color:#cdd9e6;margin-bottom:16px}
   .citygroup h2{font-size:16px;margin:24px 0 12px;padding-bottom:7px;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:9px}
   .citygroup h2 .n{font-size:12px;color:var(--muted);font-weight:500}
@@ -41,10 +45,6 @@
   .photo .badge{position:absolute;top:10px;left:10px;background:rgba(4,18,31,.82);color:#fff;font-size:11.5px;font-weight:700;padding:4px 9px;border-radius:20px}
   .photo .badge.q4{background:rgba(78,161,255,.92);color:#04121f}
   .photo .ver{position:absolute;bottom:10px;left:10px;background:rgba(37,211,102,.92);color:#04121f;font-size:10.5px;font-weight:700;padding:4px 8px;border-radius:20px}
-  .favbtn{position:absolute;top:8px;right:8px;width:34px;height:34px;border-radius:50%;border:none;background:rgba(4,18,31,.7);color:#fff;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:.15s;z-index:2}
-  .favbtn:hover{background:rgba(4,18,31,.9);transform:scale(1.1)}
-  .favbtn.on{background:rgba(255,90,120,.95)}
-  .card.isfav{border-color:#ff5a78;box-shadow:0 0 0 1px #ff5a78}
   .body{padding:14px;display:flex;flex-direction:column;gap:9px;flex:1}
   .top{display:flex;justify-content:space-between;align-items:flex-start;gap:10px}
   .title{font-weight:600;font-size:14.5px;line-height:1.3}
@@ -72,12 +72,17 @@
   .btn-ver{background:var(--accent);color:#04121f}
   .btn-tel{background:var(--card2);color:#cfe0f0;border:1px solid var(--line)}
   .btn:hover{filter:brightness(1.08)}
+  .favbtn{position:absolute;top:8px;right:8px;width:34px;height:34px;border-radius:50%;border:none;background:rgba(4,18,31,.7);color:#fff;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:.15s;z-index:2}
+  .favbtn:hover{background:rgba(4,18,31,.9);transform:scale(1.1)}
+  .favbtn.on{background:rgba(255,90,120,.95)}
+  .card.isfav{border-color:#ff5a78;box-shadow:0 0 0 1px #ff5a78}
   .hidebtn{background:transparent;border:1px solid var(--line);color:var(--muted);font-size:11px;padding:7px 10px;border-radius:8px;cursor:pointer}
   .hidebtn:hover{border-color:#ff7a8f;color:#ff9ec9}
   .track{display:flex;gap:6px;margin-top:8px;padding-top:8px;border-top:1px dashed var(--line)}
   .tstatus{background:var(--card2);color:#cfe0f0;border:1px solid var(--line);border-radius:8px;padding:6px 8px;font-size:11.5px}
   .tnote{flex:1;min-width:80px;background:var(--card2);color:#cfe0f0;border:1px solid var(--line);border-radius:8px;padding:6px 8px;font-size:11.5px}
-  .card.st-visita,.card.st-gostei{border-color:#37c98a}
+  .card.st-visita{border-color:#37c98a}
+  .card.st-gostei{border-color:#37c98a}
   .card.st-descartei{opacity:.55}
   .empty{color:var(--muted);padding:30px;text-align:center}
   footer{margin-top:40px;color:var(--muted);font-size:11.5px;text-align:center;border-top:1px solid var(--line);padding-top:16px}
@@ -86,29 +91,42 @@
 <body>
 <div class="wrap">
   <header>
-    <h1>🏡 Minhas Casas</h1>
-    <p class="sub">Só as suas favoritas e as que você indicou · aluguel até R$ 6.500 · 4+ quartos ou 3 quartos com escritório</p>
+    <h1>🏡 Casas em Condomínio — <span style="color:var(--green)">verificadas</span></h1>
+    <p class="sub">Interior de SP · aluguel até R$ 6.500/mês e venda até R$ 850 mil · cada casa foi conferida no site oficial da imobiliária ou no VivaReal recente (nada de MGF) · jul/2026</p>
   </header>
 
   <div class="stats" id="stats"></div>
 
   <div class="tabs">
-    <div class="tab active" data-cat="mine">⭐ Minhas casas</div>
-    <div class="tab" data-cat="4q">🛏️ 4+ quartos</div>
+    <div class="tab active" data-cat="4q">🛏️ 4+ quartos</div>
     <div class="tab" data-cat="3qoff">💼 3 quartos + escritório</div>
-    <div class="tab" data-cat="buy">💰 Comprar</div>
+    <div class="tab" data-cat="3q">🏠 Outras 3 quartos</div>
+    <div class="tab" data-cat="buy">💰 Comprar (até R$ 850 mil)</div>
+    <div class="tab" data-cat="mine">⭐ Minhas casas</div>
   </div>
 
   <div class="note" id="note"></div>
 
   <div class="controls">
     <select id="fCity"><option value="">Todas as cidades</option></select>
+    <select id="fPrice">
+      <option value="99999">Qualquer aluguel</option>
+      <option value="4000">até R$ 4.000</option>
+      <option value="5000">até R$ 5.000</option>
+      <option value="6000">até R$ 6.000</option>
+      <option value="6500">até R$ 6.500</option>
+    </select>
     <select id="fSort">
       <option value="cityAsc">Ordenar: cidade</option>
-      <option value="priceAsc">Preço ↑</option>
-      <option value="priceDesc">Preço ↓</option>
+      <option value="priceAsc">Aluguel ↑</option>
+      <option value="priceDesc">Aluguel ↓</option>
       <option value="areaDesc">Maior área</option>
     </select>
+    <label class="toggle"><input type="checkbox" id="fCond"> só condomínio fechado</label>
+    <label class="toggle"><input type="checkbox" id="fPet"> aceita pet</label>
+    <label class="toggle"><input type="checkbox" id="fOffice"> com escritório</label>
+    <label class="toggle"><input type="checkbox" id="fFav"> ❤️ só favoritas</label>
+    <label class="toggle"><input type="checkbox" id="fShowHidden"> mostrar ocultas</label>
     <select id="fStatus">
       <option value="">Situação: todas</option>
       <option value="contatar">📞 A contatar</option>
@@ -117,33 +135,30 @@
       <option value="gostei">💚 Gostei</option>
       <option value="descartei">🚫 Descartei</option>
     </select>
-    <label class="toggle"><input type="checkbox" id="fFav"> ❤️ só favoritas</label>
-    <label class="toggle"><input type="checkbox" id="fShowHidden"> mostrar ocultas</label>
     <select id="fEntrada" style="display:none">
       <option value="0.20">Entrada 20%</option>
       <option value="0.30" selected>Entrada 30%</option>
       <option value="0.40">Entrada 40%</option>
     </select>
     <button id="btnAdd" class="toggle" style="cursor:pointer;background:var(--accent);color:#04121f;border-color:transparent;font-weight:600">➕ adicionar anúncio</button>
-    <button id="btnExport" class="toggle" style="cursor:pointer" title="Gera um código com seus dados — pra colar em outro aparelho">⬆️ exportar</button>
-    <button id="btnImport" class="toggle" style="cursor:pointer" title="Cole aqui o código gerado em outro aparelho">⬇️ importar</button>
+    <span class="sync" id="sync" title="Seus favoritos, situações e anotações ficam salvos na nuvem e aparecem em qualquer aparelho"></span>
     <span class="count" id="count"></span>
   </div>
 
   <div id="addPanel" style="display:none;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:16px;margin-bottom:18px">
     <div style="font-weight:600;margin-bottom:4px">➕ Adicionar um anúncio que você encontrou</div>
-    <div style="font-size:12px;color:var(--muted);margin-bottom:12px">Cole o link e preencha o básico. Fica salvo no seu navegador e aparece aqui em "Minhas casas".</div>
+    <div style="font-size:12px;color:var(--muted);margin-bottom:12px">Cole o link do anúncio (de qualquer site) e preencha o básico. Ele tenta adivinhar quartos e tipo pelo link. Fica salvo no seu navegador e aparece na aba "Minhas casas".</div>
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
-      <label style="grid-column:1/3;font-size:12px;color:var(--muted)">Link do anúncio *<br><input id="aUrl" type="url" placeholder="cole aqui o link" style="width:100%;margin-top:4px;background:var(--card);color:var(--txt);border:1px solid var(--line);border-radius:8px;padding:8px"></label>
-      <label style="font-size:12px;color:var(--muted)">Título<br><input id="aTitle" placeholder="ex.: Casa 4 quartos com piscina" style="width:100%;margin-top:4px;background:var(--card);color:var(--txt);border:1px solid var(--line);border-radius:8px;padding:8px"></label>
+      <label style="grid-column:1/3;font-size:12px;color:var(--muted)">Link do anúncio *<br><input id="aUrl" type="url" placeholder="cole aqui o link (ex.: imovelweb, olx, vivareal...)" style="width:100%;margin-top:4px;background:var(--card);color:var(--txt);border:1px solid var(--line);border-radius:8px;padding:8px"></label>
+      <label style="font-size:12px;color:var(--muted)">Título<br><input id="aTitle" placeholder="ex.: Chácara 4 quartos com piscina" style="width:100%;margin-top:4px;background:var(--card);color:var(--txt);border:1px solid var(--line);border-radius:8px;padding:8px"></label>
       <label style="font-size:12px;color:var(--muted)">Cidade<br><input id="aCity" placeholder="ex.: Salto" style="width:100%;margin-top:4px;background:var(--card);color:var(--txt);border:1px solid var(--line);border-radius:8px;padding:8px"></label>
       <label style="font-size:12px;color:var(--muted)">Valor (R$)<br><input id="aPrice" type="number" placeholder="ex.: 5500" style="width:100%;margin-top:4px;background:var(--card);color:var(--txt);border:1px solid var(--line);border-radius:8px;padding:8px"></label>
-      <label style="font-size:12px;color:var(--muted)">Tipo<br><select id="aSale" style="width:100%;margin-top:4px;background:var(--card);color:var(--txt);border:1px solid var(--line);border-radius:8px;padding:8px"><option value="0">Aluguel (por mês)</option><option value="1">Venda</option></select></label>
+      <label style="font-size:12px;color:var(--muted)">Tipo<br><select id="aSale" style="width:100%;margin-top:4px;background:var(--card);color:var(--txt);border:1px solid var(--line);border-radius:8px;padding:8px"><option value="0">Aluguel (por mês)</option><option value="1">Venda (compra)</option></select></label>
       <label style="font-size:12px;color:var(--muted)">Quartos<br><input id="aQ" type="number" placeholder="ex.: 4" style="width:100%;margin-top:4px;background:var(--card);color:var(--txt);border:1px solid var(--line);border-radius:8px;padding:8px"></label>
       <label style="font-size:12px;color:var(--muted)">Suítes<br><input id="aSu" type="number" placeholder="ex.: 2" style="width:100%;margin-top:4px;background:var(--card);color:var(--txt);border:1px solid var(--line);border-radius:8px;padding:8px"></label>
       <label style="font-size:12px;color:var(--muted)">Área (m²)<br><input id="aArea" type="number" placeholder="ex.: 200" style="width:100%;margin-top:4px;background:var(--card);color:var(--txt);border:1px solid var(--line);border-radius:8px;padding:8px"></label>
       <label style="font-size:12px;color:var(--muted)">Foto (link da imagem, opcional)<br><input id="aImg" placeholder="opcional" style="width:100%;margin-top:4px;background:var(--card);color:var(--txt);border:1px solid var(--line);border-radius:8px;padding:8px"></label>
-      <label style="grid-column:1/3;font-size:12px;color:var(--muted)">Observações<br><textarea id="aFicha" rows="2" placeholder="o que achou, o que confirmar..." style="width:100%;margin-top:4px;background:var(--card);color:var(--txt);border:1px solid var(--line);border-radius:8px;padding:8px"></textarea></label>
+      <label style="grid-column:1/3;font-size:12px;color:var(--muted)">Observações<br><textarea id="aFicha" rows="2" placeholder="o que você achou dela, o que confirmar, etc." style="width:100%;margin-top:4px;background:var(--card);color:var(--txt);border:1px solid var(--line);border-radius:8px;padding:8px"></textarea></label>
       <div style="grid-column:1/3;display:flex;gap:14px;flex-wrap:wrap">
         <label class="toggle"><input type="checkbox" id="aCond" checked> condomínio fechado</label>
         <label class="toggle"><input type="checkbox" id="aPet"> aceita pet</label>
@@ -159,110 +174,97 @@
   <div id="list"></div>
 
   <footer>
-    Lista enxuta: só o que você favoritou + o que você indicou. Preços e disponibilidade mudam — confirme por WhatsApp antes de visitar. Lembre de perguntar sobre <b>box de vidro no banheiro</b> e <b>pet</b>.
+    Todas as casas foram conferidas em jul/2026 direto no site oficial da imobiliária (Kaion, Costa Rocha, Silvana Carvalho, Gonçalves, Barão, Eduardo Imóveis, Vera Diniz, Bandimóveis, Alameda Brokers, Lucem, Olandini, Terra Brasil, Forpus) ou no VivaReal com anúncio recente. Nenhum anúncio do MGF Imóveis. Preços/disponibilidade mudam rápido — confirme por WhatsApp antes de visitar. "Aceita pet" e "escritório" só marcados onde o anúncio confirma.
   </footer>
 </div>
 
 <script>
-const D = [
-/* ===== SUAS FAVORITAS ===== */
-{uid:"tatui-bosques-ipes",cat:"4q",city:"Tatuí",near:false,cond:"Cond. Bosques dos Ipês",title:"Sobrado 4 quartos / 2 suítes",price:4500,fee:358,area:null,q:4,su:2,ba:4,vg:null,type:"cond",pet:"n/i",office:false,
- ficha:"Térreo com sala 2 ambientes piso madeira, cozinha planejada, lavabo, 1 suíte, espaço gourmet integrado, jardim ao redor; superior com sala de TV e 3 dormitórios com varanda (1 com closet). Condomínio: segurança 24h, quadra, campo, playground, fitness, salão de festas. ⚠️ Confirmar box de vidro no banheiro.",
- img:"https://resizedimgs.vivareal.com/img/vr-listing/3267ced52194c17551e54957262029a9/casa-de-condominio-com-4-quartos-para-alugar-10m-no-residencial-bosques-dos-ipes-tatui.webp?action=fit-in&dimension=614x297",
- agency:"Figueiredo Imóveis",tel:"(15) 98151-5845",wa:"5515981515845",url:"https://www.vivareal.com.br/imovel/casa-de-condominio-4-quartos-residencial-bosques-dos-ipes-tatui-10m2-aluguel-RS4500-id-2898219735/"},
-{uid:"tatui-colina-estrelas",cat:"4q",city:"Tatuí",near:false,cond:"Cond. Colina das Estrelas",title:"Casa 5 suítes, 385 m², alto padrão",price:6000,fee:1230,area:385,q:5,su:5,ba:null,vg:null,type:"cond",pet:"n/i",office:false,
- ficha:"Alto padrão, sala de TV, área gourmet com piscina, energia solar, terreno 1.000 m². Anúncio 'venda ou aluguel' — confirmar locação. ⚠️ Confirmar box de vidro.",
- img:"https://resizedimgs.vivareal.com/img/vr-listing/9d5a3c9453cb4c4a2421635cb8790d91/casa-de-condominio-com-5-quartos-para-venda-ou-aluguel-385m-no-parque-residencial-colina-das-estrelas-tatui.webp?action=fit-in&dimension=614x297",
- agency:"Imóveis Lorenzetti",tel:"(15) 99115-8430",wa:"5515991158430",url:"https://www.vivareal.com.br/imovel/casa-de-condominio-5-quartos-parque-residencial-colina-das-estrelas-tatui-com-garagem-385m2-venda-RS1800000-id-2816394229/"},
-{uid:"jarinu-cambarah",cat:"3q",city:"Jarinu",near:false,cond:"Residencial Cambarah",title:"Sobrado 3 suítes + escritório, 235 m²",price:6500,fee:425,area:235,q:3,su:3,ba:3,vg:4,type:"cond",pet:"n/i",office:true,
- ficha:"Sobrado alto padrão. Superior: 3 dorms (suíte, sacada, closet, planejados). Inferior: lavabo, sala 2 ambientes, cozinha, escritório, área gourmet com banheiro, lavanderia, garagem 2+2. Ar-condicionado, porcelanato. Segurança 24h, 15 min de Jundiaí. IPTU R$180.",
- img:"https://img.kenlo.io/VWRCUkQ2Tnp3d1BJRDBJVe1szkhnWr9UfpZS9ftWwjXgr7v5Znen3XVcMHllDVRJJeIbi3YwVYEtu0xg9ddqwDVug+xDQ4KvjiWmwL2ey9ei-X+P4rjdnq78-8rDTcjzkIEO7Yn5IHyusJ58GtIAIWBQS+QjHDvPW9+DECVLijaNvhvnU+ZmHGEQ0FogyTRK8x69aqWX9mFphSCYNvTq8j6SZ6zKPFgMFrMNAdsz6EIJ9xa9SUxy8h8d4563vSCAaKyyLIOvkiMYDwYu6oa6APevm5PPedV-GacxP3wP61NeW6wcmvuVAupw6QEZovrFTQeShQjQiOM3eYWsW9dBmbwEwVrHSeMYvxi-kILH0q2vakyDN1I+p72WrvDjbf2kTLSDdXrpo8pG187XfYRLK43kQSRVXWU1enAQqVy2teuL+hu5fw==.jpg",
- agency:"Barão Imóveis de Jundiaí",tel:"(11) 95020-0044",wa:"5511950200044",url:"https://www.baraoimoveisjundiai.com.br/imovel/casa-jarinu-3-quartos-235-m/CA2517-BASR"},
-{uid:"piracaia-5q-pet",cat:"4q",city:"Piracaia",near:false,cond:"Condomínio fechado",title:"Casa 5 quartos / 2 suítes, 250 m² — aceita pet",price:6500,fee:0,area:250,q:5,su:2,ba:3,vg:2,type:"cond",pet:"sim",office:false,
- ficha:"5 dormitórios (master c/ sacada), lareira, salão de festas com churrasqueira, área gourmet, piscina, quintal amplo. Aluguel já inclui condomínio + IPTU. Aceita animais. ⚠️ Confirmar box de vidro e estado de conservação.",
- img:"https://resizedimgs.vivareal.com/img/vr-listing/5d9b077f815d7f0b32653f4505bb5fe5/casa-de-condominio-com-5-quartos-para-venda-ou-aluguel-250m-no-piracaia.webp?action=fit-in&dimension=614x297",
- agency:"Impar Planejamento Imobiliário",tel:"(11) 98583-9538",wa:"5511985839538",url:"https://www.vivareal.com.br/imovel/casa-de-condominio-5-quartos-piracaia-com-garagem-250m2-venda-RS1600000-id-2559855715/"},
-{uid:"cosmopolis-colibris",cat:"3q",city:"Cosmópolis",near:false,cond:"Cond. Recanto dos Colibris",title:"Casa 3 quartos, 220 m²",price:5000,fee:973,area:220,q:3,su:null,ba:3,vg:null,type:"cond",pet:"n/i",office:false,
- ficha:"220 m², 3 banheiros, copa, cozinha, em condomínio fechado. IPTU R$180. ⚠️ Sem escritório — confirmar se algum cômodo serve. Confirmar box de vidro.",
- img:"https://resizedimgs.vivareal.com/img/vr-listing/ea79d1d9beae7767874edd24cbc1a8b3/casa-com-3-quartos-para-alugar-220m-no-recanto-dos-colibris-cosmopolis.webp?action=fit-in&dimension=614x297",
- agency:"ABC Consultoria",tel:"(19) 3872-1046",wa:"",url:"https://www.vivareal.com.br/imovel/casa-3-quartos-recanto-dos-colibris-cosmopolis-220m2-aluguel-RS5000-id-2859529012/"},
-{uid:"boituva-passaros",cat:"4q",city:"Boituva",near:true,cond:"Cond. Portal dos Pássaros I",title:"Casa 4 suítes, 350 m² com escritório",price:6350,fee:485,area:350,q:4,su:4,ba:null,vg:null,type:"cond",pet:"n/i",office:true,
- ficha:"Suítes com opção closet/escritório. Piscina aquecida com ofurô, rooftop, salão de jogos, sauna, mezanino. Segurança 24h, lazer completo. IPTU R$165.",
- img:"https://resizedimgs.vivareal.com/img/vr-listing/4382c9a7c0a2957d156adb0908b9a705/casa-de-condominio-com-4-quartos-para-alugar-350m-no-portal-dos-passaros-i-boituva.webp?action=fit-in&dimension=614x297",
- agency:"VEB Imóveis",tel:"(15) 99762-4927",wa:"5515997624927",url:"https://www.vivareal.com.br/imovel/casa-de-condominio-4-quartos-portal-dos-passaros-i-boituva-com-garagem-350m2-aluguel-RS6350-id-2872060775/"},
-{uid:"jaguariuna-nova-4q",cat:"4q",city:"Jaguariúna",near:true,cond:"Nova Jaguariúna (residencial)",title:"Casa 4 quartos + escritório, 300 m²",price:4500,fee:null,area:300,q:4,su:1,ba:null,vg:null,type:"cond",pet:"n/i",office:true,
- ficha:"Escritório, 300 m². IPTU R$154. Atualizado recentemente. ⚠️ Confirmar se o residencial é fechado e se tem box de vidro.",
- img:"https://resizedimgs.vivareal.com/img/vr-listing/86b50f01161bd63e3bed2d00c7155376/casa-com-4-quartos-para-alugar-300m-no-nova-jaguariuna-jaguariuna.webp?action=fit-in&dimension=614x297",
- agency:"via VivaReal",tel:"contato pelo anúncio",wa:"",url:"https://www.vivareal.com.br/imovel/casa-4-quartos-nova-jaguariuna-jaguariuna-com-garagem-300m2-aluguel-RS4500-id-2893795142/"},
-{uid:"itatiba-santa-rosa",cat:"4q",city:"Itatiba",near:true,cond:"Jardim Santa Rosa (cond. fechado)",title:"Casa 4 quartos / 2 suítes + escritório, 500 m²",price:5800,fee:550,area:500,q:4,su:2,ba:null,vg:null,type:"cond",pet:"n/i",office:true,
- ficha:"Sala de TV, escritório, 4 dormitórios, 500 m². Publicado 20/02/2026. ⚠️ Confirmar box de vidro e estado.",
- img:"https://www.chavesnamao.com.br/imn/0850x0450/N/60/imoveis/197099/39717741/sp-itatiba-jardim-santa-rosa-rua-narciso-polli-casa-sobrado-em-condominio-para-alugar-4-quartos-69c6ab6a-1.jpg",
- agency:"Unique Brokers (via Chaves na Mão)",tel:"contato pelo anúncio",wa:"",url:"https://www.chavesnamao.com.br/imovel/casa-em-condominio-para-alugar-4-quartos-com-garagem-sp-itatiba-jardim-santa-rosa-500m2-RS5800/id-39717741/"},
+/* os anúncios agora vêm do Baserow (via /api/casas) */
+let D=[], MINE=[], ROWID={};
 
-/* ===== SUAS FAVORITAS — À VENDA ===== */
-{uid:"piracaia-greenvillage",cat:"buy",city:"Piracaia",near:false,cond:"Cond. Greenvillage (Canedos)",title:"Chácara térrea com piscina, 367 m²",price:780000,fee:500,area:367,q:3,su:1,ba:null,vg:null,type:"cond",pet:"n/i",office:false,
- ficha:"Térrea, piscina e gourmet, terreno 1.153 m². Portaria 24h. Escritura ok, aceita financiamento. Exclusividade.",
- img:"https://www.stimobiliario.com.br/admin/imovel/mini/20240617T1418010300-339976176.jpg",
- agency:"ST Imobiliário (Pedro)",tel:"(11) 94301-7783",wa:"5511943017783",url:"https://www.stimobiliario.com.br/679/imoveis/venda-chacara-3-quartos-canedos-piracaia-sp"},
-{uid:"boituva-colina-nova",cat:"buy",city:"Boituva",near:true,cond:"Colina Nova Boituva",title:"Casa térrea em lote de 1.000 m²",price:599000,fee:null,area:167,q:3,su:1,ba:null,vg:null,type:"cond",pet:"n/i",office:false,
- ficha:"Térrea, 167 m², lote de 1.000 m² com jardim e vista rural, varanda, gourmet. Condomínio fechado a 3 km do centro.",
- img:"https://imgs1.cdn-imobibrasil.com.br/imagens/imoveis/202502031147582920.jpg",
- agency:"VEB Imóveis",tel:"(15) 99762-4927",wa:"5515997624927",url:"https://www.vebimoveis.com.br/imovel/3567581/casa-em-condominio-venda-boituva-sp-colina-nova-boituva"},
-
-/* ===== INDICADOS POR VOCÊ ===== */
-{uid:"pick-ecopark",cat:"mine",city:"Tatuí",near:false,cond:"Residencial Ecopark (chácara em condomínio)",title:"Chácara 4 quartos / 2 suítes com piscina",price:3000,fee:604,area:300,q:4,su:2,ba:2,vg:null,type:"cond",pet:"n/i",office:false,sale:false,
- ficha:"Você indicou. 4 dormitórios (2 suítes), sala 3 ambientes, área gourmet com churrasqueira, piscina, ambiente arborizado. Condomínio: 2 quadras de beach tennis, pista de caminhada 1km, campo de futebol, praça e parquinhos, eventos quinzenais. IPTU R$256.",
- img:"https://imgbr.imovelwebcdn.com/avisos/2/30/34/11/89/07/720x532/6630592749.jpg",
- agency:"Você indicou (ImovelWeb)",tel:"",wa:"",url:"https://www.imovelweb.com.br/propriedades/chacara-para-locacao-com-4-dormitorios-sendo-2-suites-3034118907.html"},
-{uid:"pick-san-thome",cat:"mine",city:"Porto Feliz",near:false,cond:"Cond. Terras de San Thomé",title:"Chácara 4 suítes, 483 m², condomínio fechado",price:4500,fee:700,area:483,q:4,su:4,ba:2,vg:12,type:"cond",pet:"n/i",office:false,sale:false,
- ficha:"Você indicou. 4 suítes, sala de estar, sala de TV com lareira, espaço gourmet, piscina, pomar, canil, casa para caseiro, poço artesiano. Terreno 5.000 m². Condomínio fechado. IPTU R$600.",
- img:"https://imgbr.imovelwebcdn.com/avisos/2/30/12/99/28/80/720x532/6584543123.jpg",
- agency:"Você indicou (ImovelWeb)",tel:"",wa:"",url:"https://www.imovelweb.com.br/propriedades/chacara-disponivel-para-locacao-terras-de-san-thome-3012992880.html"},
-{uid:"pick-de-cillo",cat:"mine",city:"Santa Bárbara d'Oeste",near:true,cond:"Condomínio De Cillo",title:"Casa 4 suítes, 460 m² (condomínio caro)",price:3000,fee:3237,area:460,q:4,su:4,ba:2,vg:2,type:"cond",pet:"n/i",office:false,sale:false,
- ficha:"Você indicou. 4 suítes, 2 banheiros sociais, cozinha com armários e cooktop, 3 salas (1 com sacada), quintal amplo, piscina, espaço gourmet. Condomínio fechado, segurança 24h. ATENÇÃO: condomínio alto (R$3.237) — total ~R$7.110/mês. IPTU R$873.",
- img:"https://img.olx.com.br/images/37/376610063588885.jpg",
- agency:"Você indicou (OLX)",tel:"(19) 3406-4...",wa:"",url:"https://sp.olx.com.br/grande-campinas/imoveis/casa-residencial-para-alugar-no-condominio-de-cillo-em-santa-barbara-d-oeste-1517949420"},
-{uid:"pick-village-americas",cat:"mine",city:"Americana",near:true,cond:"Cond. Village das Américas",title:"Casa 4 quartos / 1 suíte, 118 m² — aceita pet",price:4500,fee:780,area:118,q:4,su:1,ba:2,vg:2,type:"cond",pet:"sim",office:false,sale:false,
- ficha:"Você indicou. 4 dormitórios com planejados (1 suíte com sacada), sala de estar com painel de TV e ar-condicionado, cozinha totalmente planejada, lavabo, espaço gourmet com churrasqueira, depósito, quintal, 2 vagas. Condomínio fechado, permite animais. Total ~R$5.390/mês.",
- img:"https://img.olx.com.br/images/44/447603182476518.jpg",
- agency:"Você indicou (OLX)",tel:"(19) 3621-3...",wa:"",url:"https://sp.olx.com.br/grande-campinas/imoveis/casa-com-4-dormitorios-para-alugar-118-m-por-r-5-360-00-mes-nova-americana-american-1518235845"},
-{uid:"pick-florenca",cat:"mine",city:"Rio Claro",near:true,cond:"Cond. Residencial Florença",title:"Casa térrea 4 suítes, 315 m² — aceita pet",price:4500,fee:615,area:315,q:4,su:4,ba:4,vg:5,type:"cond",pet:"sim",office:false,sale:false,
- ficha:"Você indicou. Casa térrea, 4 suítes (1 com closet), estilo rústico com bastante madeira, cozinha planejada com porcelanato, espaço gourmet com churrasqueira, quintal com árvores frutíferas, garagem 3 cobertas. Condomínio fechado, porteiro 24h, permite animais. Também à venda por R$1.500.000. Total ~R$5.400/mês.",
- img:"https://img.olx.com.br/images/51/516642303044623.jpg",
- agency:"Você indicou (OLX)",tel:"(19) 3526-3...",wa:"",url:"https://sp.olx.com.br/grande-campinas/imoveis/casa-com-4-dormitorios-315-m-venda-por-r-1-500-000-00-ou-aluguel-por-r-5-400-00-mes-1418467384"}
-];
-
-/* ---------- estado salvo ---------- */
+/* ---------- render ---------- */
 const $=s=>document.querySelector(s);
 const list=$("#list"), fCity=$("#fCity");
-let CAT="mine";
-function loadSet(k){try{return new Set(JSON.parse(localStorage.getItem(k)||"[]"));}catch(e){return new Set();}}
-function saveSet(k,s){try{localStorage.setItem(k,JSON.stringify([...s]));}catch(e){}}
-function loadArr(k){try{return JSON.parse(localStorage.getItem(k)||"[]");}catch(e){return [];}}
-function saveArr(k,a){try{localStorage.setItem(k,JSON.stringify(a));}catch(e){}}
-function loadObj(k){try{return JSON.parse(localStorage.getItem(k)||"{}");}catch(e){return {};}}
-let FAVS=loadSet("imob_favs"), HIDDEN=loadSet("imob_hidden"), ST=loadObj("imob_status");
-let MINE=loadArr("imob_mine"); MINE.forEach(m=>{m.cat="mine"; if(!m.uid)m.uid="m"+Math.random().toString(36).slice(2);});
-/* migração: as favoritas antigas usavam índices; nesta versão já vêm marcadas */
-if(localStorage.getItem("imob_ver")!=="3"){
-  FAVS=new Set(D.filter(d=>d.cat!=="mine").map(d=>d.uid));
-  HIDDEN=new Set(); ST={};
-  saveSet("imob_favs",FAVS); saveSet("imob_hidden",HIDDEN);
-  try{localStorage.setItem("imob_status","{}");localStorage.setItem("imob_ver","3");}catch(e){}
+let CAT="4q";
+let FAVS=new Set(), HIDDEN=new Set(), ST={};
+
+/* ---------- sincronia com o Baserow ---------- */
+const API="/api/casas";
+
+function sync(txt,cls){
+  const el=$("#sync"); if(!el)return;
+  el.textContent=txt; el.className="sync "+(cls||"");
+}
+
+/* Carrega tudo e reconstrói o estado que o resto da tela já esperava. */
+async function loadAll(){
+  const r=await fetch(API,{cache:"no-store"});
+  if(!r.ok) throw new Error("api");
+  const rows=await r.json();
+  ROWID={}; FAVS=new Set(); HIDDEN=new Set(); ST={};
+  D=[]; MINE=[];
+  rows.forEach(x=>{
+    ROWID[x.uid]=x.rowId;
+    (x.cat==="mine"?MINE:D).push(x);
+    if(x.fav)FAVS.add(x.uid);
+    if(x.hidden)HIDDEN.add(x.uid);
+    if(x.status||x.nota)ST[x.uid]={s:x.status||"",n:x.nota||""};
+  });
+}
+
+/* Grava um campo. A tela já foi atualizada antes de chamar isto (otimista),
+   então aqui só avisamos se falhar — e recarregamos pra não mentir na tela. */
+async function patchRow(uid,patch,desfazer){
+  const id=ROWID[uid];
+  if(!id){sync("erro: anúncio sem id","err");return;}
+  /* um salvamento imediato torna o agendado obsoleto — ele já leva os valores atuais */
+  clearTimeout(debounced[uid]); delete debounced[uid];
+  sync("salvando…","");
+  try{
+    const r=await fetch(`${API}?rowId=${id}`,{
+      method:"PATCH",headers:{"Content-Type":"application/json"},body:JSON.stringify(patch)
+    });
+    if(!r.ok)throw new Error("patch");
+    sync("salvo ✓","ok");
+  }catch(e){
+    /* A tela não pode mostrar o que o banco não tem. Primeiro tenta recarregar
+       a verdade; se nem isso vai (sem internet), desfaz o que acabou de mudar
+       — senão fica coração vermelho de favorito que não existe. */
+    try{
+      await loadAll();
+      sync("não salvou","err");
+    }catch(_){
+      if(desfazer) desfazer();
+      sync("sem conexão — desfeito","err");
+    }
+    fillCities(); setStats(); apply();
+  }
+}
+
+/* Anotação: espera parar de digitar pra não gravar a cada tecla.
+   Recebe uma função, não um valor: os campos são lidos na hora de disparar.
+   Se congelasse o valor aqui, um salvamento feito nesse meio-tempo (trocar a
+   situação, por ex.) seria desfeito quando este disparasse com dado velho. */
+const debounced={};
+function patchDebounced(uid,lerPatch,desfazer,ms=700){
+  clearTimeout(debounced[uid]);
+  debounced[uid]=setTimeout(()=>{ delete debounced[uid]; patchRow(uid,lerPatch(),desfazer); },ms);
 }
 function allItems(){return D.concat(MINE);}
-const cityOrder=["Tatuí","Jarinu","Piracaia","Cosmópolis","Porto Feliz","Boituva","Jaguariúna","Itatiba","Santa Bárbara d'Oeste","Americana","Rio Claro"];
-/* "Minhas casas" = as que você indicou + tudo que você favoritar */
-function inCat(d){
-  if(CAT==="mine")return d.cat==="mine"||FAVS.has(d.uid);
-  if(CAT==="3qoff")return d.cat==="3q"&&d.office;
-  return d.cat===CAT;
-}
+const cityOrder=["Salto","Tatuí","Jarinu","Monte Mor","Monte Alegre do Sul","Piracaia","Morungaba","Cosmópolis","Capivari","Porto Feliz","Artur Nogueira","Amparo","Santo Antônio de Posse","Boituva","Cesário Lange","Cerquilho","Pedreira","Bom Jesus dos Perdões","Holambra","Jaguariúna","Engenheiro Coelho","Serra Negra","Atibaia","Itatiba","Bragança Paulista","Santa Bárbara d'Oeste","Americana","Rio Claro"];
+function inCat(d){return CAT==="3qoff" ? (d.cat==="3q"&&d.office) : d.cat===CAT;}
+/* Um anúncio é de venda se veio do catálogo "buy" ou se você marcou "à venda"
+   ao adicioná-lo. Importa porque R$ 700.000 e R$ 3.000/mês não se comparam. */
+function ehVenda(d){return d.cat==="buy"||(d.cat==="mine"&&!!d.sale);}
 function catCities(){return [...new Set(allItems().filter(inCat).map(d=>d.city))].filter(Boolean);}
-/* financiamento: taxa Caixa ~11,19% a.a. + TR, 360 meses */
+/* financiamento: taxa Caixa jul/2026 ~11,19% a.a. + TR, 360 meses */
 const TAXA_AA=0.1119, MESES=360, iMes=Math.pow(1+TAXA_AA,1/12)-1;
-function parcelas(v,e){const f=v*(1-e);return {price:f*iMes/(1-Math.pow(1+iMes,-MESES)), sac:f/MESES+f*iMes};}
-
+function parcelas(valorImovel,entradaPct){
+  const f=valorImovel*(1-entradaPct);
+  const price=f*iMes/(1-Math.pow(1+iMes,-MESES));
+  const sac=f/MESES+f*iMes;
+  return {f,price,sac};
+}
 function fillCities(){
   const cur=fCity.value;
   const cities=catCities().sort((a,b)=>cityOrder.indexOf(a)-cityOrder.indexOf(b));
@@ -280,30 +282,34 @@ function specStr(d){
   return p;
 }
 function card(d){
-  const id=d.uid, isFav=FAVS.has(id), isSale=(d.cat==="buy"||(d.cat==="mine"&&d.sale));
   const chips=[];
-  chips.push(d.type==="cond"?'<span class="chip c-cond">condomínio fechado</span>':'<span class="chip c-alt">confirmar condomínio</span>');
+  chips.push(d.type==="cond"?'<span class="chip c-cond">condomínio fechado</span>':'<span class="chip c-alt">casa de rua</span>');
   if(d.pet==="sim")chips.push('<span class="chip c-pet">aceita pet</span>');
   if(d.office)chips.push('<span class="chip c-office">escritório</span>');
   const fee=d.fee?`<small>+ cond. R$ ${d.fee.toLocaleString("pt-BR")}</small>`:(d.fee===0?'<small>cond. incluso</small>':'');
   let finHtml='';
-  if(isSale&&d.price){
-    const e=parseFloat($("#fEntrada").value), p=parcelas(d.price,e);
+  if(ehVenda(d)&&d.price){
+    const e=parseFloat($("#fEntrada").value);
+    const p=parcelas(d.price,e);
     finHtml=`<div style="background:var(--card2);border-radius:9px;padding:8px 10px;font-size:11.8px;color:#cfe0f0;line-height:1.5">
       💰 <b>Financiando</b> (entrada ${Math.round(e*100)}% = R$ ${(d.price*e).toLocaleString("pt-BR")}):<br>
-      Price: <b>R$ ${Math.round(p.price).toLocaleString("pt-BR")}/mês</b> · SAC: começa em <b>R$ ${Math.round(p.sac).toLocaleString("pt-BR")}</b> e cai
-      <span style="color:var(--muted)">(11,19% a.a., 30 anos)</span></div>`;
+      Price: <b>R$ ${Math.round(p.price).toLocaleString("pt-BR")}/mês</b> fixos · SAC: começa em <b>R$ ${Math.round(p.sac).toLocaleString("pt-BR")}</b> e cai
+      <span style="color:var(--muted)">(taxa 11,19% a.a., 30 anos)</span>
+    </div>`;
   }
-  const photo=d.img?`<img src="${d.img}" alt="${d.title}" loading="lazy" onerror="this.remove();">`:'';
-  const wa=d.wa?`<a class="btn btn-wa" href="https://wa.me/${d.wa}?text=${encodeURIComponent('Olá! Tenho interesse na casa em '+d.cond+' ('+d.city+'). Ainda está disponível? Ela tem box de vidro nos banheiros e aceita pet?')}" target="_blank" rel="noopener">WhatsApp</a>`:'';
+  /* referrerpolicy: VivaReal e OLX bloqueiam imagem pedida de fora do site deles.
+     Sem mandar o referer, servem normalmente — são 41 das 96 fotos. */
+  const photo=d.img?`<img src="${d.img}" alt="${d.title}" loading="lazy" referrerpolicy="no-referrer" onerror="this.remove();">`:'';
+  const wa=d.wa?`<a class="btn btn-wa" href="https://wa.me/${d.wa}?text=${encodeURIComponent('Olá! Tenho interesse na casa em '+d.cond+' ('+d.city+'). Ainda está disponível?')}" target="_blank" rel="noopener">WhatsApp</a>`:'';
   const tel=(d.tel&&d.tel.startsWith('('))?`<span class="btn btn-tel">${d.tel}</span>`:'';
-  const isMine=MINE.some(m=>m.uid===id);
+  const id=d.uid;
+  const isFav=FAVS.has(id);
   return `<div class="card${isFav?' isfav':''}${ST[id]?.s?' st-'+ST[id].s:''}" data-id="${id}">
-    <div class="photo">${photo}<span class="ph">🏡</span><span class="badge${d.q>=4?' q4':''}">${d.q?d.q+' quartos':'—'}</span>${d.cat==="mine"?'<span class="ver">⭐ você indicou</span>':'<span class="ver">✓ verificado</span>'}<button class="favbtn${isFav?' on':''}" data-fav title="Favoritar">${isFav?'❤️':'🤍'}</button></div>
+    <div class="photo">${photo}<span class="ph">🏡</span><span class="badge${d.q>=4?' q4':''}">${d.q?d.q+' quartos':'—'}</span><span class="ver">✓ verificado</span><button class="favbtn${isFav?' on':''}" data-fav title="Favoritar">${isFav?'❤️':'🤍'}</button></div>
     <div class="body">
       <div class="top">
         <div><div class="title">${d.title}</div><div class="cond">${d.city} · ${d.cond}</div></div>
-        <div class="price">${money(d.price)}${d.price!=null?(isSale?'<small>venda</small>':'<small>/mês</small>'):''}${fee}</div>
+        <div class="price">${money(d.price)}${d.price!=null?(ehVenda(d)?'<small>venda</small>':'<small>/mês</small>'):''}${fee}</div>
       </div>
       <div class="specs">${specStr(d).map(s=>`<span class="spec">${s}</span>`).join("")}</div>
       <div class="chips">${chips.join("")}</div>
@@ -313,8 +319,9 @@ function card(d){
         <span class="agency">🏢 ${d.agency}${d.tel&&!d.tel.startsWith('(')?' · '+d.tel:''}</span>
         ${d.url?`<a class="btn btn-ver" href="${d.url}" target="_blank" rel="noopener">Ver anúncio</a>`:''}
         ${wa}${tel}
-        ${isMine?`<button class="hidebtn" data-edit>editar</button><button class="hidebtn" data-del>excluir</button>`
-                :`<button class="hidebtn" data-hide>${HIDDEN.has(id)?'↩︎ desocultar':'✕ ocultar'}</button>`}
+        ${(d.cat==="mine"&&MINE.some(m=>m.uid===id))
+          ? `<button class="hidebtn" data-edit>editar</button><button class="hidebtn" data-del>excluir</button>`
+          : `<button class="hidebtn" data-hide title="Ocultar da lista">${HIDDEN.has(id)?'↩︎ desocultar':'✕ ocultar'}</button>`}
       </div>
       <div class="track">
         <select class="tstatus" data-status>
@@ -325,29 +332,59 @@ function card(d){
           <option value="gostei"${ST[id]?.s==="gostei"?" selected":""}>💚 Gostei</option>
           <option value="descartei"${ST[id]?.s==="descartei"?" selected":""}>🚫 Descartei</option>
         </select>
-        <input class="tnote" data-note placeholder="anotação (box? pet? valor?)" value="${(ST[id]?.n||"").replace(/"/g,'&quot;')}">
+        <input class="tnote" data-note placeholder="anotação (pet ok? valor negociado?...)" value="${(ST[id]?.n||"").replace(/"/g,'&quot;')}">
       </div>
     </div>
   </div>`;
 }
+/* clicks em favoritar / ocultar / editar / excluir (delegação) */
 list.addEventListener("click",e=>{
-  const c=e.target.closest(".card"); if(!c)return;
-  const id=c.dataset.id;
-  if(e.target.closest("[data-fav]")){FAVS.has(id)?FAVS.delete(id):FAVS.add(id);saveSet("imob_favs",FAVS);apply();setStats();}
-  else if(e.target.closest("[data-hide]")){HIDDEN.has(id)?HIDDEN.delete(id):HIDDEN.add(id);saveSet("imob_hidden",HIDDEN);apply();}
-  else if(e.target.closest("[data-edit]")){openForm(MINE.find(m=>m.uid===id));}
-  else if(e.target.closest("[data-del]")){if(confirm("Excluir esta casa da sua lista?")){MINE=MINE.filter(m=>m.uid!==id);saveArr("imob_mine",MINE);apply();setStats();}}
+  const card=e.target.closest(".card"); if(!card)return;
+  const id=card.dataset.id;
+  if(e.target.closest("[data-fav]")){
+    const on=!FAVS.has(id);
+    on?FAVS.add(id):FAVS.delete(id); apply(); setStats();
+    patchRow(id,{fav:on}, ()=>{ on?FAVS.delete(id):FAVS.add(id); });
+  }else if(e.target.closest("[data-hide]")){
+    const on=!HIDDEN.has(id);
+    on?HIDDEN.add(id):HIDDEN.delete(id); apply();
+    patchRow(id,{hidden:on}, ()=>{ on?HIDDEN.delete(id):HIDDEN.add(id); });
+  }else if(e.target.closest("[data-edit]")){
+    openForm(MINE.find(m=>m.uid===id));
+  }else if(e.target.closest("[data-del]")){
+    if(confirm("Excluir esta casa da sua lista?")){
+      const rid=ROWID[id];
+      MINE=MINE.filter(m=>m.uid!==id); apply(); setStats();
+      sync("excluindo…","");
+      fetch(`${API}?rowId=${rid}`,{method:"DELETE"})
+        .then(r=>{ if(!r.ok)throw new Error("del"); sync("excluído ✓","ok"); })
+        .catch(async()=>{ sync("não excluiu — recarregando","err"); try{await loadAll();fillCities();setStats();apply();}catch(_){} });
+    }
+  }
 });
-function saveTrack(c){
-  const id=c.dataset.id, s=c.querySelector("[data-status]")?.value||"", n=c.querySelector("[data-note]")?.value||"";
-  if(s||n)ST[id]={s,n}; else delete ST[id];
-  try{localStorage.setItem("imob_status",JSON.stringify(ST));}catch(e){}
+/* salvar situação / anotação (acompanhamento) */
+function saveTrack(card,imediato){
+  const id=card.dataset.id;
+  const antes=ST[id]?{...ST[id]}:null;
+  const desfazer=()=>{ if(antes)ST[id]=antes; else delete ST[id]; };
+  /* lê a situação e a anotação do card agora, e atualiza o estado local */
+  const ler=()=>{
+    const s=card.querySelector("[data-status]")?.value||"";
+    const n=card.querySelector("[data-note]")?.value||"";
+    if(s||n)ST[id]={s,n}; else delete ST[id];
+    return {status:s||null,nota:n};
+  };
+  if(imediato) patchRow(id,ler(),desfazer);
+  else { ler(); patchDebounced(id,ler,desfazer); }
 }
-list.addEventListener("change",e=>{const c=e.target.closest(".card");if(c&&e.target.matches("[data-status]")){saveTrack(c);apply();}});
-list.addEventListener("input",e=>{const c=e.target.closest(".card");if(c&&e.target.matches("[data-note]"))saveTrack(c);});
-
+list.addEventListener("change",e=>{
+  const card=e.target.closest(".card"); if(!card)return;
+  if(e.target.matches("[data-status]")){ saveTrack(card,true); card.className="card"+(FAVS.has(card.dataset.id)?" isfav":"")+(e.target.value?" st-"+e.target.value:""); }
+});
+list.addEventListener("input",e=>{ if(e.target.matches("[data-note]")){const card=e.target.closest(".card"); if(card)saveTrack(card);} });
 function apply(){
-  const city=fCity.value, sort=$("#fSort").value, st=$("#fStatus").value;
+  const city=fCity.value, maxP=+$("#fPrice").value, sort=$("#fSort").value;
+  const onlyCond=$("#fCond").checked, onlyPet=$("#fPet").checked, onlyOff=$("#fOffice").checked;
   const onlyFav=$("#fFav").checked, showHidden=$("#fShowHidden").checked;
   let r=allItems().filter(d=>{
     const id=d.uid;
@@ -356,14 +393,21 @@ function apply(){
     if(showHidden&&!HIDDEN.has(id))return false;
     if(onlyFav&&!FAVS.has(id))return false;
     if(city&&d.city!==city)return false;
-    if(st&&(ST[id]?.s||"")!==st)return false;
+    /* O teto vem em reais de aluguel ou de venda, conforme a aba. Só aplicar
+       quando for da mesma natureza — senão uma casa à venda some ao aparecer
+       numa aba de aluguel (via "só favoritas" ou "minhas casas"). */
+    if(d.price!=null&&ehVenda(d)===(CAT==="buy")&&d.price>maxP)return false;
+    if(onlyCond&&d.type!=="cond")return false;
+    if(onlyPet&&d.pet!=="sim")return false;
+    if(onlyOff&&!d.office)return false;
+    const st=$("#fStatus").value; if(st&&(ST[id]?.s||"")!==st)return false;
     return true;
   });
-  if(sort==="priceAsc")r.sort((a,b)=>(a.price??1e12)-(b.price??1e12));
+  if(sort==="priceAsc")r.sort((a,b)=>(a.price??1e9)-(b.price??1e9));
   else if(sort==="priceDesc")r.sort((a,b)=>(b.price??-1)-(a.price??-1));
   else if(sort==="areaDesc")r.sort((a,b)=>(b.area??0)-(a.area??0));
   else r.sort((a,b)=>cityOrder.indexOf(a.city)-cityOrder.indexOf(b.city));
-  $("#count").textContent=r.length+" imóvel"+(r.length!==1?"is":"");
+  $("#count").textContent=r.length+(r.length===1?" imóvel":" imóveis");
   if(!r.length){list.innerHTML='<div class="empty">Nenhum imóvel com esses filtros.</div>';return;}
   if(sort==="cityAsc"&&!city){
     const g={};r.forEach(d=>{(g[d.city||"Outras"]=g[d.city||"Outras"]||[]).push(d)});
@@ -376,47 +420,64 @@ function apply(){
 }
 function setNote(){
   let t;
-  if(CAT==="mine")t='<b>Minhas casas.</b> Aqui ficam as que você indicou <b>e tudo que você favoritar</b> (❤️) nas outras abas. Use o seletor de <b>situação</b> em cada card pra acompanhar seus contatos.';
-  else if(CAT==="4q")t='<b>4+ quartos.</b> Suas favoritas com 4 ou 5 quartos.';
-  else if(CAT==="3qoff")t='<b>3 quartos + escritório.</b> Só entram casas de 3 quartos que tenham escritório — sem escritório não entra na lista.';
-  else t='<b>À venda.</b> Cada card mostra a parcela estimada do financiamento — ajuste a entrada no seletor acima. Some ~4-5% de ITBI e registro no custo da compra.';
+  if(CAT==="4q") t='<b>4+ quartos, verificadas.</b> Casas de 4 e 5 quartos conferidas uma a uma no site oficial da imobiliária ou no VivaReal recente. Algumas em cidades pequenas vizinhas (etiqueta laranja). Use "com escritório" para filtrar home office.';
+  else if(CAT==="3qoff") t='<b>3 quartos + escritório, verificadas.</b> Casas de 3 quartos com escritório/home office confirmado no anúncio. É um nicho raro — por isso a lista é curta, mas todas são reais.';
+  else if(CAT==="buy") t='<b>À venda até R$ 850 mil, verificadas em 16/07/2026.</b> Cada card mostra a parcela estimada do financiamento — ajuste a <b>entrada</b> no seletor acima (taxa Caixa ~11,19% a.a. + TR, 30 anos; a taxa real depende do seu perfil no banco). Custos extras na compra: ITBI + escritura/registro (~4-5% do valor). Não sou consultora financeira — use como base e simule no banco.';
+  else if(CAT==="mine") t='<b>Minhas casas.</b> Anúncios que você mesma adicionou (clique em "➕ adicionar anúncio" acima). Ficam salvos na nuvem e aparecem em qualquer aparelho. Você pode favoritar, editar e excluir cada um.';
+  else t='<b>Outras 3 quartos, verificadas.</b> Casas boas de 3 quartos em condomínio, conferidas no site oficial da imobiliária ou VivaReal recente.';
   $("#note").innerHTML=t;
-  $("#fEntrada").style.display=(CAT==="buy")?"":"none";
+  /* controles por aba */
+  /* "minhas casas" também mostra a entrada: ela pode ter salvo casas à venda */
+  $("#fEntrada").style.display = (CAT==="buy"||CAT==="mine") ? "" : "none";
+  const fp=$("#fPrice");
+  if(CAT==="buy"){
+    fp.innerHTML='<option value="99999999">Qualquer preço</option><option value="600000">até R$ 600 mil</option><option value="700000">até R$ 700 mil</option><option value="800000">até R$ 800 mil</option><option value="850000">até R$ 850 mil</option>';
+  }else if(CAT==="mine"){
+    /* aqui convivem aluguel e venda: faixa de aluguel confundiria */
+    fp.innerHTML='<option value="99999999">Qualquer preço</option>';
+  }else{
+    fp.innerHTML='<option value="99999">Qualquer aluguel</option><option value="4000">até R$ 4.000</option><option value="5000">até R$ 5.000</option><option value="6000">até R$ 6.000</option><option value="6500">até R$ 6.500</option>';
+  }
 }
 function setStats(){
-  const favN=allItems().filter(d=>FAVS.has(d.uid)).length;
-  const mineN=allItems().filter(d=>d.cat==="mine").length;
-  const cid=new Set(allItems().map(d=>d.city)).size;
-  $("#stats").innerHTML=[["❤️ "+favN,"favoritas"],[mineN,"você indicou"],[allItems().length,"no total"],[cid,"cidades"]]
-    .map(s=>`<div class="stat"><b>${s[0]}</b><span>${s[1]}</span></div>`).join("");
+  const q4=D.filter(d=>d.cat==="4q");
+  const q3=D.filter(d=>d.cat==="3q");
+  const q3off=q3.filter(d=>d.office);
+  const buy=D.filter(d=>d.cat==="buy");
+  const cid=new Set(D.map(d=>d.city)).size;
+  $("#stats").innerHTML=[
+    [D.length,"casas verificadas"],[q4.length,"aluguel 4+ quartos"],[buy.length,"à venda ≤ R$850 mil"],["❤️ "+FAVS.size,"favoritas"],[cid,"cidades"]
+  ].map(s=>`<div class="stat"><b>${s[0]}</b><span>${s[1]}</span></div>`).join("");
 }
 document.querySelectorAll(".tab").forEach(t=>t.addEventListener("click",()=>{
   document.querySelectorAll(".tab").forEach(x=>x.classList.remove("active"));
   t.classList.add("active");CAT=t.dataset.cat;fillCities();setNote();apply();
 }));
-["change","input"].forEach(ev=>document.querySelectorAll("#fCity,#fSort,#fStatus,#fFav,#fShowHidden,#fEntrada").forEach(el=>el.addEventListener(ev,apply)));
+["change","input"].forEach(ev=>document.querySelectorAll("#fCity,#fPrice,#fSort,#fCond,#fPet,#fOffice,#fFav,#fShowHidden,#fStatus,#fEntrada").forEach(el=>el.addEventListener(ev,apply)));
 
-/* ===== adicionar / editar ===== */
-const panel=$("#addPanel"); let editingUid=null;
-function tryParse(u){
-  const s=decodeURIComponent(u||"").toLowerCase().replace(/[-_+]/g," "); const o={};
-  let m=s.match(/(\d+)\s*(dormitor|quarto|dorm)/); if(m)o.q=+m[1];
-  m=s.match(/(\d+)\s*suite/); if(m)o.su=+m[1];
-  if(/venda|comprar/.test(s)&&!/loca|aluguel/.test(s))o.sale=1;
-  if(/loca|aluguel/.test(s))o.sale=0;
-  if(/escritorio|home office/.test(s))o.office=true;
-  return o;
+/* ===== Adicionar / editar meus anúncios ===== */
+const panel=$("#addPanel");
+let editingUid=null;
+function tryParse(url){
+  const s=decodeURIComponent(url||"").toLowerCase().replace(/[-_+]/g," ");
+  const out={};
+  let m=s.match(/(\d+)\s*(dormitor|quarto|dorm|suite)/); if(m)out.q=+m[1];
+  m=s.match(/(\d+)\s*suite/); if(m)out.su=+m[1];
+  if(/venda|comprar|a-venda/.test(s)&&!/loca|aluguel/.test(s))out.sale=1;
+  if(/loca|aluguel/.test(s))out.sale=0;
+  if(/escritorio|home office|home-office/.test(s))out.office=true;
+  return out;
 }
 function openForm(item){
-  editingUid=item?item.uid:null;
-  $("#aUrl").value=item?.url||"";$("#aTitle").value=item?.title||"";$("#aCity").value=item?.city||"";
-  $("#aPrice").value=item?.price||"";$("#aSale").value=item?.sale?"1":"0";
-  $("#aQ").value=item?.q||"";$("#aSu").value=item?.su||"";$("#aArea").value=item?.area||"";
-  $("#aImg").value=item?.img||"";$("#aFicha").value=item?.ficha||"";
-  $("#aCond").checked=item?item.type==="cond":true;$("#aPet").checked=item?item.pet==="sim":false;$("#aOffice").checked=item?!!item.office:false;
-  panel.style.display="";panel.scrollIntoView({behavior:"smooth",block:"center"});
+  editingUid = item ? item.uid : null;
+  $("#aUrl").value=item?.url||""; $("#aTitle").value=item?.title||""; $("#aCity").value=item?.city||"";
+  $("#aPrice").value=item?.price||""; $("#aSale").value=item?.sale?"1":"0";
+  $("#aQ").value=item?.q||""; $("#aSu").value=item?.su||""; $("#aArea").value=item?.area||"";
+  $("#aImg").value=item?.img||""; $("#aFicha").value=item?.ficha||"";
+  $("#aCond").checked=item?item.type==="cond":true; $("#aPet").checked=item?item.pet==="sim":false; $("#aOffice").checked=item?!!item.office:false;
+  panel.style.display=""; panel.scrollIntoView({behavior:"smooth",block:"center"});
 }
-$("#btnAdd").addEventListener("click",()=>{panel.style.display==="none"?openForm(null):panel.style.display="none";});
+$("#btnAdd").addEventListener("click",()=>{ if(panel.style.display==="none"){openForm(null);}else{panel.style.display="none";} });
 $("#aCancel").addEventListener("click",()=>{panel.style.display="none";editingUid=null;});
 $("#aUrl").addEventListener("change",()=>{
   const g=tryParse($("#aUrl").value);
@@ -425,47 +486,53 @@ $("#aUrl").addEventListener("change",()=>{
   if(g.sale!=null)$("#aSale").value=String(g.sale);
   if(g.office)$("#aOffice").checked=true;
 });
-$("#aSave").addEventListener("click",()=>{
+$("#aSave").addEventListener("click",async()=>{
   const url=$("#aUrl").value.trim();
-  if(!url&&!$("#aTitle").value.trim()){alert("Cole pelo menos o link do anúncio.");return;}
-  const o={cat:"mine",uid:editingUid||("m"+Math.random().toString(36).slice(2)),url,
-    title:$("#aTitle").value.trim()||"Anúncio salvo",city:$("#aCity").value.trim()||"Sem cidade",
-    cond:"anúncio adicionado por você",price:$("#aPrice").value?+$("#aPrice").value:null,fee:null,
-    sale:$("#aSale").value==="1",q:$("#aQ").value?+$("#aQ").value:null,su:$("#aSu").value?+$("#aSu").value:null,
-    area:$("#aArea").value?+$("#aArea").value:null,ba:null,vg:null,
-    type:$("#aCond").checked?"cond":"alt",pet:$("#aPet").checked?"sim":"n/i",office:$("#aOffice").checked,
-    ficha:$("#aFicha").value.trim()||"Sem observações.",img:$("#aImg").value.trim()||"",
-    agency:"Você adicionou",tel:"",wa:"",near:false};
-  if(editingUid){const i=MINE.findIndex(m=>m.uid===editingUid);if(i>=0)MINE[i]=o;}else MINE.push(o);
-  saveArr("imob_mine",MINE);
-  panel.style.display="none";editingUid=null;
-  CAT="mine";document.querySelectorAll(".tab").forEach(x=>x.classList.toggle("active",x.dataset.cat==="mine"));
-  fillCities();setNote();setStats();apply();
-});
-
-/* ===== exportar / importar ===== */
-$("#btnExport").addEventListener("click",()=>{
-  const dump=JSON.stringify({favs:[...FAVS],hidden:[...HIDDEN],mine:MINE,status:ST});
-  const code=btoa(unescape(encodeURIComponent(dump)));
-  navigator.clipboard?.writeText(code).then(()=>{},()=>{});
-  window.prompt("Copie este código e cole no outro aparelho (botão ⬇️ importar). Já tentei copiar pra você:",code);
-});
-$("#btnImport").addEventListener("click",()=>{
-  const code=window.prompt("Cole aqui o código exportado no outro aparelho:");
-  if(!code)return;
+  if(!url && !$("#aTitle").value.trim()){alert("Cole pelo menos o link do anúncio.");return;}
+  const obj={
+    url, title:$("#aTitle").value.trim()||"Anúncio salvo", city:$("#aCity").value.trim()||"Sem cidade",
+    cond:"anúncio adicionado por você", price:$("#aPrice").value?+$("#aPrice").value:null,
+    sale:$("#aSale").value==="1", q:$("#aQ").value?+$("#aQ").value:null, su:$("#aSu").value?+$("#aSu").value:null,
+    area:$("#aArea").value?+$("#aArea").value:null,
+    type:$("#aCond").checked?"cond":"alt", pet:$("#aPet").checked?"sim":"n/i", office:$("#aOffice").checked,
+    ficha:$("#aFicha").value.trim()||"Sem observações.", img:$("#aImg").value.trim()||"",
+    agency:"Você adicionou", near:false
+  };
+  const btn=$("#aSave"); btn.disabled=true; sync("salvando…","");
   try{
-    const o=JSON.parse(decodeURIComponent(escape(atob(code.trim()))));
-    if(o.favs)FAVS=new Set([...FAVS,...o.favs]);
-    if(o.hidden)HIDDEN=new Set([...HIDDEN,...o.hidden]);
-    if(o.status)ST=Object.assign(ST,o.status);
-    if(o.mine){const have=new Set(MINE.map(m=>m.uid));o.mine.forEach(m=>{if(!have.has(m.uid)){m.cat="mine";MINE.push(m);}});}
-    saveSet("imob_favs",FAVS);saveSet("imob_hidden",HIDDEN);saveArr("imob_mine",MINE);
-    try{localStorage.setItem("imob_status",JSON.stringify(ST));}catch(e){}
-    fillCities();setStats();apply();alert("Importado!");
-  }catch(e){alert("Código inválido. Confira se copiou tudo.");}
+    if(editingUid){
+      const r=await fetch(`${API}?rowId=${ROWID[editingUid]}`,{
+        method:"PATCH",headers:{"Content-Type":"application/json"},body:JSON.stringify(obj)});
+      if(!r.ok)throw new Error("patch");
+    }else{
+      const r=await fetch(API,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(obj)});
+      if(!r.ok)throw new Error("post");
+    }
+    await loadAll();
+    sync("salvo ✓","ok");
+    panel.style.display="none"; editingUid=null;
+    CAT="mine"; document.querySelectorAll(".tab").forEach(x=>x.classList.toggle("active",x.dataset.cat==="mine"));
+    fillCities(); setNote(); setStats(); apply();
+  }catch(e){
+    sync("não salvou","err");
+    alert("Não consegui salvar. Confira a conexão e tente de novo — o que você digitou continua aí.");
+  }finally{ btn.disabled=false; }
 });
 
-setStats();fillCities();setNote();apply();
+/* ---------- início ---------- */
+(async function init(){
+  list.innerHTML='<div class="empty">Carregando suas casas…</div>';
+  sync("carregando…","");
+  try{
+    await loadAll();
+    sync("sincronizado ✓","ok");
+    setStats();fillCities();setNote();apply();
+  }catch(e){
+    sync("sem conexão","err");
+    list.innerHTML='<div class="empty">Não consegui carregar as casas agora.<br>'+
+      'Verifique sua internet e <a href="" onclick="location.reload();return false" style="color:var(--accent)">tente de novo</a>.</div>';
+  }
+})();
 </script>
 </body>
 </html>
