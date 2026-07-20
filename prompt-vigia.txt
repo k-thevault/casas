@@ -77,21 +77,34 @@ Socorro, Iperó, Tietê, Conchal, Estiva Gerbi, Águas de Lindóia, Lindóia,
 Espírito Santo do Pinhal, Elias Fausto, Rafard, Laranjal Paulista, Conchas,
 Porangaba, Salto de Pirapora.
 
-=== FONTES ===
+=== FONTES — o que FUNCIONA nesta rotina (testado em 20/07/2026) ===
+
+A rotina tem WebSearch, WebFetch e Bash (curl). NÃO tem navegador. Isso muda
+tudo, e foi medido na prática:
+
+  [X] OLX ................. HTTP 403 no curl E no WebFetch. NÃO INSISTA.
+  [X] VivaReal / ZAP ...... HTTP 403 no curl. NÃO INSISTA.
+  [X] Chaves na Mão ....... idem.
+  [OK] Sites próprios de imobiliárias locais — funcionam com WebFetch.
+       É AQUI QUE A ROTINA TRABALHA.
+  [OK] WebSearch — funciona, e os snippets já trazem preço/quartos de anúncios
+       de portal. Use como PISTA; se não abrir a página pra confirmar, NÃO
+       grave: escreva "pista não confirmada, vale ligar".
+
+O método é: WebSearch para descobrir -> WebFetch no site da imobiliária ->
+gravar só o que abriu e confirmou.
+
+(Observação: com navegador de verdade os portais abrem normalmente. Se um dia
+a rotina ganhar navegador, o OLX é a melhor fonte subaproveitada e o VivaReal
+serve o HTML dos cards no servidor — mas bloqueia com 429 depois de ~30
+requisições.)
 
 - PROIBIDO: mgfimoveis.com.br e imagens i.mgfserv.com. Recicla anúncio velho.
   Nem como referência.
-- OLX funciona bem e é subaproveitado:
-  https://www.olx.com.br/imoveis/aluguel/casas/estado-sp?q=casa+condominio+CIDADE&ros=4&pe=7600
-  Leia os cards do DOM renderizado (anchors com id de 9+ dígitos). O corpo do
-  anúncio vem no campo "description" do JSON embutido na página.
-- VivaReal: funciona, mas BLOQUEIA com HTTP 429 depois de ~30 requisições e
-  passa a devolver a tela "Just a moment" do Cloudflare. Formato:
-  https://www.vivareal.com.br/aluguel/sp/CIDADE/casa_residencial/?quartos=4
-- Sites próprios de imobiliárias locais são a melhor fonte — é onde está o
-  estoque que nenhum portal mostra. Vários carregam por JavaScript e só abrem
-  com navegador de verdade (Intermedial e Multi Imóvel em Boituva, Barrilari,
-  Scudeler, Aluga Cerquilho).
+- Alguns sites locais carregam por JavaScript e o WebFetch só traz o esqueleto
+  (Intermedial e Multi Imóvel em Boituva, Barrilari, Scudeler, Aluga
+  Cerquilho). Quando isso acontecer, NÃO conclua que não há estoque — escreva
+  "site X não abriu o conteúdo, vale ligar".
 
 Contatos já mapeados (use e amplie):
   Bom Jesus dos Perdões — Terra Brasil (35 locações em condomínio) (11) 99684-2177
