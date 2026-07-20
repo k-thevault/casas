@@ -81,7 +81,17 @@ async function lerCatalogo() {
 /* Devolve {estado, via, http}. estado: 'vivo' | 'morto' | 'incerto'.
  * 'incerto' nunca marca nada — bloqueio de portal não é anúncio removido. */
 async function checar(url) {
-  /* 1) tentativa grátis */
+  /* 1) tentativa grátis.
+   *
+   * ATENÇÃO — lição cara: NÃO se pode declarar morte lendo o HTML cru. Vários
+   * CMS de imobiliária (Kenlo/Imoview e afins) já trazem "imóvel indisponível"
+   * escondido no template, em TODA página — inclusive na home e em anúncios
+   * perfeitamente vivos. Isso derrubou 10 casas boas de uma vez.
+   *
+   * Aqui, portanto: 404/410 mata na hora (é inequívoco); a frase suspeita só
+   * levanta suspeita e manda confirmar no passo 2, onde o onlyMainContent
+   * descarta menu, rodapé e template. */
+  let suspeita = null;
   try {
     const r = await fetch(url, {
       headers: { "User-Agent": UA, "Accept-Language": "pt-BR,pt;q=0.9" },
@@ -93,20 +103,27 @@ async function checar(url) {
     if (r.ok) {
       const html = (await r.text()).toLowerCase();
       const achou = SINAIS_MORTE.find((s) => html.includes(s));
-      /* Página de anúncio vivo costuma ser grande; casca de erro é pequena. */
-      if (achou) return { estado: "morto", via: "fetch", http: r.status, motivo: `a página diz "${achou}"` };
       if (html.length < 3000) {
         return { estado: "incerto", via: "fetch", http: r.status, motivo: "página veio quase vazia" };
       }
-      return { estado: "vivo", via: "fetch", http: r.status };
+      if (!achou) return { estado: "vivo", via: "fetch", http: r.status };
+      suspeita = achou; /* cai para a confirmação paga */
     }
     /* 403/429/5xx: o site bloqueou o robô. Cai para o Firecrawl. */
   } catch (e) {
     /* rede falhou; tenta o Firecrawl antes de desistir */
   }
 
-  /* 2) só quem bloqueou chega aqui — 1 crédito */
-  if (!FIRECRAWL_KEY) return { estado: "incerto", via: "bloqueado", motivo: "sem chave do Firecrawl" };
+  /* 2) confirmação — 1 crédito. Chega aqui quem bloqueou ou quem levantou
+   * suspeita no HTML cru. O onlyMainContent tira o template do caminho. */
+  if (!FIRECRAWL_KEY) {
+    /* Sem como confirmar: suspeita não vira condenação. */
+    return {
+      estado: "incerto",
+      via: "bloqueado",
+      motivo: suspeita ? `suspeita de "${suspeita}", sem como confirmar` : "sem chave do Firecrawl",
+    };
+  }
   try {
     const r = await fetch("https://api.firecrawl.dev/v2/scrape", {
       method: "POST",
