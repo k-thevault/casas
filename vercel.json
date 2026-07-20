@@ -5,5 +5,16 @@
       "source": "/api/casas",
       "headers": [{ "key": "Cache-Control", "value": "no-store" }]
     }
-  ]
+  ],
+  "crons": [
+    {
+      "path": "/api/vigia-diaria",
+      "schedule": "0 11 * * *"
+    }
+  ],
+  "functions": {
+    "api/vigia-diaria.js": {
+      "maxDuration": 60
+    }
+  }
 }
