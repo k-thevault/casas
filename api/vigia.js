@@ -116,15 +116,64 @@ export default async function handler(req, res) {
   const corpo = req.body || {};
   let texto = typeof corpo.text === "string" ? corpo.text.trim() : "";
   const casas = Array.isArray(corpo.casas) ? corpo.casas : [];
+  const indisponiveis = Array.isArray(corpo.indisponiveis) ? corpo.indisponiveis : [];
 
-  if (!texto && !casas.length) {
-    return res.status(400).json({ error: "Mande { text } e/ou { casas: [...] }." });
+  if (!texto && !casas.length && !indisponiveis.length) {
+    return res.status(400).json({ error: "Mande { text }, { casas: [...] } e/ou { indisponiveis: [...] }." });
   }
   if (casas.length > TETO_POR_CHAMADA) {
     return res.status(400).json({ error: `No máximo ${TETO_POR_CHAMADA} casas por chamada.` });
   }
 
-  const resultado = { gravadas: 0, repetidas: 0, falhas: 0 };
+  const resultado = { gravadas: 0, repetidas: 0, falhas: 0, marcadas_indisponiveis: 0 };
+
+  /* ---- marca como indisponível o que saiu do ar ----
+   *
+   * Não apaga: esconde e carimba o motivo. Anúncio às vezes some por um dia e
+   * volta, e um 404 pode ser erro de leitura — apagar seria irreversível. Com
+   * hidden=true some da lista, e o "mostrar ocultas" no site recupera. */
+  if (indisponiveis.length) {
+    if (!BASEROW_URL || !BASEROW_TOKEN || !BASEROW_TABLE) {
+      return res.status(500).json({ error: "Faltam as variáveis do Baserow." });
+    }
+    let linhas = [];
+    try {
+      linhas = await lerCatalogo();
+    } catch (e) {
+      return res.status(502).json({ error: "Não consegui ler o catálogo." });
+    }
+    const porUid = new Map(linhas.map((l) => [(l.uid || "").toLowerCase(), l]));
+    const hoje = new Date().toISOString().slice(0, 10).split("-").reverse().join("/");
+
+    for (const item of indisponiveis.slice(0, 60)) {
+      const uid = String(item?.uid || "").toLowerCase();
+      const linha = porUid.get(uid);
+      if (!linha) {
+        resultado.falhas++;
+        continue;
+      }
+      /* Já carimbado antes: não repete o selo nem infla a contagem. */
+      if (String(linha.title || "").startsWith("🚫")) continue;
+
+      const motivo = String(item?.motivo || "anúncio não encontrado").slice(0, 300);
+      const dados = {
+        title: ("🚫 INDISPONÍVEL — " + (linha.title || "")).slice(0, 4000),
+        ficha: ((linha.ficha || "") +
+          ` || 🚫 INDISPONÍVEL em ${hoje}: ${motivo}. Verificado pelo vigia semanal. ` +
+          `Se o anúncio voltar, é só desfazer o ocultar e apagar este aviso.`).slice(0, 4000),
+        hidden: true,
+      };
+      try {
+        const r = await baserow(
+          `/api/database/rows/table/${BASEROW_TABLE}/${linha.id}/?user_field_names=true`,
+          { method: "PATCH", body: JSON.stringify(dados) }
+        );
+        r.ok ? resultado.marcadas_indisponiveis++ : resultado.falhas++;
+      } catch (e) {
+        resultado.falhas++;
+      }
+    }
+  }
 
   /* ---- grava as novidades no catálogo ---- */
   if (casas.length) {
@@ -187,17 +236,24 @@ export default async function handler(req, res) {
   }
 
   /* ---- avisa no WhatsApp ---- */
-  if (casas.length) {
+  if (casas.length || indisponiveis.length) {
     const partes = [];
     if (resultado.gravadas) {
       partes.push(
         `🏡 ${resultado.gravadas} ${resultado.gravadas === 1 ? "casa nova" : "casas novas"} no site`
       );
-    } else {
+    } else if (casas.length) {
       partes.push("🏡 Nenhuma casa nova esta semana");
     }
     if (resultado.repetidas) partes.push(`(${resultado.repetidas} já estavam lá)`);
-    if (resultado.falhas) partes.push(`⚠️ ${resultado.falhas} não consegui gravar`);
+    if (resultado.marcadas_indisponiveis) {
+      partes.push(
+        `🚫 ${resultado.marcadas_indisponiveis} ${
+          resultado.marcadas_indisponiveis === 1 ? "saiu do ar" : "saíram do ar"
+        }`
+      );
+    }
+    if (resultado.falhas) partes.push(`⚠️ ${resultado.falhas} falharam`);
     const cabecalho = partes.join(" ") + "\ncasas-three.vercel.app";
     texto = texto ? `${cabecalho}\n\n${texto}` : cabecalho;
   }
@@ -213,7 +269,7 @@ export default async function handler(req, res) {
   }
 
   /* Se gravou e o WhatsApp falhou, ainda foi um sucesso parcial: ela vê no site. */
-  if (!enviado && !casas.length) {
+  if (!enviado && !casas.length && !indisponiveis.length) {
     return res.status(502).json({ error: "Evolution recusou o envio." });
   }
   return res.status(200).json({ ok: true, enviado, ...resultado });
