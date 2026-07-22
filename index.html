@@ -297,9 +297,10 @@ function card(d){
       <span style="color:var(--muted)">(taxa 11,19% a.a., 30 anos)</span>
     </div>`;
   }
-  /* referrerpolicy: VivaReal e OLX bloqueiam imagem pedida de fora do site deles.
-     Sem mandar o referer, servem normalmente — são 41 das 96 fotos. */
-  const photo=d.img?`<img src="${d.img}" alt="${d.title}" loading="lazy" referrerpolicy="no-referrer" onerror="this.remove();">`:'';
+  /* As CDNs de imobiliária bloqueiam hotlink. Em vez de pedir a foto direto
+     (o que quebra a maioria), pedimos via /api/img: o servidor busca mandando
+     o Referer da origem e desarma o bloqueio. onerror ainda esconde as mortas. */
+  const photo=d.img?`<img src="/api/img?u=${encodeURIComponent(d.img)}" alt="${d.title}" loading="lazy" onerror="this.remove();">`:'';
   const wa=d.wa?`<a class="btn btn-wa" href="https://wa.me/${d.wa}?text=${encodeURIComponent('Olá! Tenho interesse na casa em '+d.cond+' ('+d.city+'). Ainda está disponível?')}" target="_blank" rel="noopener">WhatsApp</a>`:'';
   const tel=(d.tel&&d.tel.startsWith('('))?`<span class="btn btn-tel">${d.tel}</span>`:'';
   const id=d.uid;
