@@ -53,6 +53,27 @@ function normalizarUrl(u) {
   return u.split("?")[0].replace(/\/$/, "").toLowerCase();
 }
 
+/* Chave do "descarte permanente": cidade|condomínio|área. Sobrevive a reanúncio
+ * com URL e preço novos — aluguel muda de preço, a área não. Exige condomínio E
+ * área pra apontar a UNIDADE, não o prédio: descartar uma casa não pode vetar o
+ * condomínio inteiro. Devolve null quando não dá pra fixar a unidade. */
+function chaveDescarte(l) {
+  const cond = String(l.cond || "").trim().toLowerCase();
+  const area = l.area;
+  if (!cond || area === null || area === undefined || area === "") return null;
+  const city = String(l.city || "").trim().toLowerCase();
+  return `${city}|${cond}|${area}`;
+}
+
+/* Ela rejeitou de propósito? Ocultou pelo site (mas não é o 🚫 que o vigia
+ * carimba quando some do ar — esse pode voltar) ou marcou status "descartei".
+ * O que ela descartou não volta numa busca nova. */
+function foiDescartada(l) {
+  const status = l.status && (l.status.value || l.status);
+  const ocultadaPorEla = l.hidden && !String(l.title || "").startsWith("🚫");
+  return ocultadaPorEla || status === "descartei";
+}
+
 function limpar(casa) {
   const out = {};
   for (const k of CAMPOS) {
@@ -125,7 +146,7 @@ export default async function handler(req, res) {
     return res.status(400).json({ error: `No máximo ${TETO_POR_CHAMADA} casas por chamada.` });
   }
 
-  const resultado = { gravadas: 0, repetidas: 0, falhas: 0, marcadas_indisponiveis: 0 };
+  const resultado = { gravadas: 0, repetidas: 0, descartadas: 0, falhas: 0, marcadas_indisponiveis: 0 };
 
   /* ---- marca como indisponível o que saiu do ar ----
    *
@@ -196,6 +217,11 @@ export default async function handler(req, res) {
         [(l.city || "").toLowerCase(), (l.cond || "").toLowerCase(), l.price, l.area].join("|")
       )
     );
+    /* Descartes permanentes: o que ela ocultou/descartou não volta ao site,
+     * mesmo reanunciado com URL e preço novos. */
+    const descartadas = new Set(
+      existentes.filter(foiDescartada).map(chaveDescarte).filter(Boolean)
+    );
 
     for (const bruta of casas) {
       const casa = limpar(bruta || {});
@@ -205,6 +231,12 @@ export default async function handler(req, res) {
         casa.price,
         casa.area,
       ].join("|");
+
+      const chaveD = chaveDescarte(casa);
+      if (chaveD && descartadas.has(chaveD)) {
+        resultado.descartadas++;
+        continue;
+      }
 
       const repetida =
         (casa.url && urls.has(normalizarUrl(casa.url))) ||
@@ -245,7 +277,8 @@ export default async function handler(req, res) {
     } else if (casas.length) {
       partes.push("🏡 Nenhuma casa nova esta semana");
     }
-    if (resultado.repetidas) partes.push(`(${resultado.repetidas} já estavam lá)`);
+    const jaConhecidas = resultado.repetidas + resultado.descartadas;
+    if (jaConhecidas) partes.push(`(${jaConhecidas} já estavam lá)`);
     if (resultado.marcadas_indisponiveis) {
       partes.push(
         `🚫 ${resultado.marcadas_indisponiveis} ${

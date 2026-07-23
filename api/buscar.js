@@ -15,8 +15,40 @@
  * internet inteira. Por isso só passam sites de imóvel.
  */
 
-const FIRECRAWL_KEY = process.env.FIRECRAWL_API_KEY;
+/* Duas contas: quando a primeira fica sem crédito (Firecrawl responde 402),
+ * cai na segunda automaticamente. A ordem é a das env vars. */
+const FIRECRAWL_KEYS = [
+  process.env.FIRECRAWL_API_KEY,
+  process.env.FIRECRAWL_API_KEY_2,
+].filter(Boolean);
 const SEGREDO = process.env.VIGIA_SECRET;
+
+/* Scrape no Firecrawl com failover entre contas. Só o 402 (crédito esgotado)
+ * troca de conta — outros erros falhariam igual nas duas. Devolve {ok,status,data}. */
+async function firecrawlScrape(payload) {
+  let ultimo = { ok: false, status: 0, data: null };
+  for (const key of FIRECRAWL_KEYS) {
+    let r, d;
+    try {
+      r = await fetch("https://api.firecrawl.dev/v2/scrape", {
+        method: "POST",
+        headers: { Authorization: `Bearer ${key}`, "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+      d = await r.json().catch(() => null);
+    } catch (e) {
+      ultimo = { ok: false, status: 0, data: null };
+      continue; /* rede falhou nesta conta; tenta a próxima */
+    }
+    if (r.ok && d) return { ok: true, status: r.status, data: d.data ?? {} };
+    if (r.status === 402) {
+      ultimo = { ok: false, status: 402, data: null };
+      continue; /* sem crédito: cai pra próxima conta */
+    }
+    return { ok: false, status: r.status, data: null }; /* outro erro: não é crédito */
+  }
+  return ultimo; /* todas as contas sem crédito (ou vazias) */
+}
 
 /* Só sites de imóvel. mgfimoveis fica de fora de propósito: recicla anúncio
  * velho e já causou frustração. */
@@ -52,7 +84,7 @@ export default async function handler(req, res) {
     res.setHeader("Allow", "POST");
     return res.status(405).json({ error: "Use POST." });
   }
-  if (!FIRECRAWL_KEY || !SEGREDO) {
+  if (!FIRECRAWL_KEYS.length || !SEGREDO) {
     return res.status(500).json({ error: "Faltam FIRECRAWL_API_KEY ou VIGIA_SECRET." });
   }
   if ((req.headers["x-vigia-secret"] || "") !== SEGREDO) {
@@ -82,21 +114,13 @@ export default async function handler(req, res) {
   }
 
   try {
-    const r = await fetch("https://api.firecrawl.dev/v2/scrape", {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${FIRECRAWL_KEY}`,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(payload),
-    });
-
-    const d = await r.json().catch(() => null);
-    if (!r.ok || !d) {
-      return res.status(502).json({ error: "Firecrawl recusou.", status: r.status });
+    const fc = await firecrawlScrape(payload);
+    if (!fc.ok) {
+      const error = fc.status === 402 ? "Firecrawl sem crédito nas contas." : "Firecrawl recusou.";
+      return res.status(502).json({ error, status: fc.status });
     }
 
-    const dados = d.data || {};
+    const dados = fc.data || {};
     return res.status(200).json({
       ok: true,
       status: dados.metadata?.statusCode ?? null,

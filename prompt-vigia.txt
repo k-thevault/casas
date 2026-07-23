@@ -1,4 +1,4 @@
-VIGIA DE CASAS — cópia versionada dos prompts (atualizado 20/07/2026)
+VIGIA DE CASAS — cópia versionada dos prompts (atualizado 22/07/2026)
 
 Este arquivo documenta as DUAS vigias que existem hoje. O prompt que roda de
 verdade na semanal está na rotina da nuvem e é igual ao de baixo, só que com o
@@ -20,6 +20,10 @@ manda WhatsApp SÓ quando algo muda.
 Como custa quase nada: tenta um fetch comum primeiro (4 de 5 sites respondem
 200); só gasta 1 crédito de Firecrawl (scrape markdown, não extração com IA)
 quando o site bloqueia. Medido em produção: ~10 créditos por execução.
+
+Failover de crédito: há DUAS contas Firecrawl (env FIRECRAWL_API_KEY e
+FIRECRAWL_API_KEY_2). Quando a 1ª responde 402 (sem crédito), o código cai
+sozinho na 2ª. Vale para a vigia diária e para o /api/buscar da semanal.
 
 Três travas deliberadas:
  - "incerto" nunca marca nada. 403/429 é bloqueio de portal, não anúncio morto.
@@ -50,6 +54,9 @@ curl -s https://casas-three.vercel.app/api/casas
  - JÁ CADASTRADOS = todos (240+). Serve para não repetir na parte (B).
  - Itens com "hidden": true já foram descartados por ela OU já marcados como
    indisponíveis — pule os que já têm 🚫 no título.
+ - DESCARTADAS = as que ELA rejeitou de propósito: "hidden": true SEM 🚫 no
+   título, ou "status": "descartei". Guarde de cada uma cidade + condomínio +
+   área. Ela NÃO quer ver essas de novo — usa-se na PARTE (B) (ver adiante).
 
 --- PARTE (A) — VERIFICAR O QUE JÁ ESTÁ NO SITE — PRIORIDADE ---
 Quais conferir, nesta ordem, até ~25 verificações:
@@ -91,6 +98,14 @@ anúncio. UMA CIDADE POR VEZ — juntar cidades dá falso negativo.
 
 Sites de imobiliária local abrem com WebFetch direto. Se vierem vazios
 (JavaScript), mande a URL pro /api/buscar.
+
+NÃO OFEREÇA O QUE ELA JÁ DESCARTOU: antes de pôr uma novidade em "casas" OU
+citar no "text", compare cidade + condomínio + área com a lista de DESCARTADAS
+do PASSO 0. Se bater, PULE — nem no site nem no WhatsApp, mesmo que a URL ou o
+preço sejam novos (é reanúncio da mesma casa). Isso vale só quando a descartada
+tem condomínio E área: mira a UNIDADE, não o prédio — outra casa do mesmo
+condomínio, com área diferente, continua valendo. (O /api/vigia já se recusa a
+regravar essas no site; esta regra é para elas nem aparecerem no seu resumo.)
 
 Orçamento: ~40 chamadas ao /api/buscar por execução, já contando a parte (A).
 

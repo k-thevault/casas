@@ -18,7 +18,12 @@
 const BASEROW_URL = (process.env.BASEROW_URL || "").replace(/\/$/, "");
 const BASEROW_TOKEN = process.env.BASEROW_TOKEN;
 const BASEROW_TABLE = process.env.BASEROW_TABLE;
-const FIRECRAWL_KEY = process.env.FIRECRAWL_API_KEY;
+/* Duas contas: quando a primeira fica sem crédito (Firecrawl responde 402),
+ * cai na segunda automaticamente. A ordem é a das env vars. */
+const FIRECRAWL_KEYS = [
+  process.env.FIRECRAWL_API_KEY,
+  process.env.FIRECRAWL_API_KEY_2,
+].filter(Boolean);
 const CRON_SECRET = process.env.CRON_SECRET;
 
 const EVO_URL = (process.env.EVOLUTION_URL || "").replace(/\/$/, "");
@@ -78,6 +83,35 @@ async function lerCatalogo() {
   return linhas;
 }
 
+/* Scrape no Firecrawl com failover entre contas. Só o 402 (crédito esgotado)
+ * troca de conta — bloqueio de site (403/404/429) falharia igual nas duas, e
+ * o 429 é rate limit, não falta de crédito. Devolve {ok, status, data, conta}. */
+async function firecrawlScrape(payload) {
+  let ultimo = { ok: false, status: 0, data: null, conta: 0 };
+  for (let i = 0; i < FIRECRAWL_KEYS.length; i++) {
+    let r, d;
+    try {
+      r = await fetch("https://api.firecrawl.dev/v2/scrape", {
+        method: "POST",
+        headers: { Authorization: `Bearer ${FIRECRAWL_KEYS[i]}`, "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+      d = await r.json().catch(() => null);
+    } catch (e) {
+      ultimo = { ok: false, status: 0, data: null, conta: i + 1 };
+      continue; /* rede falhou nesta conta; tenta a próxima */
+    }
+    if (r.ok) return { ok: true, status: r.status, data: d?.data ?? null, conta: i + 1 };
+    if (r.status === 402) {
+      ultimo = { ok: false, status: 402, data: null, conta: i + 1 };
+      continue; /* sem crédito: cai pra próxima conta */
+    }
+    /* outro erro (403/404/429/5xx): não é crédito, não adianta trocar. */
+    return { ok: false, status: r.status, data: d?.data ?? null, conta: i + 1 };
+  }
+  return ultimo; /* todas as contas sem crédito (ou vazias) */
+}
+
 /* Devolve {estado, via, http}. estado: 'vivo' | 'morto' | 'incerto'.
  * 'incerto' nunca marca nada — bloqueio de portal não é anúncio removido. */
 async function checar(url) {
@@ -116,7 +150,7 @@ async function checar(url) {
 
   /* 2) confirmação — 1 crédito. Chega aqui quem bloqueou ou quem levantou
    * suspeita no HTML cru. O onlyMainContent tira o template do caminho. */
-  if (!FIRECRAWL_KEY) {
+  if (!FIRECRAWL_KEYS.length) {
     /* Sem como confirmar: suspeita não vira condenação. */
     return {
       estado: "incerto",
@@ -125,20 +159,16 @@ async function checar(url) {
     };
   }
   try {
-    const r = await fetch("https://api.firecrawl.dev/v2/scrape", {
-      method: "POST",
-      headers: { Authorization: `Bearer ${FIRECRAWL_KEY}`, "Content-Type": "application/json" },
-      body: JSON.stringify({ url, formats: ["markdown"], onlyMainContent: true }),
-    });
-    const d = await r.json().catch(() => null);
-    if (!r.ok || !d?.data) {
-      return { estado: "incerto", via: "firecrawl", motivo: `Firecrawl devolveu ${r.status}` };
+    const fc = await firecrawlScrape({ url, formats: ["markdown"], onlyMainContent: true });
+    if (!fc.ok || !fc.data) {
+      const motivo = fc.status === 402 ? "Firecrawl sem crédito nas contas" : `Firecrawl devolveu ${fc.status}`;
+      return { estado: "incerto", via: "firecrawl", motivo };
     }
-    const http = d.data.metadata?.statusCode ?? null;
+    const http = fc.data.metadata?.statusCode ?? null;
     if (http === 404 || http === 410) {
       return { estado: "morto", via: "firecrawl", http, motivo: `página responde ${http}` };
     }
-    const md = (d.data.markdown || "").toLowerCase();
+    const md = (fc.data.markdown || "").toLowerCase();
     const achou = SINAIS_MORTE.find((s) => md.includes(s));
     if (achou) return { estado: "morto", via: "firecrawl", http, motivo: `a página diz "${achou}"` };
     if (md.length < 400) {
