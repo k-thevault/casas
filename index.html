@@ -56,9 +56,9 @@
   .toggle:hover{border-color:var(--accent)}
   .toggle input{position:absolute;opacity:0;width:0;height:0;pointer-events:none}
   .toggle::before{content:"";width:15px;height:15px;border-radius:5px;border:1.5px solid var(--muted);flex-shrink:0;transition:.15s}
-  .toggle:has(input:checked){background:var(--accent);color:var(--accent-ink);border-color:var(--accent);font-weight:600}
-  .toggle:has(input:checked)::before{background:var(--accent-ink);border-color:var(--accent-ink)}
-  .toggle:has(input:focus-visible){outline:2px solid var(--accent);outline-offset:2px}
+  .toggle.on,.toggle:has(input:checked){background:var(--accent);color:var(--accent-ink);border-color:var(--accent);font-weight:600}
+  .toggle.on::before,.toggle:has(input:checked)::before{background:var(--accent-ink);border-color:var(--accent-ink)}
+  .toggle:has(input:focus-visible),.toggle:focus-within{outline:2px solid var(--accent);outline-offset:2px}
   .count{margin-left:auto;color:var(--muted);font-size:13.5px;font-weight:500;font-variant-numeric:tabular-nums;white-space:nowrap}
   .sync{font-size:12px;color:var(--muted);padding:5px 12px;border-radius:20px;background:var(--card2);transition:color .2s}
   .sync:empty{display:none}
@@ -443,7 +443,13 @@ list.addEventListener("change",e=>{
   }
 });
 list.addEventListener("input",e=>{ if(e.target.matches("[data-note]")){const card=e.target.closest(".card"); if(card)saveTrack(card);} });
+/* Reflete o estado dos toggles no visual (pílula preenchida). Feito em JS
+   porque :has() não existe em todo navegador. */
+function syncToggleStates(){
+  document.querySelectorAll(".toggle input[type=checkbox]").forEach(cb=>cb.closest(".toggle").classList.toggle("on",cb.checked));
+}
 function apply(){
+  syncToggleStates();
   const city=fCity.value, maxP=+$("#fPrice").value, sort=$("#fSort").value;
   const onlyCond=$("#fCond").checked, onlyPet=$("#fPet").checked, onlyOff=$("#fOffice").checked;
   const onlyFav=$("#fFav").checked, showHidden=$("#fShowHidden").checked;
