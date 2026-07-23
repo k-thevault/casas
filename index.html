@@ -4,110 +4,140 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Casas em Condomínio — Alugar e Comprar, verificadas (Interior de SP)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..700;1,9..144,400..600&family=Inter:wght@400;450;500;600;700&display=swap" rel="stylesheet">
 <style>
   :root{
     /* paleta quente — terracota, areia e mel, sem verde */
-    --bg:#f5efe6; --panel:#fffdf9; --card:#ffffff; --card2:#f3ebe0;
-    --line:#e7dccc; --txt:#2c2621; --muted:#8b7d6c; --accent:#bf5a34;
-    --accent-2:#a4482a; --accent-ink:#fffaf4;
-    --gold:#b98a34; --rose:#d24862; --espresso:#3a2c22;
-    --amber:#cf9a4a; --purple:#977ac9; --chip:#efe6d8;
-    --shadow:0 1px 2px rgba(80,55,30,.05); --shadow-lift:0 14px 30px -12px rgba(95,60,30,.28);
-    --serif:ui-serif,Georgia,"Iowan Old Style","Palatino Linotype",serif;
+    --bg:#f4ede2; --panel:#fffdf9; --card:#ffffff; --card2:#f4ece1;
+    --line:#e6dbc9; --txt:#2a2420; --muted:#8a7c6a; --accent:#c05a33;
+    --accent-2:#a3472a; --accent-ink:#fffaf4;
+    --gold:#b0842f; --rose:#d24862; --espresso:#39291f;
+    --amber:#cf9a4a; --purple:#8a6cc0; --chip:#eee4d4;
+    --shadow:0 1px 3px rgba(80,55,30,.06); --shadow-md:0 4px 14px -6px rgba(90,58,28,.16);
+    --shadow-lift:0 18px 38px -14px rgba(95,60,30,.30);
+    --serif:"Fraunces",ui-serif,Georgia,serif;
+    --sans:"Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    --r:14px;
   }
   *{box-sizing:border-box}
-  body{margin:0;background:var(--bg);color:var(--txt);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",ui-sans-serif,Roboto,Helvetica,Arial,sans-serif;line-height:1.5;-webkit-font-smoothing:antialiased}
+  body{margin:0;background:var(--bg);color:var(--txt);font-family:var(--sans);font-size:15px;line-height:1.55;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
   a{color:inherit;text-decoration:none}
-  .wrap{max-width:1280px;margin:0 auto;padding:30px 22px 72px}
-  header h1{font-family:var(--serif);font-size:33px;line-height:1.1;margin:0 0 8px;font-weight:600;letter-spacing:-.01em}
-  header h1 .mk{color:var(--accent);font-style:italic}
-  header p.sub{color:var(--muted);margin:0 0 22px;font-size:14px;max-width:70ch}
-  .stats{display:flex;flex-wrap:wrap;gap:12px;margin-bottom:22px}
-  .stat{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:13px 18px;min-width:116px;box-shadow:var(--shadow)}
-  .stat b{display:block;font-size:24px;font-weight:700;font-variant-numeric:tabular-nums;font-family:var(--serif);letter-spacing:-.01em}
-  .stat span{color:var(--muted);font-size:12px;letter-spacing:.01em}
-  .tabs{display:flex;gap:9px;margin-bottom:20px;flex-wrap:wrap}
-  .tab{background:var(--panel);border:1px solid var(--line);border-radius:999px;padding:9px 17px;font-size:14px;font-weight:600;cursor:pointer;color:var(--muted);transition:.15s;box-shadow:var(--shadow)}
-  .tab:hover{color:var(--txt);border-color:var(--accent)}
-  .tab.active{background:var(--accent);color:var(--accent-ink);border-color:transparent;box-shadow:0 6px 16px -6px rgba(191,90,52,.55)}
-  .controls{position:sticky;top:12px;z-index:20;background:rgba(250,246,239,.82);backdrop-filter:blur(12px) saturate(1.1);padding:13px;border:1px solid var(--line);border-radius:16px;margin-bottom:22px;display:flex;flex-wrap:wrap;gap:10px;align-items:center;box-shadow:var(--shadow)}
-  select{background:var(--card);color:var(--txt);border:1px solid var(--line);border-radius:10px;padding:9px 12px;font-size:13.5px;cursor:pointer;transition:.15s}
+  .wrap{max-width:1300px;margin:0 auto;padding:34px 26px 80px}
+  /* ---------- cabeçalho ---------- */
+  .hdr{display:flex;justify-content:space-between;align-items:flex-start;gap:24px;margin-bottom:26px}
+  .hdr h1{font-family:var(--serif);font-size:42px;line-height:1.05;margin:0 0 10px;font-weight:600;letter-spacing:-.015em}
+  .hdr h1 .mk{color:var(--accent);font-style:italic}
+  .hdr p.sub{color:var(--muted);margin:0;font-size:15px;max-width:66ch;line-height:1.55}
+  .btn-add{font-family:var(--sans);background:var(--accent);color:var(--accent-ink);border:none;border-radius:12px;padding:13px 20px;font-size:14.5px;font-weight:600;cursor:pointer;white-space:nowrap;box-shadow:0 8px 18px -8px rgba(192,90,51,.6);transition:.16s;flex-shrink:0}
+  .btn-add:hover{background:var(--accent-2);transform:translateY(-1px);box-shadow:0 12px 22px -8px rgba(192,90,51,.6)}
+  .btn-add:active{transform:translateY(0)}
+  /* ---------- stats ---------- */
+  .stats{display:flex;flex-wrap:wrap;gap:12px;margin-bottom:24px}
+  .stat{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px 20px;min-width:120px;box-shadow:var(--shadow)}
+  .stat b{display:block;font-size:27px;font-weight:600;font-variant-numeric:tabular-nums;font-family:var(--serif);letter-spacing:-.01em;line-height:1.1}
+  .stat span{color:var(--muted);font-size:12.5px;margin-top:2px;display:block}
+  /* ---------- abas ---------- */
+  .tabs{display:flex;gap:8px;margin-bottom:22px;flex-wrap:wrap;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:6px;box-shadow:var(--shadow)}
+  .tab{background:transparent;border:none;border-radius:10px;padding:10px 18px;font-size:14.5px;font-weight:500;cursor:pointer;color:var(--muted);transition:.15s}
+  .tab:hover{color:var(--txt);background:var(--card2)}
+  .tab.active{background:var(--accent);color:var(--accent-ink);box-shadow:0 4px 12px -4px rgba(192,90,51,.5);font-weight:600}
+  /* ---------- barra de filtros ---------- */
+  .controls{position:sticky;top:12px;z-index:20;background:rgba(249,244,236,.85);backdrop-filter:blur(14px) saturate(1.1);padding:16px 18px;border:1px solid var(--line);border-radius:16px;margin-bottom:24px;display:flex;flex-direction:column;gap:14px;box-shadow:var(--shadow-md)}
+  .frow{display:flex;flex-wrap:wrap;gap:14px;align-items:flex-end}
+  .fld{display:flex;flex-direction:column;gap:6px}
+  .fld>span{font-size:10.5px;font-weight:600;color:var(--muted);letter-spacing:.06em;text-transform:uppercase;padding-left:3px}
+  select{font-family:var(--sans);background:var(--card);color:var(--txt);border:1px solid var(--line);border-radius:10px;padding:10px 13px;font-size:14px;cursor:pointer;transition:.15s;min-width:140px}
   select:hover{border-color:var(--accent)}
   select:focus-visible,input:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
-  .toggle{display:flex;align-items:center;gap:7px;font-size:13px;color:var(--muted);cursor:pointer;background:var(--chip);border:1px solid var(--line);padding:8px 12px;border-radius:10px;user-select:none;transition:.15s}
-  .toggle:hover{color:var(--txt);border-color:var(--accent)}
-  .toggle input{accent-color:var(--accent)}
-  .count{margin-left:auto;color:var(--muted);font-size:13px;font-variant-numeric:tabular-nums}
-  .sync{font-size:12px;color:var(--muted);padding:4px 11px;border-radius:20px;background:var(--card2);transition:color .2s}
+  .toggles{display:flex;flex-wrap:wrap;gap:9px;align-items:center;border-top:1px solid var(--line);padding-top:14px}
+  .toggle{position:relative;display:inline-flex;align-items:center;gap:7px;font-size:13.5px;color:var(--txt);cursor:pointer;background:var(--chip);border:1px solid var(--line);padding:9px 14px;border-radius:999px;user-select:none;transition:.15s;font-weight:450}
+  .toggle:hover{border-color:var(--accent)}
+  .toggle input{position:absolute;opacity:0;width:0;height:0;pointer-events:none}
+  .toggle::before{content:"";width:15px;height:15px;border-radius:5px;border:1.5px solid var(--muted);flex-shrink:0;transition:.15s}
+  .toggle:has(input:checked){background:var(--accent);color:var(--accent-ink);border-color:var(--accent);font-weight:600}
+  .toggle:has(input:checked)::before{background:var(--accent-ink);border-color:var(--accent-ink)}
+  .toggle:has(input:focus-visible){outline:2px solid var(--accent);outline-offset:2px}
+  .count{margin-left:auto;color:var(--muted);font-size:13.5px;font-weight:500;font-variant-numeric:tabular-nums;white-space:nowrap}
+  .sync{font-size:12px;color:var(--muted);padding:5px 12px;border-radius:20px;background:var(--card2);transition:color .2s}
   .sync:empty{display:none}
   .sync.ok{color:var(--accent-2)}
   .sync.err{color:#b23b3b;background:#f6e0dc}
-  .note{background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--accent);border-radius:12px;padding:13px 16px;font-size:12.8px;color:#5f5346;margin-bottom:20px;line-height:1.6}
-  .note b{color:var(--txt)}
-  .citygroup h2{font-family:var(--serif);font-size:19px;margin:32px 0 14px;padding-bottom:9px;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:10px;font-weight:600}
-  .citygroup h2 .n{font-size:12px;color:var(--muted);font-weight:500;font-family:-apple-system,sans-serif}
-  .citygroup h2 .near{font-size:10.5px;background:rgba(185,138,52,.16);color:var(--gold);padding:3px 9px;border-radius:20px;font-weight:700;font-family:-apple-system,sans-serif}
-  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(310px,1fr));gap:20px}
-  .card{background:var(--card);border:1px solid var(--line);border-radius:18px;overflow:hidden;display:flex;flex-direction:column;transition:transform .18s ease,box-shadow .18s ease,border-color .18s ease;box-shadow:var(--shadow)}
-  .card:hover{transform:translateY(-4px);box-shadow:var(--shadow-lift);border-color:#e0d2bd}
-  .photo{position:relative;height:210px;background:linear-gradient(135deg,#efe4d3,#e6d8c2);display:flex;align-items:center;justify-content:center;overflow:hidden}
-  .photo img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .4s ease}
-  .card:hover .photo img{transform:scale(1.04)}
-  .photo::after{content:"";position:absolute;inset:0;background:linear-gradient(to top,rgba(40,28,18,.35),transparent 42%);pointer-events:none}
-  .photo .ph{font-size:40px;opacity:.35}
-  .photo .badge{position:absolute;top:12px;left:12px;z-index:2;background:rgba(58,44,34,.82);color:#fff;font-size:11.5px;font-weight:700;padding:5px 11px;border-radius:999px;backdrop-filter:blur(4px)}
+  /* ---------- nota por aba ---------- */
+  .note{background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--accent);border-radius:12px;padding:14px 18px;font-size:13.5px;color:#5f5346;margin-bottom:22px;line-height:1.65}
+  .note b{color:var(--txt);font-weight:600}
+  /* ---------- grupos por cidade ---------- */
+  .citygroup h2{font-family:var(--serif);font-size:22px;margin:36px 0 16px;padding-bottom:10px;border-bottom:1px solid var(--line);display:flex;align-items:baseline;gap:11px;font-weight:600;letter-spacing:-.01em}
+  .citygroup h2 .n{font-size:12.5px;color:var(--muted);font-weight:500;font-family:var(--sans)}
+  .citygroup h2 .near{font-size:10.5px;background:rgba(176,132,47,.16);color:var(--gold);padding:3px 10px;border-radius:20px;font-weight:700;font-family:var(--sans);align-self:center}
+  /* ---------- cards ---------- */
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:22px}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);overflow:hidden;display:flex;flex-direction:column;transition:transform .18s ease,box-shadow .18s ease,border-color .18s ease;box-shadow:var(--shadow)}
+  .card:hover{transform:translateY(-4px);box-shadow:var(--shadow-lift);border-color:#ddceb6}
+  .photo{position:relative;height:216px;background:linear-gradient(135deg,#efe4d3,#e6d8c2);display:flex;align-items:center;justify-content:center;overflow:hidden}
+  .photo img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .45s ease}
+  .card:hover .photo img{transform:scale(1.05)}
+  .photo::after{content:"";position:absolute;inset:0;background:linear-gradient(to top,rgba(40,28,18,.38),transparent 45%);pointer-events:none}
+  .photo .ph{font-size:42px;opacity:.32}
+  .photo .badge{position:absolute;top:13px;left:13px;z-index:2;background:rgba(57,41,31,.85);color:#fff;font-size:11.5px;font-weight:600;padding:6px 12px;border-radius:999px;backdrop-filter:blur(4px)}
   .photo .badge.q4{background:var(--accent);color:var(--accent-ink)}
-  .photo .ver{position:absolute;bottom:12px;left:12px;z-index:2;background:rgba(255,253,249,.94);color:var(--gold);font-size:10.5px;font-weight:800;padding:4px 10px;border-radius:999px;letter-spacing:.02em;box-shadow:var(--shadow)}
-  .body{padding:16px;display:flex;flex-direction:column;gap:10px;flex:1}
-  .top{display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
-  .title{font-weight:600;font-size:15.5px;line-height:1.3;letter-spacing:-.005em}
-  .cond{color:var(--muted);font-size:12px;margin-top:3px}
-  .price{font-size:20px;font-weight:700;white-space:nowrap;text-align:right;font-variant-numeric:tabular-nums;color:var(--accent-2);letter-spacing:-.01em}
-  .price small{display:block;font-size:10.5px;color:var(--muted);font-weight:500}
+  .photo .ver{position:absolute;bottom:13px;left:13px;z-index:2;background:rgba(255,253,249,.95);color:var(--gold);font-size:10.5px;font-weight:700;padding:5px 11px;border-radius:999px;letter-spacing:.03em;box-shadow:var(--shadow)}
+  .body{padding:18px;display:flex;flex-direction:column;gap:11px;flex:1}
+  .top{display:flex;justify-content:space-between;align-items:flex-start;gap:14px}
+  .title{font-weight:600;font-size:16.5px;line-height:1.3;letter-spacing:-.01em}
+  .cond{color:var(--muted);font-size:12.5px;margin-top:4px}
+  .price{font-family:var(--serif);font-size:23px;font-weight:600;white-space:nowrap;text-align:right;font-variant-numeric:tabular-nums;color:var(--accent-2);letter-spacing:-.01em;line-height:1.1}
+  .price small{display:block;font-size:10.5px;color:var(--muted);font-weight:500;font-family:var(--sans);margin-top:2px}
   .specs{display:flex;flex-wrap:wrap;gap:7px}
-  .spec{background:var(--card2);border-radius:8px;padding:4px 9px;font-size:11.5px;color:#6b5d4d;font-variant-numeric:tabular-nums}
-  .spec b{color:var(--txt)}
+  .spec{background:var(--card2);border-radius:8px;padding:5px 10px;font-size:12px;color:#6b5d4d;font-variant-numeric:tabular-nums}
+  .spec b{color:var(--txt);font-weight:600}
   .chips{display:flex;flex-wrap:wrap;gap:6px}
-  .chip{font-size:10.5px;padding:3px 9px;border-radius:999px;font-weight:600}
-  .c-cond{background:rgba(191,90,52,.12);color:var(--accent-2)}
-  .c-alt{background:rgba(207,154,74,.18);color:#98702c}
-  .c-pet{background:rgba(185,138,52,.16);color:var(--gold)}
-  .c-office{background:rgba(151,122,201,.16);color:#6e56a6}
-  details{font-size:12.5px;color:#6b5d4d}
+  .chip{font-size:11px;padding:4px 10px;border-radius:999px;font-weight:600}
+  .c-cond{background:rgba(192,90,51,.12);color:var(--accent-2)}
+  .c-alt{background:rgba(207,154,74,.20);color:#96692a}
+  .c-pet{background:rgba(176,132,47,.16);color:var(--gold)}
+  .c-office{background:rgba(138,108,192,.16);color:#6a51a2}
+  details{font-size:13px;color:#6b5d4d}
   details summary{cursor:pointer;color:var(--accent);font-size:12.5px;font-weight:600;list-style:none}
   details summary::-webkit-details-marker{display:none}
   details summary::before{content:"▸ ";}
   details[open] summary::before{content:"▾ ";}
-  details .ficha{margin-top:7px;line-height:1.6}
-  .foot{display:flex;align-items:center;gap:8px;margin-top:auto;padding-top:10px;flex-wrap:wrap}
-  .agency{font-size:11px;color:var(--muted);width:100%}
-  .btn{font-weight:600;font-size:12px;padding:9px 13px;border-radius:10px;display:inline-flex;align-items:center;gap:5px;transition:.15s;cursor:pointer}
+  details .ficha{margin-top:8px;line-height:1.65}
+  .agency{font-size:11.5px;color:var(--muted)}
+  .actions{display:flex;align-items:center;gap:8px;margin-top:auto;padding-top:12px;flex-wrap:wrap}
+  .actions .spacer{flex:1 1 auto}
+  .btn{font-family:var(--sans);font-weight:600;font-size:13px;padding:10px 15px;border-radius:10px;display:inline-flex;align-items:center;gap:6px;transition:.15s;cursor:pointer;border:none}
   .btn-wa{background:var(--espresso);color:#fbf3ea}
   .btn-ver{background:var(--accent);color:var(--accent-ink)}
   .btn-tel{background:var(--card2);color:#6b5d4d;border:1px solid var(--line)}
-  .btn:hover{filter:brightness(1.06);transform:translateY(-1px)}
-  .favbtn{position:absolute;top:10px;right:10px;width:38px;height:38px;border-radius:50%;border:none;background:rgba(255,253,249,.9);color:#fff;font-size:17px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:.15s;z-index:3;box-shadow:var(--shadow)}
+  .btn:hover{filter:brightness(1.07);transform:translateY(-1px)}
+  .favbtn{position:absolute;top:11px;right:11px;width:40px;height:40px;border-radius:50%;border:none;background:rgba(255,253,249,.92);font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:.15s;z-index:3;box-shadow:var(--shadow-md)}
   .favbtn:hover{transform:scale(1.12);background:#fff}
   .favbtn.on{background:var(--rose)}
-  .card.isfav{border-color:var(--rose);box-shadow:0 0 0 1px var(--rose),var(--shadow)}
-  .hidebtn{background:transparent;border:1px solid var(--line);color:var(--muted);font-size:11px;padding:8px 11px;border-radius:10px;cursor:pointer;transition:.15s}
+  .card.isfav{border-color:var(--rose);box-shadow:0 0 0 1.5px var(--rose),var(--shadow)}
+  .hidebtn{background:transparent;border:1px solid var(--line);color:var(--muted);font-size:12px;font-weight:500;padding:9px 12px;border-radius:10px;cursor:pointer;transition:.15s}
   .hidebtn:hover{border-color:var(--rose);color:var(--rose)}
-  .track{display:flex;gap:7px;margin-top:8px;padding-top:10px;border-top:1px dashed var(--line)}
-  .tstatus{background:var(--card2);color:#6b5d4d;border:1px solid var(--line);border-radius:9px;padding:7px 9px;font-size:11.5px;cursor:pointer}
-  .tnote{flex:1;min-width:80px;background:var(--card2);color:var(--txt);border:1px solid var(--line);border-radius:9px;padding:7px 9px;font-size:11.5px}
+  .track{display:flex;gap:8px;margin-top:2px;padding-top:12px;border-top:1px dashed var(--line)}
+  .tstatus{font-family:var(--sans);background:var(--card2);color:#6b5d4d;border:1px solid var(--line);border-radius:10px;padding:8px 10px;font-size:12px;cursor:pointer;min-width:0}
+  .tnote{flex:1;min-width:80px;background:var(--card2);color:var(--txt);border:1px solid var(--line);border-radius:10px;padding:8px 11px;font-size:12px;font-family:var(--sans)}
   .tnote::placeholder{color:var(--muted)}
-  .card.st-visita{border-color:var(--gold);box-shadow:0 0 0 1px var(--gold),var(--shadow)}
-  .card.st-gostei{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent),var(--shadow)}
+  .card.st-visita{border-color:var(--gold);box-shadow:0 0 0 1.5px var(--gold),var(--shadow)}
+  .card.st-gostei{border-color:var(--accent);box-shadow:0 0 0 1.5px var(--accent),var(--shadow)}
   .card.st-descartei{opacity:.5}
-  .empty{color:var(--muted);padding:40px;text-align:center;background:var(--panel);border:1px solid var(--line);border-radius:16px}
-  footer{margin-top:48px;color:var(--muted);font-size:11.5px;text-align:center;border-top:1px solid var(--line);padding-top:20px;line-height:1.7}
+  .empty{color:var(--muted);padding:44px;text-align:center;background:var(--panel);border:1px solid var(--line);border-radius:16px;font-size:14px}
+  footer{margin-top:52px;color:var(--muted);font-size:11.5px;text-align:center;border-top:1px solid var(--line);padding-top:22px;line-height:1.75;max-width:80ch;margin-left:auto;margin-right:auto}
+  @media(max-width:640px){ .hdr{flex-direction:column} .hdr h1{font-size:34px} .btn-add{width:100%} }
 </style>
 </head>
 <body>
 <div class="wrap">
-  <header>
-    <h1>Casas em Condomínio, <span class="mk">verificadas</span></h1>
-    <p class="sub">Interior de SP · aluguel até R$ 6.500/mês e venda até R$ 850 mil · cada casa foi conferida no site oficial da imobiliária ou no VivaReal recente (nada de MGF) · jul/2026</p>
+  <header class="hdr">
+    <div>
+      <h1>Casas em Condomínio, <span class="mk">verificadas</span></h1>
+      <p class="sub">Interior de SP · aluguel até R$ 6.500/mês e venda até R$ 850 mil · cada casa conferida no site oficial da imobiliária ou no VivaReal recente (nada de MGF) · jul/2026</p>
+    </div>
+    <button id="btnAdd" class="btn-add">＋ Adicionar anúncio</button>
   </header>
 
   <div class="stats" id="stats"></div>
@@ -123,41 +153,44 @@
   <div class="note" id="note"></div>
 
   <div class="controls">
-    <select id="fCity"><option value="">Todas as cidades</option></select>
-    <select id="fPrice">
-      <option value="99999">Qualquer aluguel</option>
-      <option value="4000">até R$ 4.000</option>
-      <option value="5000">até R$ 5.000</option>
-      <option value="6000">até R$ 6.000</option>
-      <option value="6500">até R$ 6.500</option>
-    </select>
-    <select id="fSort">
-      <option value="cityAsc">Ordenar: cidade</option>
-      <option value="priceAsc">Aluguel ↑</option>
-      <option value="priceDesc">Aluguel ↓</option>
-      <option value="areaDesc">Maior área</option>
-    </select>
-    <label class="toggle"><input type="checkbox" id="fCond"> só condomínio fechado</label>
-    <label class="toggle"><input type="checkbox" id="fPet"> aceita pet</label>
-    <label class="toggle"><input type="checkbox" id="fOffice"> com escritório</label>
-    <label class="toggle"><input type="checkbox" id="fFav"> ❤️ só favoritas</label>
-    <label class="toggle"><input type="checkbox" id="fShowHidden"> mostrar ocultas</label>
-    <select id="fStatus">
-      <option value="">Situação: todas</option>
-      <option value="contatar">📞 A contatar</option>
-      <option value="aguardando">⏳ Aguardando resposta</option>
-      <option value="visita">📅 Visita marcada</option>
-      <option value="gostei">💚 Gostei</option>
-      <option value="descartei">🚫 Descartei</option>
-    </select>
-    <select id="fEntrada" style="display:none">
-      <option value="0.20">Entrada 20%</option>
-      <option value="0.30" selected>Entrada 30%</option>
-      <option value="0.40">Entrada 40%</option>
-    </select>
-    <button id="btnAdd" class="toggle" style="cursor:pointer;background:var(--accent);color:var(--accent-ink);border-color:transparent;font-weight:600">➕ adicionar anúncio</button>
-    <span class="sync" id="sync" title="Seus favoritos, situações e anotações ficam salvos na nuvem e aparecem em qualquer aparelho"></span>
-    <span class="count" id="count"></span>
+    <div class="frow">
+      <label class="fld"><span>Cidade</span><select id="fCity"><option value="">Todas as cidades</option></select></label>
+      <label class="fld"><span>Ordenar por</span><select id="fSort">
+        <option value="cityAsc">Cidade</option>
+        <option value="priceAsc">Aluguel ↑ (menor)</option>
+        <option value="priceDesc">Aluguel ↓ (maior)</option>
+        <option value="areaDesc">Maior área</option>
+      </select></label>
+      <label class="fld"><span>Preço</span><select id="fPrice">
+        <option value="99999">Qualquer aluguel</option>
+        <option value="4000">até R$ 4.000</option>
+        <option value="5000">até R$ 5.000</option>
+        <option value="6000">até R$ 6.000</option>
+        <option value="6500">até R$ 6.500</option>
+      </select></label>
+      <label class="fld"><span>Situação</span><select id="fStatus">
+        <option value="">Todas</option>
+        <option value="contatar">📞 A contatar</option>
+        <option value="aguardando">⏳ Aguardando resposta</option>
+        <option value="visita">📅 Visita marcada</option>
+        <option value="gostei">💚 Gostei</option>
+        <option value="descartei">🚫 Descartei</option>
+      </select></label>
+      <select id="fEntrada" style="display:none">
+        <option value="0.20">Entrada 20%</option>
+        <option value="0.30" selected>Entrada 30%</option>
+        <option value="0.40">Entrada 40%</option>
+      </select>
+      <span class="count" id="count"></span>
+    </div>
+    <div class="toggles">
+      <label class="toggle"><input type="checkbox" id="fCond"> só condomínio fechado</label>
+      <label class="toggle"><input type="checkbox" id="fPet"> aceita pet</label>
+      <label class="toggle"><input type="checkbox" id="fOffice"> com escritório</label>
+      <label class="toggle"><input type="checkbox" id="fFav"> só favoritas ❤️</label>
+      <label class="toggle"><input type="checkbox" id="fShowHidden"> mostrar ocultas</label>
+      <span class="sync" id="sync" title="Seus favoritos, situações e anotações ficam salvos na nuvem e aparecem em qualquer aparelho"></span>
+    </div>
   </div>
 
   <div id="addPanel" style="display:none;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:16px;margin-bottom:18px">
@@ -336,10 +369,11 @@ function card(d){
       <div class="chips">${chips.join("")}</div>
       ${finHtml}
       <details><summary>Ver ficha completa</summary><div class="ficha">${d.ficha}</div></details>
-      <div class="foot">
-        <span class="agency">🏢 ${d.agency}${d.tel&&!d.tel.startsWith('(')?' · '+d.tel:''}</span>
+      <div class="agency">🏢 ${d.agency}${d.tel&&!d.tel.startsWith('(')?' · '+d.tel:''}</div>
+      <div class="actions">
         ${d.url?`<a class="btn btn-ver" href="${d.url}" target="_blank" rel="noopener">Ver anúncio</a>`:''}
         ${wa}${tel}
+        <span class="spacer"></span>
         ${(d.cat==="mine"&&MINE.some(m=>m.uid===id))
           ? `<button class="hidebtn" data-edit>editar</button><button class="hidebtn" data-del>excluir</button>`
           : `<button class="hidebtn" data-hide title="Ocultar da lista">${HIDDEN.has(id)?'↩︎ desocultar':'✕ ocultar'}</button>`}
