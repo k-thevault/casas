@@ -251,6 +251,11 @@ function patchDebounced(uid,lerPatch,desfazer,ms=700){
   debounced[uid]=setTimeout(()=>{ delete debounced[uid]; patchRow(uid,lerPatch(),desfazer); },ms);
 }
 function allItems(){return D.concat(MINE);}
+/* Arquivada = fora da vista pra sempre: você ocultou, ou marcou "descartei".
+   Some da grade e do contador. Continua no banco (lápide invisível) só pra a
+   busca semanal não trazê-la de volta — ver api/vigia.js. "mostrar ocultas" ou
+   filtrar por situação reexibe. */
+function arquivada(d){return HIDDEN.has(d.uid) || (ST[d.uid]&&ST[d.uid].s==="descartei");}
 const cityOrder=["Salto","Tatuí","Jarinu","Monte Mor","Monte Alegre do Sul","Piracaia","Morungaba","Cosmópolis","Capivari","Porto Feliz","Artur Nogueira","Amparo","Santo Antônio de Posse","Boituva","Cesário Lange","Cerquilho","Pedreira","Bom Jesus dos Perdões","Holambra","Jaguariúna","Engenheiro Coelho","Serra Negra","Atibaia","Itatiba","Bragança Paulista","Santa Bárbara d'Oeste","Americana","Rio Claro"];
 function inCat(d){return CAT==="3qoff" ? (d.cat==="3q"&&d.office) : d.cat===CAT;}
 /* Um anúncio é de venda se veio do catálogo "buy" ou se você marcou "à venda"
@@ -380,18 +385,29 @@ function saveTrack(card,imediato){
 }
 list.addEventListener("change",e=>{
   const card=e.target.closest(".card"); if(!card)return;
-  if(e.target.matches("[data-status]")){ saveTrack(card,true); card.className="card"+(FAVS.has(card.dataset.id)?" isfav":"")+(e.target.value?" st-"+e.target.value:""); }
+  if(e.target.matches("[data-status]")){
+    const id=card.dataset.id, val=e.target.value;
+    saveTrack(card,true);
+    /* "descartei" arquiva na hora: some da grade e do contador. */
+    if(val==="descartei"){ apply(); setStats(); }
+    else card.className="card"+(FAVS.has(id)?" isfav":"")+(val?" st-"+val:"");
+  }
 });
 list.addEventListener("input",e=>{ if(e.target.matches("[data-note]")){const card=e.target.closest(".card"); if(card)saveTrack(card);} });
 function apply(){
   const city=fCity.value, maxP=+$("#fPrice").value, sort=$("#fSort").value;
   const onlyCond=$("#fCond").checked, onlyPet=$("#fPet").checked, onlyOff=$("#fOffice").checked;
   const onlyFav=$("#fFav").checked, showHidden=$("#fShowHidden").checked;
+  const stFilter=$("#fStatus").value;
   let r=allItems().filter(d=>{
     const id=d.uid;
     if(!onlyFav&&!inCat(d))return false;
-    if(HIDDEN.has(id)&&!showHidden)return false;
-    if(showHidden&&!HIDDEN.has(id))return false;
+    /* Arquivadas (ocultas + "descartei") somem por padrão. Um filtro de
+       situação explícito ou "mostrar ocultas" as reexibe. */
+    if(!stFilter){
+      if(arquivada(d)&&!showHidden)return false;
+      if(showHidden&&!arquivada(d))return false;
+    }
     if(onlyFav&&!FAVS.has(id))return false;
     if(city&&d.city!==city)return false;
     /* O teto vem em reais de aluguel ou de venda, conforme a aba. Só aplicar
@@ -401,7 +417,7 @@ function apply(){
     if(onlyCond&&d.type!=="cond")return false;
     if(onlyPet&&d.pet!=="sim")return false;
     if(onlyOff&&!d.office)return false;
-    const st=$("#fStatus").value; if(st&&(ST[id]?.s||"")!==st)return false;
+    if(stFilter&&(ST[id]?.s||"")!==stFilter)return false;
     return true;
   });
   if(sort==="priceAsc")r.sort((a,b)=>(a.price??1e9)-(b.price??1e9));
@@ -441,13 +457,13 @@ function setNote(){
   }
 }
 function setStats(){
-  const q4=D.filter(d=>d.cat==="4q");
-  const q3=D.filter(d=>d.cat==="3q");
-  const q3off=q3.filter(d=>d.office);
-  const buy=D.filter(d=>d.cat==="buy");
-  const cid=new Set(D.map(d=>d.city)).size;
+  const vis=D.filter(d=>!arquivada(d));      /* o contador reflete só o que está à mostra */
+  const q4=vis.filter(d=>d.cat==="4q");
+  const buy=vis.filter(d=>d.cat==="buy");
+  const cid=new Set(vis.map(d=>d.city)).size;
+  const fav=allItems().filter(d=>FAVS.has(d.uid)&&!arquivada(d)).length;
   $("#stats").innerHTML=[
-    [D.length,"casas verificadas"],[q4.length,"aluguel 4+ quartos"],[buy.length,"à venda ≤ R$850 mil"],["❤️ "+FAVS.size,"favoritas"],[cid,"cidades"]
+    [vis.length,"casas verificadas"],[q4.length,"aluguel 4+ quartos"],[buy.length,"à venda ≤ R$850 mil"],["❤️ "+fav,"favoritas"],[cid,"cidades"]
   ].map(s=>`<div class="stat"><b>${s[0]}</b><span>${s[1]}</span></div>`).join("");
 }
 document.querySelectorAll(".tab").forEach(t=>t.addEventListener("click",()=>{
