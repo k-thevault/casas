@@ -15,6 +15,8 @@
  * vira ruído e ela para de ler.
  */
 
+import { scrapeDo } from "../lib/scrapedo.js";
+
 const BASEROW_URL = (process.env.BASEROW_URL || "").replace(/\/$/, "");
 const BASEROW_TOKEN = process.env.BASEROW_TOKEN;
 const BASEROW_TABLE = process.env.BASEROW_TABLE;
@@ -150,19 +152,36 @@ async function checar(url) {
 
   /* 2) confirmação — 1 crédito. Chega aqui quem bloqueou ou quem levantou
    * suspeita no HTML cru. O onlyMainContent tira o template do caminho. */
-  if (!FIRECRAWL_KEYS.length) {
+  if (!FIRECRAWL_KEYS.length && !process.env.SCRAPEDO_TOKEN) {
     /* Sem como confirmar: suspeita não vira condenação. */
     return {
       estado: "incerto",
       via: "bloqueado",
-      motivo: suspeita ? `suspeita de "${suspeita}", sem como confirmar` : "sem chave do Firecrawl",
+      motivo: suspeita ? `suspeita de "${suspeita}", sem como confirmar` : "sem chave de nenhum motor",
     };
   }
   try {
-    const fc = await firecrawlScrape({ url, formats: ["markdown"], onlyMainContent: true });
+    const fc = FIRECRAWL_KEYS.length
+      ? await firecrawlScrape({ url, formats: ["markdown"], onlyMainContent: true })
+      : { ok: false, status: 402, data: null };
     if (!fc.ok || !fc.data) {
-      const motivo = fc.status === 402 ? "Firecrawl sem crédito nas contas" : `Firecrawl devolveu ${fc.status}`;
-      return { estado: "incerto", via: "firecrawl", motivo };
+      /* Sem crédito nas duas contas: tenta o scrape.do, mas com a mão MUITO
+       * mais leve. Ele não tem onlyMainContent, então o markdown vem com menu,
+       * rodapé e template — e é justamente aí que mora o "imóvel indisponível"
+       * fantasma que já matou 10 casas vivas de uma vez. Portanto, por este
+       * caminho só o 404/410 condena; frase suspeita vira "incerto" e espera
+       * o crédito voltar. Custa 1 crédito. */
+      if (fc.status === 402) {
+        const sd = await scrapeDo(url, { maxDegrau: 1, timeoutMs: 20000 });
+        if (sd.ok && (sd.status === 404 || sd.status === 410)) {
+          return { estado: "morto", via: "scrape.do", http: sd.status, motivo: `página responde ${sd.status}` };
+        }
+        if (sd.ok) {
+          return { estado: "vivo", via: "scrape.do", http: sd.status };
+        }
+        return { estado: "incerto", via: "scrape.do", motivo: `Firecrawl sem crédito e ${sd.motivo}` };
+      }
+      return { estado: "incerto", via: "firecrawl", motivo: `Firecrawl devolveu ${fc.status}` };
     }
     const http = fc.data.metadata?.statusCode ?? null;
     if (http === 404 || http === 410) {
@@ -223,10 +242,12 @@ export default async function handler(req, res) {
   const mortas = [];
   const incertas = [];
   let creditos = 0;
+  let creditos_sd = 0;
 
   for (const l of fila) {
     const r = await checar(l.url);
     if (r.via === "firecrawl") creditos++;
+    if (r.via === "scrape.do") creditos_sd++;
 
     if (r.estado === "morto") {
       const hoje = new Date().toLocaleDateString("pt-BR", { timeZone: "America/Sao_Paulo" });
@@ -269,6 +290,7 @@ export default async function handler(req, res) {
     mortas: mortas.length,
     incertas: incertas.length,
     creditos_firecrawl: creditos,
+    creditos_scrapedo: creditos_sd,
     avisado,
     detalhe_incertas: incertas,
   });

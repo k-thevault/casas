@@ -15,8 +15,11 @@
  * internet inteira. Por isso só passam sites de imóvel.
  */
 
+import { scrapeDo } from "../lib/scrapedo.js";
+
 /* Duas contas: quando a primeira fica sem crédito (Firecrawl responde 402),
- * cai na segunda automaticamente. A ordem é a das env vars. */
+ * cai na segunda automaticamente. A ordem é a das env vars.
+ * Esgotadas as duas, ainda há o scrape.do — ver lib/scrapedo.js. */
 const FIRECRAWL_KEYS = [
   process.env.FIRECRAWL_API_KEY,
   process.env.FIRECRAWL_API_KEY_2,
@@ -84,8 +87,8 @@ export default async function handler(req, res) {
     res.setHeader("Allow", "POST");
     return res.status(405).json({ error: "Use POST." });
   }
-  if (!FIRECRAWL_KEYS.length || !SEGREDO) {
-    return res.status(500).json({ error: "Faltam FIRECRAWL_API_KEY ou VIGIA_SECRET." });
+  if ((!FIRECRAWL_KEYS.length && !process.env.SCRAPEDO_TOKEN) || !SEGREDO) {
+    return res.status(500).json({ error: "Faltam FIRECRAWL_API_KEY/SCRAPEDO_TOKEN ou VIGIA_SECRET." });
   }
   if ((req.headers["x-vigia-secret"] || "") !== SEGREDO) {
     return res.status(401).json({ error: "Não autorizado." });
@@ -114,21 +117,56 @@ export default async function handler(req, res) {
   }
 
   try {
-    const fc = await firecrawlScrape(payload);
-    if (!fc.ok) {
-      const error = fc.status === 402 ? "Firecrawl sem crédito nas contas." : "Firecrawl recusou.";
-      return res.status(502).json({ error, status: fc.status });
+    const fc = FIRECRAWL_KEYS.length
+      ? await firecrawlScrape(payload)
+      : { ok: false, status: 402, data: null };
+
+    if (fc.ok) {
+      const dados = fc.data || {};
+      return res.status(200).json({
+        ok: true,
+        motor: "firecrawl",
+        status: dados.metadata?.statusCode ?? null,
+        titulo: dados.metadata?.title ?? null,
+        json: dados.json ?? null,
+        markdown: prompt ? null : (dados.markdown || "").slice(0, 60000),
+      });
     }
 
-    const dados = fc.data || {};
+    /* Firecrawl fora do ar por CRÉDITO (402) ou por rede (status 0). Nos dois
+     * casos o scrape.do resolve. Já um 4xx do Firecrawl é pedido malformado —
+     * repetir no outro motor daria o mesmo erro e gastaria crédito à toa. */
+    const vaiTentarReserva = fc.status === 402 || fc.status === 0;
+    if (!vaiTentarReserva) {
+      return res.status(502).json({ error: "Firecrawl recusou.", status: fc.status });
+    }
+
+    const sd = await scrapeDo(url, { timeoutMs: 55000 });
+    if (!sd.ok) {
+      const error =
+        sd.status === 402
+          ? "Firecrawl E scrape.do sem crédito."
+          : `Firecrawl sem crédito e o scrape.do falhou (${sd.motivo}).`;
+      return res.status(502).json({ error, status: sd.status, motor: "scrape.do" });
+    }
+
+    /* O scrape.do não extrai com IA. Se veio prompt, ele é ignorado e o
+     * conteúdo volta cru — quem lê é a rotina. O aviso existe para ela não
+     * achar que o json sumiu por bug. */
     return res.status(200).json({
       ok: true,
-      status: dados.metadata?.statusCode ?? null,
-      titulo: dados.metadata?.title ?? null,
-      json: dados.json ?? null,
-      markdown: prompt ? null : (dados.markdown || "").slice(0, 60000),
+      motor: "scrape.do",
+      status: sd.status,
+      titulo: null,
+      json: null,
+      markdown: (sd.markdown || "").slice(0, 60000),
+      custo: sd.custo,
+      creditos_restantes: sd.restantes,
+      aviso: prompt
+        ? "Firecrawl sem crédito: respondi pelo scrape.do, que não extrai com IA. O seu prompt foi ignorado e o conteúdo veio em markdown — leia e conclua você mesma."
+        : "Firecrawl sem crédito: respondi pelo scrape.do.",
     });
   } catch (e) {
-    return res.status(502).json({ error: "Não consegui falar com o Firecrawl." });
+    return res.status(502).json({ error: "Não consegui falar com o Firecrawl nem com o scrape.do." });
   }
 }
