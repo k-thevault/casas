@@ -58,6 +58,33 @@ curl -s https://casas-three.vercel.app/api/casas
    título, ou "status": "descartei". Guarde de cada uma cidade + condomínio +
    área. Ela NÃO quer ver essas de novo — usa-se na PARTE (B) (ver adiante).
 
+--- PASSO 0.5 — TESTE O /api/buscar ANTES DE GASTAR A EXECUÇÃO ---
+Faça UMA chamada de teste ao /api/buscar (qualquer URL de portal serve). Se a
+resposta vier com "status": 402 ou o erro "Firecrawl sem crédito nas contas",
+as DUAS contas Firecrawl estão zeradas e TODA chamada seguinte vai falhar.
+Não insista: entre em MODO DEGRADADO.
+
+MODO DEGRADADO:
+ - Parte (A): confira SÓ as favoritas cujo "url" NÃO seja de olx.com.br,
+   vivareal.com.br, zapimoveis.com.br, chavesnamao.com.br, imovelweb.com.br,
+   quintoandar.com.br ou wimoveis.com.br. Sites de imobiliária pequena
+   respondem a WebFetch direto — use WebFetch e marque os indisponíveis
+   normalmente. Os portais grandes ficam sem verificação nesta semana; diga
+   isso no relatório.
+ - Parte (B): PULE inteira. Sem o renderizador não há como buscar novidade.
+ - No "text", a PRIMEIRA linha tem que ser o aviso, nesta forma:
+   "⚠️ Firecrawl sem crédito nas DUAS contas — a busca de novidades não rodou.
+    Reponha crédito em firecrawl.dev para a próxima segunda."
+ - Mande o POST final assim mesmo. Um aviso curto e honesto chegando de manhã
+   vale mais que uma execução inteira gasta descobrindo o mesmo no meio.
+
+Diagnóstico rápido (para quem for repor): a conta 1 se consulta com
+ curl -H "Authorization: Bearer $FIRECRAWL_API_KEY" \
+      https://api.firecrawl.dev/v2/team/credit-usage
+A chave da conta 2 é "sensitive" na Vercel e não pode ser lida de volta — o
+teste válido dela é justamente o 402 do /api/buscar, porque o failover só
+devolve 402 quando a ÚLTIMA chave também falhou por crédito.
+
 --- PARTE (A) — VERIFICAR O QUE JÁ ESTÁ NO SITE — PRIORIDADE ---
 Quais conferir, nesta ordem, até ~25 verificações:
  1. TODAS as favoritas, sem exceção, toda semana.
@@ -75,6 +102,8 @@ INDISPONÍVEL quando: página some, 404, redireciona para busca/home; texto diz
 
 NÃO marque se o status vier 403, 429 ou 5xx — é bloqueio, não anúncio morto.
 Se o preço mudou e o anúncio segue ativo, NÃO marque: reporte no WhatsApp.
+Antes de reportar, cheque se o número novo não é o CUSTO TOTAL comparado com o
+aluguel cadastrado — senão vira alarme falso de aumento (já aconteceu).
 
 Como marcar: no POST final, campo
  "indisponiveis": [{"uid": "...", "motivo": "..."}]
@@ -140,6 +169,9 @@ Orçamento: ~40 chamadas ao /api/buscar por execução, já contando a parte (A)
     Já achamos SETE casos, com diferenças de R$ 150 a R$ 1.000/mês. Reporte os
     dois valores — é dinheiro na negociação dela.
  7. Parado há mais de 6 meses -> "confirmar disponibilidade".
+ 8. Aumento de preço que não existe: antes de anunciar "subiu R$ X", confira se
+    o número novo não é o custo total (aluguel + condomínio + IPTU) comparado
+    com o aluguel cadastrado. Já geramos um alarme falso assim (Americana).
 
 --- ENTREGA: UM ÚNICO POST NO FINAL ---
 POST https://casas-three.vercel.app/api/vigia
