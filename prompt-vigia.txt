@@ -59,12 +59,22 @@ curl -s https://casas-three.vercel.app/api/casas
    área. Ela NÃO quer ver essas de novo — usa-se na PARTE (B) (ver adiante).
 
 --- PASSO 0.5 — TESTE O /api/buscar ANTES DE GASTAR A EXECUÇÃO ---
-Faça UMA chamada de teste ao /api/buscar (qualquer URL de portal serve). Se a
-resposta vier com "status": 402 ou o erro "Firecrawl sem crédito nas contas",
-as DUAS contas Firecrawl estão zeradas e TODA chamada seguinte vai falhar.
-Não insista: entre em MODO DEGRADADO.
+Faça UMA chamada de teste ao /api/buscar (qualquer URL de portal serve) e olhe
+o campo "motor" da resposta. São TRÊS cenários:
 
-MODO DEGRADADO:
+ 1. "motor": "firecrawl" — normal. Siga o prompt à risca: mandando "prompt",
+    volta "json" já mastigado.
+
+ 2. "motor": "scrape.do" — o Firecrawl zerou e você caiu no motor reserva.
+    A execução segue INTEIRA, inclusive a parte (B); só muda uma coisa:
+    o scrape.do NÃO extrai com IA. Seu "prompt" é ignorado e volta "markdown"
+    cru com "json": null — leia o markdown e conclua você mesma. A resposta
+    traz "aviso" dizendo isso e "creditos_restantes": se cair abaixo de ~150,
+    escreva no relatório que a reserva está no fim.
+
+ 3. erro "Firecrawl E scrape.do sem crédito" — aí sim, MODO DEGRADADO.
+
+MODO DEGRADADO (só quando os DOIS motores estão zerados):
  - Parte (A): confira SÓ as favoritas cujo "url" NÃO seja de olx.com.br,
    vivareal.com.br, zapimoveis.com.br, chavesnamao.com.br, imovelweb.com.br,
    quintoandar.com.br ou wimoveis.com.br. Sites de imobiliária pequena
@@ -73,8 +83,8 @@ MODO DEGRADADO:
    isso no relatório.
  - Parte (B): PULE inteira. Sem o renderizador não há como buscar novidade.
  - No "text", a PRIMEIRA linha tem que ser o aviso, nesta forma:
-   "⚠️ Firecrawl sem crédito nas DUAS contas — a busca de novidades não rodou.
-    Reponha crédito em firecrawl.dev para a próxima segunda."
+   "⚠️ Firecrawl E scrape.do sem crédito — a busca de novidades não rodou.
+    Reponha crédito para a próxima segunda."
  - Mande o POST final assim mesmo. Um aviso curto e honesto chegando de manhã
    vale mais que uma execução inteira gasta descobrindo o mesmo no meio.
 
@@ -83,7 +93,13 @@ Diagnóstico rápido (para quem for repor): a conta 1 se consulta com
       https://api.firecrawl.dev/v2/team/credit-usage
 A chave da conta 2 é "sensitive" na Vercel e não pode ser lida de volta — o
 teste válido dela é justamente o 402 do /api/buscar, porque o failover só
-devolve 402 quando a ÚLTIMA chave também falhou por crédito.
+devolve 402 quando a ÚLTIMA chave também falhou por crédito. O saldo do
+scrape.do vem de graça em "creditos_restantes" toda vez que ele responde.
+
+Custo do motor reserva (medido em 27/07): ficha e busca do VivaReal e ficha da
+OLX voltam completas por 1 crédito. O /api/buscar só escala para render (5) ou
+residencial (25) quando o alvo bloqueia de fato. Uma rodada semanal inteira
+custa algo como 50 créditos, e a franquia grátis é de 1.000 por mês.
 
 --- PARTE (A) — VERIFICAR O QUE JÁ ESTÁ NO SITE — PRIORIDADE ---
 Quais conferir, nesta ordem, até ~25 verificações:
