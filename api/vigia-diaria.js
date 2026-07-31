@@ -359,18 +359,51 @@ async function marcarMorta(linha, motivo) {
   if (!r.ok) throw new Error(`Baserow devolveu ${r.status}`);
 }
 
+/* Devolve {ok, detalhe}. O detalhe vai para a resposta JSON porque um
+ * "avisado: false" mudo não diz se faltou variável, se a instância caiu ou se
+ * o número foi recusado — e sem o WhatsApp a casa sai do site em silêncio. */
 async function avisar(texto) {
-  if (!EVO_URL || !EVO_KEY || !EVO_INSTANCIA || !PARA) return false;
+  const faltando = [
+    !EVO_URL && "EVOLUTION_URL",
+    !EVO_KEY && "EVOLUTION_API_KEY",
+    !EVO_INSTANCIA && "EVOLUTION_INSTANCE",
+    !PARA && "WHATSAPP_TO",
+  ].filter(Boolean);
+  if (faltando.length) return { ok: false, detalhe: `faltam variáveis: ${faltando.join(", ")}` };
   try {
     const r = await fetch(`${EVO_URL}/message/sendText/${EVO_INSTANCIA}`, {
       method: "POST",
       headers: { apikey: EVO_KEY, "Content-Type": "application/json" },
       body: JSON.stringify({ number: PARA, text: texto }),
     });
-    return r.ok;
+    if (r.ok) return { ok: true, detalhe: `enviado (${r.status})` };
+    const corpo = await r.text().catch(() => "");
+    return { ok: false, detalhe: `Evolution devolveu ${r.status}: ${corpo.slice(0, 300)}` };
   } catch (e) {
-    return false;
+    return { ok: false, detalhe: `rede falhou ao falar com a Evolution: ${e.message}` };
   }
+}
+
+/* Só consulta o estado da instância — não manda mensagem nenhuma. Serve para
+ * saber se o WhatsApp está de pé sem torrar a paciência dela com teste. */
+async function estadoDoWhatsApp() {
+  if (!EVO_URL || !EVO_KEY || !EVO_INSTANCIA) return { erro: "faltam variáveis da Evolution" };
+  const sondar = async (caminho, comChave) => {
+    try {
+      const r = await fetch(`${EVO_URL}${caminho}`, { headers: comChave ? { apikey: EVO_KEY } : {} });
+      const corpo = await r.text().catch(() => "");
+      return { http: r.status, corpo: corpo.slice(0, 300) };
+    } catch (e) {
+      return { erro: e.message };
+    }
+  };
+  return {
+    host: (() => { try { return new URL(EVO_URL).host; } catch { return "URL inválida"; } })(),
+    instancia: EVO_INSTANCIA,
+    servidor_de_pe: await sondar("/", false),
+    com_chave: await sondar(`/instance/connectionState/${EVO_INSTANCIA}`, true),
+    lista_instancias: await sondar("/instance/fetchInstances", true),
+  };
 }
 
 const rotulo = (l) => `${l.city || "?"} — ${l.cond || l.title || "sem nome"}`;
@@ -387,6 +420,12 @@ export default async function handler(req, res) {
   }
   if (!BASEROW_URL || !BASEROW_TOKEN || !BASEROW_TABLE) {
     return res.status(500).json({ error: "Faltam as variáveis do Baserow." });
+  }
+
+  /* ?diag=1 — só checa se o WhatsApp está conectado. Não varre nada, não
+   * gasta crédito e não manda mensagem. */
+  if (req.query?.diag === "1") {
+    return res.status(200).json({ whatsapp: await estadoDoWhatsApp() });
   }
 
   let linhas;
@@ -486,12 +525,15 @@ export default async function handler(req, res) {
 
   /* Silêncio é o padrão: só avisa quando muda. */
   let avisado = false;
+  let aviso_detalhe = "nada mudou, não havia o que avisar";
   if (mortas.length) {
     const txt =
       `🚫 ${mortas.length === 1 ? "Uma casa saiu do ar" : `${mortas.length} casas saíram do ar`}:\n` +
       mortas.map((m) => `• ${m}`).join("\n") +
       `\n\nJá tirei do site. casas-three.vercel.app`;
-    avisado = await avisar(txt);
+    const envio = await avisar(txt);
+    avisado = envio.ok;
+    aviso_detalhe = envio.detalhe;
   }
 
   return res.status(200).json({
@@ -506,6 +548,7 @@ export default async function handler(req, res) {
     creditos_scrapedo,
     teto_pago: MAX_PAGO,
     avisado,
+    aviso_detalhe,
     segundos: Math.round((Date.now() - t0) / 1000),
     detalhe_incertas: incertas,
     falhas,
