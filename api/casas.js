@@ -22,6 +22,10 @@ const CAMPOS_MINE = [
 
 const STATUS_VALIDOS = ["contatar", "aguardando", "visita", "gostei", "descartei"];
 
+/* Linha de serviço, não é casa: guarda a hora da última varredura do vigia.
+ * Fica fora da listagem e é protegida contra escrita e exclusão pelo site. */
+const UID_CONTROLE = "_vigia";
+
 function baserow(path, options = {}) {
   return fetch(`${URL_BASE}${path}`, {
     ...options,
@@ -101,6 +105,27 @@ export default async function handler(req, res) {
   }
 
   try {
+    /* ---- estado do vigia diário ----
+     * A linha "_vigia" guarda a hora da última varredura (ver registrarBatida
+     * em vigia-diaria.js). Sem isto, cron quebrado é invisível: a tela segue
+     * mostrando o catálogo de ontem com cara de atualizado. */
+    if (req.method === "GET" && req.query.vigia === "1") {
+      const r = await baserow(
+        `/api/database/rows/table/${TABLE}/?user_field_names=true&filter__uid__equal=${UID_CONTROLE}&size=1`
+      );
+      res.setHeader("Cache-Control", "no-store");
+      if (!r.ok) return res.status(r.status).json({ error: "Falha ao ler do Baserow." });
+      const linha = (await r.json()).results?.[0];
+      const ultima = linha?.nota || null;
+      const horas = ultima ? (Date.now() - new Date(ultima).getTime()) / 3600000 : null;
+      return res.status(200).json({
+        ultima,
+        horas: horas === null ? null : Math.floor(horas),
+        atrasado: horas === null || horas >= 24,
+        resumo: linha?.ficha || "",
+      });
+    }
+
     /* ---- listar tudo ---- */
     if (req.method === "GET") {
       const todas = [];
@@ -116,7 +141,9 @@ export default async function handler(req, res) {
         page++;
       }
       res.setHeader("Cache-Control", "no-store");
-      return res.status(200).json(todas.map(normalizar));
+      return res.status(200).json(
+        todas.filter((l) => l.uid !== UID_CONTROLE).map(normalizar)
+      );
     }
 
     /* ---- criar anúncio meu ---- */
@@ -136,6 +163,13 @@ export default async function handler(req, res) {
 
     const rowId = parseInt(req.query.rowId, 10);
     if (!rowId) return res.status(400).json({ error: "rowId ausente." });
+
+    /* A linha de controle não é editável nem apagável pelo site: se ela sumir
+     * ou for mexida, o aviso de "vigia parado" mente. */
+    const alvo = await buscarLinha(rowId);
+    if (alvo?.uid === UID_CONTROLE) {
+      return res.status(403).json({ error: "Essa linha é de controle interno." });
+    }
 
     /* ---- atualizar ---- */
     if (req.method === "PATCH") {

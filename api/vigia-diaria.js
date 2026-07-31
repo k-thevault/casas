@@ -362,6 +362,46 @@ async function marcarMorta(linha, motivo) {
 /* Devolve {ok, detalhe}. O detalhe vai para a resposta JSON porque um
  * "avisado: false" mudo não diz se faltou variável, se a instância caiu ou se
  * o número foi recusado — e sem o WhatsApp a casa sai do site em silêncio. */
+/*
+ * Batida do vigia: uma linha de controle no Baserow (uid "_vigia") com a hora
+ * da última execução. É o que permite o site dizer "faz X horas que não rodo".
+ *
+ * Por que uma linha e não um campo novo: o token do Baserow é de banco de
+ * dados, faz CRUD de linha mas não cria campo. E por que isso importa: sem
+ * batida, um cron quebrado é invisível — o site segue mostrando o catálogo de
+ * ontem com cara de atualizado, que é exatamente o problema que esta rotina
+ * existe para resolver.
+ *
+ * A linha vai com hidden=true e é filtrada no /api/casas, então nunca aparece
+ * como se fosse casa.
+ */
+async function registrarBatida(resumo) {
+  const agora = new Date().toISOString();
+  const dados = {
+    uid: "_vigia",
+    title: "⏱️ controle do vigia diário (não é uma casa)",
+    nota: agora,
+    ficha: resumo.slice(0, 4000),
+    hidden: true,
+  };
+  const busca = await baserow(
+    `/api/database/rows/table/${BASEROW_TABLE}/?user_field_names=true&filter__uid__equal=_vigia&size=1`
+  );
+  if (!busca.ok) throw new Error(`busca da linha de controle: ${busca.status}`);
+  const achou = (await busca.json()).results?.[0];
+  const r = achou
+    ? await baserow(`/api/database/rows/table/${BASEROW_TABLE}/${achou.id}/?user_field_names=true`, {
+        method: "PATCH",
+        body: JSON.stringify(dados),
+      })
+    : await baserow(`/api/database/rows/table/${BASEROW_TABLE}/?user_field_names=true`, {
+        method: "POST",
+        body: JSON.stringify(dados),
+      });
+  if (!r.ok) throw new Error(`gravação da linha de controle: ${r.status}`);
+  return agora;
+}
+
 async function avisar(texto) {
   const faltando = [
     !EVO_URL && "EVOLUTION_URL",
@@ -536,8 +576,23 @@ export default async function handler(req, res) {
     aviso_detalhe = envio.detalhe;
   }
 
+  /* A batida é a última coisa: só marca "rodei" quem de fato chegou até aqui,
+   * tendo varrido a fila e gravado o que morreu. */
+  let batida = null;
+  let batida_erro = null;
+  try {
+    batida = await registrarBatida(
+      `Última varredura: ${fila.length} casas, ${vivas} vivas, ${mortas.length} removidas, ` +
+        `${incertas.length} sem confirmar. ${Math.round((Date.now() - t0) / 1000)}s.`
+    );
+  } catch (e) {
+    batida_erro = e.message;
+  }
+
   return res.status(200).json({
     ok: true,
+    batida,
+    batida_erro,
     verificadas: fila.length,
     vivas,
     mortas: mortas.length,

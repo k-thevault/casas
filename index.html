@@ -67,6 +67,10 @@
   .sync.ok{color:var(--accent-2)}
   .sync.err{color:#b23b3b;background:#f6e0dc}
   /* ---------- nota por aba ---------- */
+  /* Faixa de "o vigia parou". Vermelha e no topo de propósito: o risco aqui é
+     ela confiar numa lista velha achando que foi conferida hoje. */
+  .alerta{background:#fdeee9;border:1px solid #f0c3b3;border-left:3px solid var(--rose);border-radius:12px;padding:13px 17px;font-size:13.5px;color:#7d3322;margin-bottom:20px;line-height:1.6}
+  .alerta b{color:#5e2417}
   .note{background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--accent);border-radius:12px;padding:14px 18px;font-size:13.5px;color:#5f5346;margin-bottom:22px;line-height:1.65}
   .note b{color:var(--txt);font-weight:600}
   /* ---------- grupos por cidade ---------- */
@@ -141,6 +145,8 @@
     </div>
     <button id="btnAdd" class="btn-add">＋ Adicionar anúncio</button>
   </header>
+
+  <div class="alerta" id="vigiaAviso" hidden></div>
 
   <div class="stats" id="stats"></div>
 
@@ -260,6 +266,26 @@ async function loadAll(){
     if(x.hidden)HIDDEN.add(x.uid);
     if(x.status||x.nota)ST[x.uid]={s:x.status||"",n:x.nota||""};
   });
+}
+
+/* Avisa se o vigia diário parou de rodar.
+   Sem isto, cron quebrado é invisível: a tela mostra o catálogo de ontem com
+   cara de conferido hoje, e ela liga para imobiliária sobre casa que já saiu
+   do ar. Falha na consulta não mostra nada — alarme falso é pior que silêncio. */
+async function checarVigia(){
+  const el=$("#vigiaAviso"); if(!el)return;
+  try{
+    const r=await fetch(`${API}?vigia=1`,{cache:"no-store"});
+    if(!r.ok)return;
+    const v=await r.json();
+    if(!v.atrasado){ el.hidden=true; return; }
+    const quando = v.ultima
+      ? `A última foi há <b>${v.horas} horas</b> (${new Date(v.ultima).toLocaleString("pt-BR",{timeZone:"America/Sao_Paulo",day:"2-digit",month:"2-digit",hour:"2-digit",minute:"2-digit"})}).`
+      : "Não há registro de nenhuma verificação.";
+    el.innerHTML = `⚠️ <b>A verificação diária não rodou nas últimas 24h.</b> ${quando} `+
+      `As casas abaixo podem já ter saído do ar — confirme com a imobiliária antes de se animar.`;
+    el.hidden=false;
+  }catch(e){ /* silêncio: não dá pra confiar no alarme se nem a consulta foi */ }
 }
 
 /* Grava um campo. A tela já foi atualizada antes de chamar isto (otimista),
@@ -601,6 +627,7 @@ $("#aSave").addEventListener("click",async()=>{
     await loadAll();
     sync("sincronizado ✓","ok");
     setStats();fillCities();setNote();apply();
+    checarVigia();
   }catch(e){
     sync("sem conexão","err");
     list.innerHTML='<div class="empty">Não consegui carregar as casas agora.<br>'+
