@@ -196,6 +196,7 @@
       <label class="toggle"><input type="checkbox" id="fPet"> aceita pet</label>
       <label class="toggle"><input type="checkbox" id="fOffice"> com escritório</label>
       <label class="toggle"><input type="checkbox" id="fFav"> só favoritas ❤️</label>
+      <label class="toggle"><input type="checkbox" id="fNotFav"> só não-favoritas 🤍</label>
       <label class="toggle"><input type="checkbox" id="fShowHidden"> mostrar ocultas</label>
       <span class="sync" id="sync" title="Seus favoritos, situações e anotações ficam salvos na nuvem e aparecem em qualquer aparelho"></span>
     </div>
@@ -480,11 +481,11 @@ function apply(){
   syncToggleStates();
   const city=fCity.value, maxP=+$("#fPrice").value, sort=$("#fSort").value;
   const onlyCond=$("#fCond").checked, onlyPet=$("#fPet").checked, onlyOff=$("#fOffice").checked;
-  const onlyFav=$("#fFav").checked, showHidden=$("#fShowHidden").checked;
+  const onlyFav=$("#fFav").checked, onlyNotFav=$("#fNotFav").checked, showHidden=$("#fShowHidden").checked;
   const stFilter=$("#fStatus").value;
   let r=allItems().filter(d=>{
     const id=d.uid;
-    if(!onlyFav&&!inCat(d))return false;
+    if(!onlyFav&&!onlyNotFav&&!inCat(d))return false;
     /* Arquivadas (ocultas + "descartei") somem por padrão. Um filtro de
        situação explícito ou "mostrar ocultas" as reexibe. */
     if(!stFilter){
@@ -492,6 +493,7 @@ function apply(){
       if(showHidden&&!arquivada(d))return false;
     }
     if(onlyFav&&!FAVS.has(id))return false;
+    if(onlyNotFav&&FAVS.has(id))return false;
     if(city&&d.city!==city)return false;
     /* O teto vem em reais de aluguel ou de venda, conforme a aba. Só aplicar
        quando for da mesma natureza — senão uma casa à venda some ao aparecer
@@ -553,7 +555,11 @@ document.querySelectorAll(".tab").forEach(t=>t.addEventListener("click",()=>{
   document.querySelectorAll(".tab").forEach(x=>x.classList.remove("active"));
   t.classList.add("active");CAT=t.dataset.cat;fillCities();setNote();apply();
 }));
-["change","input"].forEach(ev=>document.querySelectorAll("#fCity,#fPrice,#fSort,#fCond,#fPet,#fOffice,#fFav,#fShowHidden,#fStatus,#fEntrada").forEach(el=>el.addEventListener(ev,apply)));
+/* Favoritas e nao-favoritas sao mutuamente exclusivas: marcar um desmarca
+   o outro, para nao pedir "favorita E nao-favorita" (resultado sempre zero). */
+$("#fFav").addEventListener("change",e=>{ if(e.target.checked) $("#fNotFav").checked=false; });
+$("#fNotFav").addEventListener("change",e=>{ if(e.target.checked) $("#fFav").checked=false; });
+["change","input"].forEach(ev=>document.querySelectorAll("#fCity,#fPrice,#fSort,#fCond,#fPet,#fOffice,#fFav,#fNotFav,#fShowHidden,#fStatus,#fEntrada").forEach(el=>el.addEventListener(ev,apply)));
 
 /* ===== Adicionar / editar meus anúncios ===== */
 const panel=$("#addPanel");
