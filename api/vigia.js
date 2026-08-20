@@ -112,12 +112,41 @@ async function lerCatalogo() {
 }
 
 async function enviarWhatsapp(texto) {
-  const r = await fetch(`${EVO_URL}/message/sendText/${EVO_INSTANCIA}`, {
-    method: "POST",
-    headers: { apikey: EVO_KEY, "Content-Type": "application/json" },
-    body: JSON.stringify({ number: PARA, text: texto }),
-  });
-  return r.ok;
+  try {
+    const r = await fetch(`${EVO_URL}/message/sendText/${EVO_INSTANCIA}`, {
+      method: "POST",
+      headers: { apikey: EVO_KEY, "Content-Type": "application/json" },
+      body: JSON.stringify({ number: PARA, text: texto }),
+    });
+    if (r.ok) return { ok: true, detalhe: `enviado (${r.status})` };
+    const corpo = await r.text().catch(() => "");
+    return { ok: false, detalhe: `Evolution devolveu ${r.status}: ${corpo.slice(0, 300)}` };
+  } catch (e) {
+    return { ok: false, detalhe: `rede falhou ao falar com a Evolution: ${e.message}` };
+  }
+}
+
+/* Só consulta o estado da instância — não manda mensagem nenhuma. Serve pra
+ * diagnosticar quando a Evolution recusa envio (apikey trocada, instância
+ * desconectada, URL mudou) sem gastar chamada nem torrar paciência com teste. */
+async function estadoDoWhatsApp() {
+  if (!EVO_URL || !EVO_KEY || !EVO_INSTANCIA) return { erro: "faltam variáveis da Evolution" };
+  const sondar = async (caminho, comChave) => {
+    try {
+      const r = await fetch(`${EVO_URL}${caminho}`, { headers: comChave ? { apikey: EVO_KEY } : {} });
+      const corpo = await r.text().catch(() => "");
+      return { http: r.status, corpo: corpo.slice(0, 300) };
+    } catch (e) {
+      return { erro: e.message };
+    }
+  };
+  return {
+    host: (() => { try { return new URL(EVO_URL).host; } catch { return "URL inválida"; } })(),
+    instancia: EVO_INSTANCIA,
+    servidor_de_pe: await sondar("/", false),
+    com_chave: await sondar(`/instance/connectionState/${EVO_INSTANCIA}`, true),
+    lista_instancias: await sondar("/instance/fetchInstances", true),
+  };
 }
 
 export default async function handler(req, res) {
@@ -132,6 +161,13 @@ export default async function handler(req, res) {
   /* Sem isto, qualquer um que achasse a URL poderia disparar mensagem. */
   if ((req.headers["x-vigia-secret"] || "") !== SEGREDO) {
     return res.status(401).json({ error: "Não autorizado." });
+  }
+
+  /* ?diag=1 — só checa se o WhatsApp está conectado. Não grava, não envia,
+   * não gasta crédito. Serve pra descobrir o que a Evolution está reclamando
+   * quando o envio real falha. */
+  if (req.query?.diag === "1") {
+    return res.status(200).json({ whatsapp: await estadoDoWhatsApp() });
   }
 
   const corpo = req.body || {};
@@ -294,16 +330,18 @@ export default async function handler(req, res) {
   /* O WhatsApp engasga com mensagem muito longa: cortar é melhor que perder. */
   if (texto.length > 3500) texto = texto.slice(0, 3400) + "\n\n[…cortado — veio longo esta semana]";
 
-  let enviado = false;
+  let envio = { ok: false, detalhe: "" };
   try {
-    enviado = await enviarWhatsapp(texto);
+    envio = await enviarWhatsapp(texto);
   } catch (e) {
-    enviado = false;
+    envio = { ok: false, detalhe: `exceção: ${e.message}` };
   }
 
-  /* Se gravou e o WhatsApp falhou, ainda foi um sucesso parcial: ela vê no site. */
-  if (!enviado && !casas.length && !indisponiveis.length) {
-    return res.status(502).json({ error: "Evolution recusou o envio." });
+  /* Se gravou e o WhatsApp falhou, ainda foi um sucesso parcial: ela vê no site.
+   * O detalhe da recusa da Evolution vai junto pra facilitar diagnóstico
+   * (apikey errada, instância desconectada, número mudou etc.). */
+  if (!envio.ok && !casas.length && !indisponiveis.length) {
+    return res.status(502).json({ error: "Evolution recusou o envio.", detalhe: envio.detalhe });
   }
-  return res.status(200).json({ ok: true, enviado, ...resultado });
+  return res.status(200).json({ ok: true, enviado: envio.ok, envio_detalhe: envio.detalhe, ...resultado });
 }
