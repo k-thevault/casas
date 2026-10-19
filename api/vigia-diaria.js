@@ -125,7 +125,32 @@ const SINAIS_MORTE_PORTAL = [
   "nao conseguimos encontrar a pagina",
   "vi_not_found_web",
   "adview_not_found",
+  /* Chaves na Mão, medido em 19/10/2026: o anúncio morto continua 200 com a
+   * ficha inteira, e só esta faixa diz que acabou. Não existe em anúncio vivo
+   * (conferido em dois vivos do mesmo portal). Duas casas mortas passaram
+   * semanas como "vivas" por falta desta linha. */
+  "foi vendido/alugado ou está indisponível",
+  "unavailable_unavailablemessage",
+  /* Sites de imobiliária feitos em Next.js (os da Loft, por exemplo) devolvem
+   * 200 com "Carregando..." e só no navegador viram "404". O recado vem
+   * embutido no HTML com esta marca, que o Next só escreve quando a página não
+   * existe. Medido em 19/10/2026 na A Favorita (Bragança). */
+  "next_http_error_fallback;404",
 ];
+
+/* Anúncio que, ao abrir, cai na página inicial da imobiliária: é o jeito de
+ * site pequeno dizer "esse imóvel não existe mais" sem dar 404. Foi o caso da
+ * Eurico Imóveis (Valinhos) em 19/10/2026, que o vigia contava como viva. */
+function caiuNaHome(original, final) {
+  try {
+    const a = new URL(original);
+    const b = new URL(final);
+    const raiz = (p) => p.replace(/\/+$/, "") === "";
+    return !raiz(a.pathname) && raiz(b.pathname);
+  } catch {
+    return false;
+  }
+}
 
 function baserow(path, options = {}) {
   return fetch(`${BASEROW_URL}${path}`, {
@@ -204,18 +229,44 @@ async function firecrawlScrape(payload) {
  * Só o 404/410 condena aqui; frase suspeita vira 'suspeita' e vai para o
  * passe 3, onde o onlyMainContent do Firecrawl descarta menu e rodapé.
  */
+/* Sinal de morte que não depende de frase genérica: a faixa de "indisponível"
+ * do portal ou o pulo para a página inicial. Devolve o motivo, ou null. */
+function morteClara(url, final, html) {
+  if (caiuNaHome(url, final)) return "o anúncio agora abre a página inicial da imobiliária";
+  const achou = SINAIS_MORTE_PORTAL.find((s) => html.includes(s));
+  if (!achou) return null;
+  if (achou.startsWith("next_")) return "o site da imobiliária diz que a página não existe mais";
+  if (achou.startsWith("unavailable_")) return "o portal diz que o imóvel foi vendido/alugado ou está indisponível";
+  return `a página do portal diz "${achou}"`;
+}
+
 export async function checarDireto(url) {
-  try {
+  const ler = async (semCache) => {
     const r = await fetch(url, {
-      headers: CABECALHOS,
+      headers: semCache ? { ...CABECALHOS, "Cache-Control": "no-cache", Pragma: "no-cache" } : CABECALHOS,
       redirect: "follow",
       signal: AbortSignal.timeout(TIMEOUT_FETCH_MS),
     });
+    return { r, html: r.ok ? (await r.text()).toLowerCase() : "" };
+  };
+  try {
+    const { r, html } = await ler(false);
     if (r.status === 404 || r.status === 410) {
       return { estado: "morto", http: r.status, motivo: `página responde ${r.status}` };
     }
     if (r.ok) {
-      const html = (await r.text()).toLowerCase();
+      /* Vem antes do teste de tamanho: a home de imobiliária pequena pode ser
+       * curta, e ainda assim o pulo para ela é o recado. */
+      const clara = morteClara(url, r.url, html);
+      if (clara) {
+        /* Mesma regra do passe 2: segunda leitura independente tem que
+         * concordar, senão não apaga. */
+        const segunda = await ler(true).catch(() => null);
+        if (segunda?.r.ok && morteClara(url, segunda.r.url, segunda.html)) {
+          return { estado: "morto", http: r.status, motivo: `${clara} (confirmado em 2 leituras)` };
+        }
+        return { estado: "suspeita", http: r.status, motivo: `${clara}, mas a 2ª leitura discordou` };
+      }
       if (html.length < 3000) {
         return { estado: "bloqueado", http: r.status, motivo: "página veio quase vazia" };
       }
