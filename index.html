@@ -197,6 +197,11 @@
   .dk-linha .dk-info b{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
   .dk-pos{font-family:var(--serif);color:var(--muted);width:22px;text-align:center;flex-shrink:0}
   .dk-sep{margin:22px 0 10px;font-size:12px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted)}
+  .dk-star{background:none;border:none;cursor:pointer;font-size:22px;line-height:1;padding:2px 4px;color:#cdbfa8;vertical-align:middle;transition:transform .12s}
+  .dk-star.on{color:#e0a526}
+  .dk-star:hover{transform:scale(1.15)}
+  .dk-t .dk-star{font-size:17px;padding:0 4px 0 0}
+  .dk-city.dk-fav{border-color:#e0a526;box-shadow:0 0 0 2px rgba(224,165,38,.25)}
   @media(max-width:640px){ .dk-fortes{grid-template-columns:1fr} .dk-head h2{font-size:22px}
     .dk-linha{gap:9px} .dk-linha .dk-ph{width:64px;height:56px} .dk-pos{width:16px}
     .dk-linha .dk-pr{font-size:15.5px} .dk-linha .dk-info{font-size:12.5px}
@@ -702,8 +707,8 @@ $("#aSave").addEventListener("click",async()=>{
    A ficha das cidades vem de /cidades.json (pesquisa feita à mão, com fontes).
    As casas vêm das favoritas de verdade: dar coração numa casa já a põe aqui.
    Cidade nova sem ficha aparece com o aviso "ainda não pesquisada". */
-let CIDADES=null, DK_ORD="seg";
-try{ DK_ORD=localStorage.getItem("dkOrd")||"seg"; }catch(_){}
+let CIDADES=null, DK_ORD="seg", DK_SO_ESTRELA=false, ESTRELAS=new Set();
+try{ DK_ORD=localStorage.getItem("dkOrd")||"seg"; DK_SO_ESTRELA=localStorage.getItem("dkSoEstrela")==="1"; }catch(_){}
 const semAcento=s=>String(s||"").normalize("NFD").replace(/[̀-ͯ]/g,"").toLowerCase().trim();
 const esc=s=>String(s??"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 const dkNum=v=>v==null?"":Number(v).toLocaleString("pt-BR",{maximumFractionDigits:1});
@@ -712,14 +717,33 @@ const dkLink=(txt,url)=>/^https?:\/\//.test(url||"")?`${esc(txt)} <a href="${esc
 const dkUl=(arr,f)=>arr&&arr.length?`<ul>${arr.map(f).join("")}</ul>`:"<p>Não encontrado.</p>";
 const dkPico=s=>String(s||"").split(" (")[0];
 async function carregaCidades(){
-  try{ const r=await fetch("/cidades.json",{cache:"no-cache"}); CIDADES=r.ok?await r.json():{}; }
-  catch(_){ CIDADES={}; }
+  const [c,e]=await Promise.all([
+    fetch("/cidades.json",{cache:"no-cache"}).then(r=>r.ok?r.json():{}).catch(()=>({})),
+    fetch(`${API}?estrelas=1`,{cache:"no-store"}).then(r=>r.ok?r.json():{estrelas:[]}).catch(()=>({estrelas:[]})),
+  ]);
+  CIDADES=c; ESTRELAS=new Set((e.estrelas||[]).map(semAcento));
   if(CAT==="decidir"||CAT==="preco") desenhaDecidir();
 }
 function fichaDe(cidade){
   if(!CIDADES) return null;
   const k=semAcento(cidade);
   return Object.values(CIDADES).find(c=>semAcento(c.cidade)===k)||null;
+}
+/* Estrela de cidade: salva na nuvem (linha de serviço "_cidades" no Baserow),
+   aparece em qualquer aparelho. Se falhar, desfaz na tela e avisa. */
+const temEstrela=n=>ESTRELAS.has(semAcento(n));
+function dkEstrelaBtn(n){ const on=temEstrela(n); return `<button class="dk-star${on?" on":""}" data-estrela="${esc(n)}" title="${on?"Tirar a estrela":"Marcar que gostei mais desta cidade"}" aria-label="estrela">${on?"★":"☆"}</button>`; }
+async function alternaEstrela(n){
+  const k=semAcento(n), antes=new Set(ESTRELAS);
+  ESTRELAS.has(k)?ESTRELAS.delete(k):ESTRELAS.add(k);
+  desenhaDecidir(); sync("salvando…","");
+  const nomes=[...new Set([...favoritasVisiveis().map(d=>d.city),...Object.keys(CIDADES||{})])];
+  const lista=[...ESTRELAS].map(x=>nomes.find(c=>semAcento(c)===x)||x);
+  try{
+    const r=await fetch(`${API}?estrelas=1`,{method:"PUT",headers:{"Content-Type":"application/json"},body:JSON.stringify({estrelas:lista})});
+    if(!r.ok) throw new Error();
+    sync("sincronizado ✓","ok");
+  }catch(_){ ESTRELAS=antes; desenhaDecidir(); sync("não salvou a estrela","err"); }
 }
 function favoritasVisiveis(){ return allItems().filter(d=>FAVS.has(d.uid)&&!arquivada(d)); }
 function dkFoto(d){ return d.img?`<img src="/api/img?u=${encodeURIComponent(d.img)}" alt="" loading="lazy" onerror="this.remove();">`:""; }
@@ -751,10 +775,10 @@ function dkFicha(cidade,casas){
   const c=fichaDe(cidade);
   const lista=`<div class="dk-casas"><h3>Suas favoritas aqui (${casas.length})</h3>${casas.map(dkCasa).join("")}</div>`;
   const id="dk-"+semAcento(cidade).replace(/\W+/g,"-");
-  if(!c) return `<div class="dk-city" id="${id}"><div class="dk-head"><div><h2>${esc(cidade)}</h2><div class="dk-meta">⏳ Cidade ainda não pesquisada. A ficha entra na próxima atualização.</div></div></div>${lista}</div>`;
+  if(!c) return `<div class="dk-city" id="${id}"><div class="dk-head"><div><h2>${dkEstrelaBtn(cidade)}${esc(cidade)}</h2><div class="dk-meta">⏳ Cidade ainda não pesquisada. A ficha entra na próxima atualização.</div></div></div>${lista}</div>`;
   const s=c.seguranca||{}, p=c.periferia||{}, sa=c.saude||{}, m=sa.maternidade||{}, v=c.veterinario_24h||{}, dia=c.dia_a_dia||{}, pop=dkPop(c);
-  return `<div class="dk-city" id="${id}">
-    <div class="dk-head"><div><h2>${esc(c.cidade)}</h2><div class="dk-meta">${pop?Math.round(pop/1000)+" mil habitantes · ":""}${esc(c.populacao?.porte)}</div></div>
+  return `<div class="dk-city${temEstrela(cidade)?" dk-fav":""}" id="${id}">
+    <div class="dk-head"><div><h2>${dkEstrelaBtn(cidade)}${esc(c.cidade)}</h2><div class="dk-meta">${pop?Math.round(pop/1000)+" mil habitantes · ":""}${esc(c.populacao?.porte)}</div></div>
       <div class="dk-big"><span class="dk-nota ${dkCls(s.nota)}">${dkNum(s.nota)}</span><small>segurança</small></div></div>
     <p class="dk-resumo">${esc(c.resumo)}</p>
     <div class="dk-dist">${dkDist("🏙️ São Paulo",c.distancias?.sp)}${dkDist("👨‍👩‍👧 Itupeva",c.distancias?.itupeva)}${dkDist("✈️ Viracopos",c.distancias?.viracopos)}${dkDist("✈️ Guarulhos",c.distancias?.guarulhos)}${dkDist("✈️ Congonhas",c.distancias?.congonhas)}</div>
@@ -798,14 +822,15 @@ function desenhaDecidir(){
   if(CAT==="preco"){
     const linha=(d,i)=>{const c=fichaDe(d.city);
       return `<a class="dk-linha" href="${esc(d.url||"#")}" target="_blank" rel="noopener"><span class="dk-pos">${i+1}</span><div class="dk-ph">${dkFoto(d)}</div>
-      <div class="dk-info"><b>${esc(d.cond||d.title)}</b>${esc(d.city)}${c?` <span class="dk-nota ${dkCls(c.seguranca?.nota)}" style="font-size:11px;padding:0 5px;min-width:0">${dkNum(c.seguranca?.nota)}</span>`:""}<br>${d.q?d.q+" quartos":""}${d.area?" · "+d.area+" m²":""}${ST[d.uid]?.s==="gostei"?" · 💚":""}</div>
+      <div class="dk-info"><b>${esc(d.cond||d.title)}</b>${temEstrela(d.city)?'<span style="color:#e0a526">★</span> ':""}${esc(d.city)}${c?` <span class="dk-nota ${dkCls(c.seguranca?.nota)}" style="font-size:11px;padding:0 5px;min-width:0">${dkNum(c.seguranca?.nota)}</span>`:""}<br>${d.q?d.q+" quartos":""}${d.area?" · "+d.area+" m²":""}${ST[d.uid]?.s==="gostei"?" · 💚":""}</div>
       <div class="dk-pr">${money(d.price)}${d.price!=null&&!ehVenda(d)?"<br><small>/mês</small>":""}</div></a>`;};
     const alug=favs.filter(d=>!ehVenda(d)).sort(ordPreco), venda=favs.filter(ehVenda).sort(ordPreco);
     list.innerHTML=alug.map(linha).join("")+(venda.length?`<div class="dk-sep">À venda</div>`+venda.map((d,i)=>linha(d,alug.length+i)).join(""):"");
     return;
   }
   const g={}; favs.forEach(d=>(g[d.city||"Sem cidade"]||=[]).push(d));
-  const nomes=Object.keys(g);
+  let nomes=Object.keys(g);
+  if(DK_SO_ESTRELA&&nomes.some(temEstrela)) nomes=nomes.filter(temEstrela);
   const km=(n,k)=>fichaDe(n)?.distancias?.[k]?.km??Infinity;
   const ORD={seg:(a,b)=>(fichaDe(b)?.seguranca?.nota??-1)-(fichaDe(a)?.seguranca?.nota??-1),
     sp:(a,b)=>km(a,"sp")-km(b,"sp"), itu:(a,b)=>km(a,"itupeva")-km(b,"itupeva"),
@@ -815,15 +840,18 @@ function desenhaDecidir(){
   const tabela=`<div class="dk-cmp"><h2>Comparando as cidades</h2><p>Toque no nome para ir até a ficha. No celular, arraste a tabela para o lado.</p>
     <div class="dk-scroll"><table class="dk-t"><tr><th>Cidade</th><th>Segurança</th><th>Habitantes</th><th>SP (pico)</th><th>Itupeva (pico)</th><th>Maternidade</th><th>Casas</th><th>A partir de</th></tr>`+
     nomes.map(n=>{const c=fichaDe(n), mp=Math.min(...g[n].map(precoAluguel)), pop=dkPop(c);
-      return `<tr><td><a href="#dk-${semAcento(n).replace(/\W+/g,"-")}">${esc(n)}</a></td>
+      return `<tr><td>${dkEstrelaBtn(n)}<a href="#dk-${semAcento(n).replace(/\W+/g,"-")}">${esc(n)}</a></td>
       <td>${c?`<span class="dk-nota ${dkCls(c.seguranca?.nota)}">${dkNum(c.seguranca?.nota)}</span>`:"⏳"}</td>
       <td class="n">${pop?Math.round(pop/1000)+" mil":"…"}</td><td class="n">${c?esc(dkPico(c.distancias?.sp?.pico)):"…"}</td>
       <td class="n">${c?esc(dkPico(c.distancias?.itupeva?.pico)):"…"}</td><td>${c?dkTemUTI(c):"…"}</td>
       <td class="n">${g[n].length}</td><td class="n">${mp<Infinity?money(mp):"só compra"}</td></tr>`;}).join("")+`</table></div></div>`;
   const bts=[["seg","🛡️ mais segura"],["sp","🚗 mais perto de SP"],["itu","👨‍👩‍👧 mais perto de Itupeva"],["pop","🏡 cidade menor"],["preco","💰 casa mais barata"]];
-  const barra=`<div class="dk-bar">Ordenar cidades por: ${bts.map(([k,r])=>`<button data-dkord="${k}" class="${k===DK_ORD?"on":""}">${r}</button>`).join("")}</div>`;
+  const barra=`<div class="dk-bar">Ordenar cidades por: ${bts.map(([k,r])=>`<button data-dkord="${k}" class="${k===DK_ORD?"on":""}">${r}</button>`).join("")}
+    <button data-dkso class="${DK_SO_ESTRELA?"on":""}">★ só as com estrela</button></div>`;
   list.innerHTML=tabela+barra+nomes.map(n=>dkFicha(n,g[n].sort(ordPreco))).join("");
   list.querySelectorAll("[data-dkord]").forEach(b=>b.onclick=()=>{ DK_ORD=b.dataset.dkord; try{localStorage.setItem("dkOrd",DK_ORD);}catch(_){} desenhaDecidir(); });
+  list.querySelectorAll("[data-dkso]").forEach(b=>b.onclick=()=>{ DK_SO_ESTRELA=!DK_SO_ESTRELA; try{localStorage.setItem("dkSoEstrela",DK_SO_ESTRELA?"1":"0");}catch(_){} desenhaDecidir(); });
+  list.querySelectorAll("[data-estrela]").forEach(b=>b.onclick=e=>{ e.preventDefault(); e.stopPropagation(); alternaEstrela(b.dataset.estrela); });
 }
 
 /* ---------- início ---------- */

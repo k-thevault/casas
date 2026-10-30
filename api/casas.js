@@ -26,6 +26,29 @@ const STATUS_VALIDOS = ["contatar", "aguardando", "visita", "gostei", "descartei
  * Fica fora da listagem e é protegida contra escrita e exclusão pelo site. */
 const UID_CONTROLE = "_vigia";
 
+/* Outra linha de serviço: as cidades que ela marcou com estrela na aba
+ * "Decidir", guardadas como lista JSON no campo nota. Toda linha com uid
+ * começando em "_" é de serviço: fora da listagem e da edição por rowId. */
+const UID_ESTRELAS = "_cidades";
+const ehServico = (uid) => String(uid || "").startsWith("_");
+
+async function linhaEstrelas() {
+  const r = await baserow(
+    `/api/database/rows/table/${TABLE}/?user_field_names=true&filter__uid__equal=${UID_ESTRELAS}&size=1`
+  );
+  if (!r.ok) throw new Error("leitura");
+  return (await r.json()).results?.[0] || null;
+}
+
+function lerEstrelas(linha) {
+  try {
+    const v = JSON.parse(linha?.nota || "[]");
+    return Array.isArray(v) ? v.filter((x) => typeof x === "string") : [];
+  } catch (e) {
+    return [];
+  }
+}
+
 function baserow(path, options = {}) {
   return fetch(`${URL_BASE}${path}`, {
     ...options,
@@ -126,6 +149,30 @@ export default async function handler(req, res) {
       });
     }
 
+    /* ---- cidades com estrela ---- */
+    if (req.query.estrelas === "1" && req.method === "GET") {
+      const linha = await linhaEstrelas();
+      res.setHeader("Cache-Control", "no-store");
+      return res.status(200).json({ estrelas: lerEstrelas(linha) });
+    }
+    if (req.query.estrelas === "1" && req.method === "PUT") {
+      const lista = Array.isArray(req.body?.estrelas) ? req.body.estrelas : [];
+      const estrelas = [...new Set(lista.filter((x) => typeof x === "string").map((x) => x.trim().slice(0, 60)).filter(Boolean))].slice(0, 100);
+      const nota = JSON.stringify(estrelas);
+      const linha = await linhaEstrelas();
+      const r = linha
+        ? await baserow(`/api/database/rows/table/${TABLE}/${linha.id}/?user_field_names=true`, {
+            method: "PATCH",
+            body: JSON.stringify({ nota }),
+          })
+        : await baserow(`/api/database/rows/table/${TABLE}/?user_field_names=true`, {
+            method: "POST",
+            body: JSON.stringify({ uid: UID_ESTRELAS, nota }),
+          });
+      if (!r.ok) return res.status(r.status).json({ error: "Falha ao salvar as estrelas." });
+      return res.status(200).json({ estrelas });
+    }
+
     /* ---- listar tudo ---- */
     if (req.method === "GET") {
       const todas = [];
@@ -142,7 +189,7 @@ export default async function handler(req, res) {
       }
       res.setHeader("Cache-Control", "no-store");
       return res.status(200).json(
-        todas.filter((l) => l.uid !== UID_CONTROLE).map(normalizar)
+        todas.filter((l) => !ehServico(l.uid)).map(normalizar)
       );
     }
 
@@ -167,7 +214,7 @@ export default async function handler(req, res) {
     /* A linha de controle não é editável nem apagável pelo site: se ela sumir
      * ou for mexida, o aviso de "vigia parado" mente. */
     const alvo = await buscarLinha(rowId);
-    if (alvo?.uid === UID_CONTROLE) {
+    if (ehServico(alvo?.uid)) {
       return res.status(403).json({ error: "Essa linha é de controle interno." });
     }
 
@@ -199,7 +246,7 @@ export default async function handler(req, res) {
       return res.status(200).json({ ok: true });
     }
 
-    res.setHeader("Allow", "GET, POST, PATCH, DELETE");
+    res.setHeader("Allow", "GET, POST, PUT, PATCH, DELETE");
     return res.status(405).json({ error: "Método não suportado." });
   } catch (e) {
     return res.status(500).json({ error: "Erro inesperado no proxy." });
