@@ -134,6 +134,11 @@
   .empty{color:var(--muted);padding:44px;text-align:center;background:var(--panel);border:1px solid var(--line);border-radius:16px;font-size:14px}
   footer{margin-top:52px;color:var(--muted);font-size:11.5px;text-align:center;border-top:1px solid var(--line);padding-top:22px;line-height:1.75;max-width:80ch;margin-left:auto;margin-right:auto}
   @media(max-width:640px){ .hdr{flex-direction:column} .hdr h1{font-size:34px} .btn-add{width:100%} }
+  /* No celular os filtros ocupam a tela toda: somem ao descer e voltam ao subir. */
+  @media(max-width:640px){
+    .controls{transition:transform .25s ease,opacity .25s ease}
+    .controls.recolhido{transform:translateY(calc(-100% - 24px));opacity:0;pointer-events:none}
+  }
   /* ---------- abas "Decidir" e "Favoritas por preço" ---------- */
   .dk-cmp{background:var(--panel);border:1px solid var(--line);border-radius:14px;overflow:hidden;margin-bottom:18px;box-shadow:var(--shadow)}
   .dk-cmp h2{font-family:var(--serif);font-weight:600;font-size:20px;margin:0;padding:14px 16px 2px}
@@ -867,6 +872,19 @@ function desenhaDecidir(){
   list.querySelectorAll("[data-dkso]").forEach(b=>b.onclick=()=>{ DK_SO_ESTRELA=!DK_SO_ESTRELA; try{localStorage.setItem("dkSoEstrela",DK_SO_ESTRELA?"1":"0");}catch(_){} desenhaDecidir(); });
   list.querySelectorAll("[data-estrela]").forEach(b=>b.onclick=e=>{ e.preventDefault(); e.stopPropagation(); alternaEstrela(b.dataset.estrela); });
 }
+
+/* ---------- filtros recolhem ao rolar (celular) ---------- */
+(function(){
+  const painel=document.querySelector(".controls");
+  let ultimoY=window.scrollY;
+  window.addEventListener("scroll",()=>{
+    const y=window.scrollY;
+    if(window.innerWidth>640||y<200) painel.classList.remove("recolhido");
+    else if(y>ultimoY+8) painel.classList.add("recolhido");
+    else if(y<ultimoY-8) painel.classList.remove("recolhido");
+    if(Math.abs(y-ultimoY)>8||y<200) ultimoY=y;
+  },{passive:true});
+})();
 
 /* ---------- início ---------- */
 (async function init(){
