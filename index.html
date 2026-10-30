@@ -134,6 +134,73 @@
   .empty{color:var(--muted);padding:44px;text-align:center;background:var(--panel);border:1px solid var(--line);border-radius:16px;font-size:14px}
   footer{margin-top:52px;color:var(--muted);font-size:11.5px;text-align:center;border-top:1px solid var(--line);padding-top:22px;line-height:1.75;max-width:80ch;margin-left:auto;margin-right:auto}
   @media(max-width:640px){ .hdr{flex-direction:column} .hdr h1{font-size:34px} .btn-add{width:100%} }
+  /* ---------- abas "Decidir" e "Favoritas por preço" ---------- */
+  .dk-cmp{background:var(--panel);border:1px solid var(--line);border-radius:14px;overflow:hidden;margin-bottom:18px;box-shadow:var(--shadow)}
+  .dk-cmp h2{font-family:var(--serif);font-weight:600;font-size:20px;margin:0;padding:14px 16px 2px}
+  .dk-cmp p{margin:0 16px 10px;color:var(--muted);font-size:13px}
+  .dk-scroll{overflow-x:auto}
+  .dk-t{border-collapse:collapse;width:100%;font-size:13.5px}
+  .dk-t th,.dk-t td{padding:8px 11px;text-align:left;border-top:1px solid var(--line);white-space:nowrap}
+  .dk-t th{font-size:10.5px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);font-weight:600;background:var(--card2)}
+  .dk-t td.n{font-variant-numeric:tabular-nums}
+  .dk-t a{color:var(--accent);font-weight:600}
+  .dk-nota{display:inline-block;min-width:36px;text-align:center;border-radius:8px;padding:2px 8px;font-weight:700;color:#fff}
+  .dk-ok{background:#4f7a3a}.dk-mid{background:#b0842f}.dk-bad{background:#b8402e}
+  .dk-bar{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:16px;font-size:13.5px;color:var(--muted)}
+  .dk-bar button{background:var(--chip);border:1px solid var(--line);border-radius:999px;padding:7px 13px;font:500 13px var(--sans);cursor:pointer;color:var(--txt)}
+  .dk-bar button.on{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+  .dk-city{background:var(--card);border:1px solid var(--line);border-radius:16px;margin-bottom:18px;box-shadow:var(--shadow);overflow:hidden;scroll-margin-top:12px}
+  .dk-head{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;padding:16px 16px 8px}
+  .dk-head h2{font-family:var(--serif);font-weight:600;font-size:26px;margin:0;line-height:1.15}
+  .dk-meta{color:var(--muted);font-size:13px}
+  .dk-big{text-align:center;flex-shrink:0}
+  .dk-big .dk-nota{font-size:22px;padding:6px 12px;border-radius:12px}
+  .dk-big small{display:block;font-size:11px;color:var(--muted);margin-top:3px}
+  .dk-resumo{padding:0 16px 12px;margin:0}
+  .dk-dist{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px;padding:0 16px 8px}
+  .dk-d{background:var(--card2);border-radius:10px;padding:8px 10px;font-size:12.5px}
+  .dk-d b{display:block;font-size:14px}
+  .dk-d span{color:var(--muted)}
+  .dk-leg{font-size:11.5px;color:var(--muted);margin:6px 0 0}
+  .dk-city details{border-top:1px solid var(--line);font-size:14px;color:var(--txt)}
+  .dk-city details summary{padding:12px 16px;font-weight:600;font-size:14.5px;color:var(--txt);display:flex;justify-content:space-between;gap:10px}
+  .dk-city details summary::before{content:none}
+  .dk-city details summary::after{content:"+";color:var(--muted)}
+  .dk-city details[open] summary::after{content:"−"}
+  .dk-body{padding:0 16px 14px}
+  .dk-body p{margin:6px 0}
+  .dk-body ul{margin:6px 0 10px;padding-left:20px}
+  .dk-body li{margin-bottom:5px}
+  .dk-body small{color:var(--muted)}
+  .dk-body a{color:var(--accent)}
+  .dk-seg{background:#fbefe9;border-left:4px solid var(--accent)}
+  .dk-crime td,.dk-crime th{padding:6px 8px;font-size:12.5px;white-space:normal}
+  .dk-crime small{display:block;font-size:11px;color:var(--muted)}
+  .dk-bom{background:#e7f0df}.dk-ruim{background:#f6dcd6}
+  .dk-fortes{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .dk-fontes{font-size:11.5px;color:var(--muted);word-break:break-all}
+  .dk-casas{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:12px;padding:14px 16px 16px;background:var(--card2);border-top:1px solid var(--line)}
+  .dk-casas h3{grid-column:1/-1;margin:0;font-size:12px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted)}
+  .dk-casa{background:var(--card);border:1px solid var(--line);border-radius:12px;overflow:hidden;display:flex;flex-direction:column}
+  .dk-ph{height:130px;background:var(--chip);position:relative;overflow:hidden}
+  .dk-ph img{width:100%;height:100%;object-fit:cover;display:block}
+  .dk-in{padding:10px 12px;font-size:13px}
+  .dk-pr{font-family:var(--serif);font-size:19px;font-weight:600}
+  .dk-pr small{font-family:var(--sans);font-size:12px;color:var(--muted);font-weight:400}
+  .dk-in b{display:block}
+  .dk-tag{display:inline-block;background:var(--chip);border-radius:6px;padding:1px 7px;font-size:11.5px;margin-top:4px}
+  .dk-ver{margin-top:auto;display:block;text-align:center;padding:8px;border-top:1px solid var(--line);color:var(--accent);font-weight:600;font-size:13px}
+  .dk-linha{display:flex;gap:12px;align-items:center;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:8px;margin-bottom:8px}
+  .dk-linha .dk-ph{width:92px;height:70px;border-radius:8px;flex-shrink:0}
+  .dk-linha .dk-pr{font-size:18px;white-space:nowrap;text-align:right}
+  .dk-linha .dk-info{flex:1;min-width:0;font-size:13px}
+  .dk-linha .dk-info b{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .dk-pos{font-family:var(--serif);color:var(--muted);width:22px;text-align:center;flex-shrink:0}
+  .dk-sep{margin:22px 0 10px;font-size:12px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted)}
+  @media(max-width:640px){ .dk-fortes{grid-template-columns:1fr} .dk-head h2{font-size:22px}
+    .dk-linha{gap:9px} .dk-linha .dk-ph{width:64px;height:56px} .dk-pos{width:16px}
+    .dk-linha .dk-pr{font-size:15.5px} .dk-linha .dk-info{font-size:12.5px}
+    .dk-linha .dk-info b{white-space:normal;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical} }
 </style>
 </head>
 <body>
@@ -156,6 +223,8 @@
     <div class="tab" data-cat="3q">🏠 Outras 3 quartos</div>
     <div class="tab" data-cat="buy">💰 Comprar (até R$ 850 mil)</div>
     <div class="tab" data-cat="mine">⭐ Minhas casas</div>
+    <div class="tab" data-cat="decidir">🧭 Decidir: cidades</div>
+    <div class="tab" data-cat="preco">💸 Favoritas por preço</div>
   </div>
 
   <div class="note" id="note"></div>
@@ -479,6 +548,7 @@ function syncToggleStates(){
 }
 function apply(){
   syncToggleStates();
+  if(CAT==="decidir"||CAT==="preco"){ desenhaDecidir(); return; }
   const city=fCity.value, maxP=+$("#fPrice").value, sort=$("#fSort").value;
   const onlyCond=$("#fCond").checked, onlyPet=$("#fPet").checked, onlyOff=$("#fOffice").checked;
   const onlyFav=$("#fFav").checked, onlyNotFav=$("#fNotFav").checked, showHidden=$("#fShowHidden").checked;
@@ -525,9 +595,12 @@ function setNote(){
   if(CAT==="4q") t='<b>4+ quartos, verificadas.</b> Casas de 4 e 5 quartos conferidas uma a uma no site oficial da imobiliária ou no VivaReal recente. Algumas em cidades pequenas vizinhas (etiqueta laranja). Use "com escritório" para filtrar home office.';
   else if(CAT==="3qoff") t='<b>3 quartos + escritório, verificadas.</b> Casas de 3 quartos com escritório/home office confirmado no anúncio. É um nicho raro — por isso a lista é curta, mas todas são reais.';
   else if(CAT==="buy") t='<b>À venda até R$ 850 mil, verificadas em 16/07/2026.</b> Cada card mostra a parcela estimada do financiamento — ajuste a <b>entrada</b> no seletor acima (taxa Caixa ~11,19% a.a. + TR, 30 anos; a taxa real depende do seu perfil no banco). Custos extras na compra: ITBI + escritura/registro (~4-5% do valor). Não sou consultora financeira — use como base e simule no banco.';
+  else if(CAT==="decidir") t='<b>Para onde mudar.</b> As cidades das suas casas favoritas, lado a lado: segurança, periferia, distâncias, maternidade, escolas e veterinário. Embaixo de cada cidade, as suas favoritas de lá. Dar coração numa casa nova já a coloca aqui.';
+  else if(CAT==="preco") t='<b>Favoritas por preço.</b> Todas as suas favoritas que estão à mostra, da mais barata para a mais cara, com as cidades misturadas. As casas à venda ficam no fim.';
   else if(CAT==="mine") t='<b>Minhas casas.</b> Anúncios que você mesma adicionou (clique em "➕ adicionar anúncio" acima). Ficam salvos na nuvem e aparecem em qualquer aparelho. Você pode favoritar, editar e excluir cada um.';
   else t='<b>Outras 3 quartos, verificadas.</b> Casas boas de 3 quartos em condomínio, conferidas no site oficial da imobiliária ou VivaReal recente.';
   $("#note").innerHTML=t;
+  document.querySelector(".controls").style.display = (CAT==="decidir"||CAT==="preco") ? "none" : "";
   /* controles por aba */
   /* "minhas casas" também mostra a entrada: ela pode ter salvo casas à venda */
   $("#fEntrada").style.display = (CAT==="buy"||CAT==="mine") ? "" : "none";
@@ -624,6 +697,134 @@ $("#aSave").addEventListener("click",async()=>{
     alert("Não consegui salvar. Confira a conexão e tente de novo — o que você digitou continua aí.");
   }finally{ btn.disabled=false; }
 });
+
+/* ---------- abas "Decidir" e "Favoritas por preço" ----------
+   A ficha das cidades vem de /cidades.json (pesquisa feita à mão, com fontes).
+   As casas vêm das favoritas de verdade: dar coração numa casa já a põe aqui.
+   Cidade nova sem ficha aparece com o aviso "ainda não pesquisada". */
+let CIDADES=null, DK_ORD="seg";
+try{ DK_ORD=localStorage.getItem("dkOrd")||"seg"; }catch(_){}
+const semAcento=s=>String(s||"").normalize("NFD").replace(/[̀-ͯ]/g,"").toLowerCase().trim();
+const esc=s=>String(s??"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const dkNum=v=>v==null?"":Number(v).toLocaleString("pt-BR",{maximumFractionDigits:1});
+const dkCls=n=>n>=8?"dk-ok":n>=6.5?"dk-mid":"dk-bad";
+const dkLink=(txt,url)=>/^https?:\/\//.test(url||"")?`${esc(txt)} <a href="${esc(url)}" target="_blank" rel="noopener">(fonte)</a>`:esc(txt);
+const dkUl=(arr,f)=>arr&&arr.length?`<ul>${arr.map(f).join("")}</ul>`:"<p>Não encontrado.</p>";
+const dkPico=s=>String(s||"").split(" (")[0];
+async function carregaCidades(){
+  try{ const r=await fetch("/cidades.json",{cache:"no-cache"}); CIDADES=r.ok?await r.json():{}; }
+  catch(_){ CIDADES={}; }
+  if(CAT==="decidir"||CAT==="preco") desenhaDecidir();
+}
+function fichaDe(cidade){
+  if(!CIDADES) return null;
+  const k=semAcento(cidade);
+  return Object.values(CIDADES).find(c=>semAcento(c.cidade)===k)||null;
+}
+function favoritasVisiveis(){ return allItems().filter(d=>FAVS.has(d.uid)&&!arquivada(d)); }
+function dkFoto(d){ return d.img?`<img src="/api/img?u=${encodeURIComponent(d.img)}" alt="" loading="lazy" onerror="this.remove();">`:""; }
+function dkCasa(d){
+  const venda=ehVenda(d);
+  return `<div class="dk-casa"><div class="dk-ph">${dkFoto(d)}</div>
+    <div class="dk-in"><div class="dk-pr">${money(d.price)}${d.price!=null?(venda?" <small>compra</small>":" <small>/mês</small>"):""}</div>
+    <b>${esc(d.cond||d.title)}</b>${d.q?d.q+" quartos":""}${d.area?" · "+d.area+" m²":""}
+    ${ST[d.uid]?.s==="gostei"?'<div><span class="dk-tag">💚 gostei</span></div>':""}</div>
+    ${d.url?`<a class="dk-ver" href="${esc(d.url)}" target="_blank" rel="noopener">ver anúncio ↗</a>`:""}</div>`;
+}
+function dkTemUTI(c){ const m=c.saude?.maternidade||{}; return !m.tem?"❌ não tem":m.uti_neonatal?"✅ com UTI":"⚠️ sem UTI"; }
+function dkPop(c){ return c?.populacao?.estimativa||c?.populacao?.censo2022||null; }
+function dkCrimes(c){
+  const base=s=>String(s).split(" (")[0];
+  const ind=c.seguranca?.indicadores||[];
+  const anos=[...new Set(ind.map(i=>i.ano))].sort();
+  const tipos=[...new Set(ind.map(i=>base(i.crime)))];
+  if(!tipos.length) return "";
+  const get=(t,a)=>ind.find(i=>base(i.crime)===t&&i.ano===a);
+  return `<div class="dk-scroll"><table class="dk-t dk-crime"><tr><th>Por 100 mil habitantes</th>${anos.map(a=>`<th>${a}${a===2026?"*":""}</th>`).join("")}</tr>`+
+    tipos.map(t=>`<tr><td>${esc(t)}</td>${anos.map(a=>{const i=get(t,a); if(!i) return "<td></td>";
+      const r=i.media_estado_por_100mil?i.por_100mil/i.media_estado_por_100mil:1;
+      return `<td class="n ${r<0.7?"dk-bom":r>1.3?"dk-ruim":""}"><b>${dkNum(i.por_100mil)}</b><small>estado ${dkNum(i.media_estado_por_100mil)} · ${i.casos} casos</small></td>`;}).join("")}</tr>`).join("")+
+    `</table></div><p class="dk-leg">Verde: bem abaixo da média do estado. Vermelho: bem acima. *2026 = janeiro a setembro. Fonte: SSP-SP.</p>`;
+}
+function dkDist(rot,a){ return a?`<div class="dk-d">${rot}<b>${dkNum(a.km)} km</b><span>${esc(a.sem_transito)} sem trânsito · ${esc(dkPico(a.pico))} no pico</span></div>`:""; }
+function dkFicha(cidade,casas){
+  const c=fichaDe(cidade);
+  const lista=`<div class="dk-casas"><h3>Suas favoritas aqui (${casas.length})</h3>${casas.map(dkCasa).join("")}</div>`;
+  const id="dk-"+semAcento(cidade).replace(/\W+/g,"-");
+  if(!c) return `<div class="dk-city" id="${id}"><div class="dk-head"><div><h2>${esc(cidade)}</h2><div class="dk-meta">⏳ Cidade ainda não pesquisada. A ficha entra na próxima atualização.</div></div></div>${lista}</div>`;
+  const s=c.seguranca||{}, p=c.periferia||{}, sa=c.saude||{}, m=sa.maternidade||{}, v=c.veterinario_24h||{}, dia=c.dia_a_dia||{}, pop=dkPop(c);
+  return `<div class="dk-city" id="${id}">
+    <div class="dk-head"><div><h2>${esc(c.cidade)}</h2><div class="dk-meta">${pop?Math.round(pop/1000)+" mil habitantes · ":""}${esc(c.populacao?.porte)}</div></div>
+      <div class="dk-big"><span class="dk-nota ${dkCls(s.nota)}">${dkNum(s.nota)}</span><small>segurança</small></div></div>
+    <p class="dk-resumo">${esc(c.resumo)}</p>
+    <div class="dk-dist">${dkDist("🏙️ São Paulo",c.distancias?.sp)}${dkDist("👨‍👩‍👧 Itupeva",c.distancias?.itupeva)}${dkDist("✈️ Viracopos",c.distancias?.viracopos)}${dkDist("✈️ Guarulhos",c.distancias?.guarulhos)}${dkDist("✈️ Congonhas",c.distancias?.congonhas)}</div>
+    <p class="dk-leg" style="padding:0 16px 12px">São Paulo contado a partir de: ${esc(c.distancias?.sp?.ponto)}. Rota: ${esc(c.distancias?.sp?.rota)}.</p>
+    <details open class="dk-seg"><summary>🛡️ Segurança (nota ${dkNum(s.nota)})</summary><div class="dk-body">
+      <p><b>Por que essa nota:</b> ${esc(s.nota_porque)}</p>${dkCrimes(c)}
+      <p><b>Tendência:</b> ${esc(s.tendencia)}</p>
+      <b>Rankings</b>${dkUl(s.rankings,r=>`<li>${dkLink(r.texto,r.fonte)}</li>`)}
+      <b>Notícias recentes</b>${dkUl(s.noticias,r=>`<li><small>${esc(r.data)}</small> ${dkLink(r.texto,r.fonte)}</li>`)}
+    </div></details>
+    <details open class="dk-seg"><summary>🏘️ Periferia</summary><div class="dk-body">
+      <p>${esc(p.resumo)}</p><p><b>Favelas e comunidades (IBGE 2022):</b> ${esc(p.ibge_comunidades)}</p>
+      <b>Bairros de atenção</b>${dkUl(p.bairros_atencao,b=>`<li><b>${esc(b.bairro)}:</b> ${esc(b.porque)}</li>`)}
+      <b>Regiões mais tranquilas</b>${dkUl(p.bairros_seguros,b=>`<li>${esc(b)}</li>`)}
+    </div></details>
+    <details><summary>🔑 Os condomínios das suas casas</summary><div class="dk-body">${dkUl(c.condominios,x=>`<li><b>${esc(x.nome)}:</b> ${esc(x.regiao)}. ${esc(x.observacao)}</li>`)}</div></details>
+    <details><summary>🏥 Saúde e maternidade · ${dkTemUTI(c)}</summary><div class="dk-body">
+      <p><b>Maternidade:</b> ${m.tem?esc(m.nome)+(m.uti_neonatal?". Tem UTI para recém-nascido.":". Não tem UTI para recém-nascido."):"Não tem na cidade."}</p>
+      ${m.mais_proxima_se_nao_tem?`<p><b>UTI para recém-nascido mais perto:</b> ${esc(m.mais_proxima_se_nao_tem)}</p>`:""}
+      <b>Pronto-socorro 24h</b>${dkUl(sa.pronto_socorro_24h,h=>`<li>${esc(h.nome)} <small>(${esc(h.tipo)})</small></li>`)}
+      <p><b>Particular / convênio:</b> ${esc(sa.hospital_particular)}</p>
+    </div></details>
+    <details><summary>🎒 Escolas particulares</summary><div class="dk-body">${dkUl(c.escolas,e=>`<li><b>${esc(e.nome)}</b> <small>${esc(e.tipo)}</small><br>${esc(e.obs)}</li>`)}</div></details>
+    <details><summary>🐶 Veterinário 24h (Joaquim) · ${v.tem?"✅ tem":"⚠️ não confirmado"}</summary><div class="dk-body"><p>${esc(v.nome)}</p>${v.mais_proximo_se_nao_tem?`<p><b>Mais perto:</b> ${esc(v.mais_proximo_se_nao_tem)}</p>`:""}</div></details>
+    <details><summary>🛒 Dia a dia</summary><div class="dk-body"><ul>
+      <li><b>Supermercados:</b> ${esc(dia.supermercados)}</li><li><b>Shopping:</b> ${esc(dia.shopping)}</li>
+      <li><b>Internet de fibra:</b> ${esc(dia.fibra)}</li><li><b>Custo de vida:</b> ${esc(dia.custo_de_vida)}</li></ul></div></details>
+    <details><summary>⚖️ Pontos fortes e fracos</summary><div class="dk-body dk-fortes">
+      <div>✅ <b>Fortes</b>${dkUl(c.pontos_fortes,x=>`<li>${esc(x)}</li>`)}</div><div>⚠️ <b>Fracos</b>${dkUl(c.pontos_fracos,x=>`<li>${esc(x)}</li>`)}</div></div></details>
+    <details><summary>📚 Fontes (pesquisa de ${esc(c.pesquisado_em)})</summary><div class="dk-body dk-fontes">${(c.fontes||[]).map(f=>`<div>${esc(f)}</div>`).join("")}</div></details>
+    ${lista}
+  </div>`;
+}
+function desenhaDecidir(){
+  if(CIDADES===null){ list.innerHTML='<div class="empty">Carregando as cidades…</div>'; carregaCidades(); return; }
+  const favs=favoritasVisiveis();
+  $("#count").textContent="";
+  if(!favs.length){ list.innerHTML='<div class="empty">Você ainda não tem casas favoritas à mostra. Dê ❤️ nas casas das outras abas.</div>'; return; }
+  const precoAluguel=d=>ehVenda(d)||d.price==null?Infinity:d.price;
+  const ordPreco=(a,b)=>ehVenda(a)-ehVenda(b)||(a.price??1e12)-(b.price??1e12);
+  if(CAT==="preco"){
+    const linha=(d,i)=>{const c=fichaDe(d.city);
+      return `<a class="dk-linha" href="${esc(d.url||"#")}" target="_blank" rel="noopener"><span class="dk-pos">${i+1}</span><div class="dk-ph">${dkFoto(d)}</div>
+      <div class="dk-info"><b>${esc(d.cond||d.title)}</b>${esc(d.city)}${c?` <span class="dk-nota ${dkCls(c.seguranca?.nota)}" style="font-size:11px;padding:0 5px;min-width:0">${dkNum(c.seguranca?.nota)}</span>`:""}<br>${d.q?d.q+" quartos":""}${d.area?" · "+d.area+" m²":""}${ST[d.uid]?.s==="gostei"?" · 💚":""}</div>
+      <div class="dk-pr">${money(d.price)}${d.price!=null&&!ehVenda(d)?"<br><small>/mês</small>":""}</div></a>`;};
+    const alug=favs.filter(d=>!ehVenda(d)).sort(ordPreco), venda=favs.filter(ehVenda).sort(ordPreco);
+    list.innerHTML=alug.map(linha).join("")+(venda.length?`<div class="dk-sep">À venda</div>`+venda.map((d,i)=>linha(d,alug.length+i)).join(""):"");
+    return;
+  }
+  const g={}; favs.forEach(d=>(g[d.city||"Sem cidade"]||=[]).push(d));
+  const nomes=Object.keys(g);
+  const km=(n,k)=>fichaDe(n)?.distancias?.[k]?.km??Infinity;
+  const ORD={seg:(a,b)=>(fichaDe(b)?.seguranca?.nota??-1)-(fichaDe(a)?.seguranca?.nota??-1),
+    sp:(a,b)=>km(a,"sp")-km(b,"sp"), itu:(a,b)=>km(a,"itupeva")-km(b,"itupeva"),
+    pop:(a,b)=>(dkPop(fichaDe(a))??Infinity)-(dkPop(fichaDe(b))??Infinity),
+    preco:(a,b)=>Math.min(...g[a].map(precoAluguel))-Math.min(...g[b].map(precoAluguel))};
+  nomes.sort(ORD[DK_ORD]||ORD.seg);
+  const tabela=`<div class="dk-cmp"><h2>Comparando as cidades</h2><p>Toque no nome para ir até a ficha. No celular, arraste a tabela para o lado.</p>
+    <div class="dk-scroll"><table class="dk-t"><tr><th>Cidade</th><th>Segurança</th><th>Habitantes</th><th>SP (pico)</th><th>Itupeva (pico)</th><th>Maternidade</th><th>Casas</th><th>A partir de</th></tr>`+
+    nomes.map(n=>{const c=fichaDe(n), mp=Math.min(...g[n].map(precoAluguel)), pop=dkPop(c);
+      return `<tr><td><a href="#dk-${semAcento(n).replace(/\W+/g,"-")}">${esc(n)}</a></td>
+      <td>${c?`<span class="dk-nota ${dkCls(c.seguranca?.nota)}">${dkNum(c.seguranca?.nota)}</span>`:"⏳"}</td>
+      <td class="n">${pop?Math.round(pop/1000)+" mil":"…"}</td><td class="n">${c?esc(dkPico(c.distancias?.sp?.pico)):"…"}</td>
+      <td class="n">${c?esc(dkPico(c.distancias?.itupeva?.pico)):"…"}</td><td>${c?dkTemUTI(c):"…"}</td>
+      <td class="n">${g[n].length}</td><td class="n">${mp<Infinity?money(mp):"só compra"}</td></tr>`;}).join("")+`</table></div></div>`;
+  const bts=[["seg","🛡️ mais segura"],["sp","🚗 mais perto de SP"],["itu","👨‍👩‍👧 mais perto de Itupeva"],["pop","🏡 cidade menor"],["preco","💰 casa mais barata"]];
+  const barra=`<div class="dk-bar">Ordenar cidades por: ${bts.map(([k,r])=>`<button data-dkord="${k}" class="${k===DK_ORD?"on":""}">${r}</button>`).join("")}</div>`;
+  list.innerHTML=tabela+barra+nomes.map(n=>dkFicha(n,g[n].sort(ordPreco))).join("");
+  list.querySelectorAll("[data-dkord]").forEach(b=>b.onclick=()=>{ DK_ORD=b.dataset.dkord; try{localStorage.setItem("dkOrd",DK_ORD);}catch(_){} desenhaDecidir(); });
+}
 
 /* ---------- início ---------- */
 (async function init(){
