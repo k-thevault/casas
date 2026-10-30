@@ -756,6 +756,19 @@ function dkCasa(d){
     ${d.url?`<a class="dk-ver" href="${esc(d.url)}" target="_blank" rel="noopener">ver anúncio ↗</a>`:""}</div>`;
 }
 function dkTemUTI(c){ const m=c.saude?.maternidade||{}; return !m.tem?"❌ não tem":m.uti_neonatal?"✅ com UTI":"⚠️ sem UTI"; }
+/* Plano dela: Amil, rede S380 (busca oficial da Amil + UTI conferida no CNES). */
+function dkAmilMat(c){ const m=c.amil?.maternidade; if(!m) return "…";
+  const ic=m.uti_neonatal===true?"✅":m.uti_neonatal===false?"⚠️":"❓";
+  return `${ic} ${esc(String(m.cidade||"").split(" (")[0])}, ${m.minutos} min`; }
+function dkAmil(c){ const a=c.amil; if(!a) return "";
+  const m=a.maternidade||{};
+  return `<details open class="dk-seg"><summary>🩺 Seu plano: Amil S380</summary><div class="dk-body">
+    <p><b>${esc(a.resumo)}</b></p>
+    <p><b>Maternidade da rede mais perto:</b> ${esc(m.nome)} (${esc(m.cidade)}, cerca de ${m.minutos} min). ${m.uti_neonatal===true?"Tem UTI para recém-nascido.":m.uti_neonatal===false?"Não tem UTI para recém-nascido.":"UTI para recém-nascido não confirmada."}</p>
+    <b>Pronto-socorro 24h da rede</b>${dkUl(a.pronto_socorro,h=>`<li>${esc(h.nome)} <small>(${esc(h.cidade)}, ${esc(h.atende)})</small></li>`)}
+    ${a.outros?`<p><b>Na cidade:</b> ${esc(a.outros)}</p>`:""}
+    <p class="dk-leg">Fonte: busca da rede credenciada no site da Amil (rede S380 QC, enfermaria), 29/10/2026. UTI conferida no CNES. Antes de agendar, confirme na central da Amil.</p>
+  </div></details>`; }
 function dkPop(c){ return c?.populacao?.estimativa||c?.populacao?.censo2022||null; }
 function dkCrimes(c){
   const base=s=>String(s).split(" (")[0];
@@ -794,8 +807,9 @@ function dkFicha(cidade,casas){
       <b>Bairros de atenção</b>${dkUl(p.bairros_atencao,b=>`<li><b>${esc(b.bairro)}:</b> ${esc(b.porque)}</li>`)}
       <b>Regiões mais tranquilas</b>${dkUl(p.bairros_seguros,b=>`<li>${esc(b)}</li>`)}
     </div></details>
+    ${dkAmil(c)}
     <details><summary>🔑 Os condomínios das suas casas</summary><div class="dk-body">${dkUl(c.condominios,x=>`<li><b>${esc(x.nome)}:</b> ${esc(x.regiao)}. ${esc(x.observacao)}</li>`)}</div></details>
-    <details><summary>🏥 Saúde e maternidade · ${dkTemUTI(c)}</summary><div class="dk-body">
+    <details><summary>🏥 Todos os hospitais da cidade (qualquer plano) · ${dkTemUTI(c)}</summary><div class="dk-body">
       <p><b>Maternidade:</b> ${m.tem?esc(m.nome)+(m.uti_neonatal?". Tem UTI para recém-nascido.":". Não tem UTI para recém-nascido."):"Não tem na cidade."}</p>
       ${m.mais_proxima_se_nao_tem?`<p><b>UTI para recém-nascido mais perto:</b> ${esc(m.mais_proxima_se_nao_tem)}</p>`:""}
       <b>Pronto-socorro 24h</b>${dkUl(sa.pronto_socorro_24h,h=>`<li>${esc(h.nome)} <small>(${esc(h.tipo)})</small></li>`)}
@@ -837,13 +851,13 @@ function desenhaDecidir(){
     pop:(a,b)=>(dkPop(fichaDe(a))??Infinity)-(dkPop(fichaDe(b))??Infinity),
     preco:(a,b)=>Math.min(...g[a].map(precoAluguel))-Math.min(...g[b].map(precoAluguel))};
   nomes.sort(ORD[DK_ORD]||ORD.seg);
-  const tabela=`<div class="dk-cmp"><h2>Comparando as cidades</h2><p>Toque no nome para ir até a ficha. No celular, arraste a tabela para o lado.</p>
-    <div class="dk-scroll"><table class="dk-t"><tr><th>Cidade</th><th>Segurança</th><th>Habitantes</th><th>SP (pico)</th><th>Itupeva (pico)</th><th>Maternidade</th><th>Casas</th><th>A partir de</th></tr>`+
+  const tabela=`<div class="dk-cmp"><h2>Comparando as cidades</h2><p>Toque no nome para ir até a ficha. No celular, arraste a tabela para o lado. Parto Amil S380: maternidade da sua rede mais perto (✅ com UTI para recém-nascido, ⚠️ sem UTI, ❓ não confirmada).</p>
+    <div class="dk-scroll"><table class="dk-t"><tr><th>Cidade</th><th>Segurança</th><th>Habitantes</th><th>SP (pico)</th><th>Itupeva (pico)</th><th>Parto Amil S380</th><th>Casas</th><th>A partir de</th></tr>`+
     nomes.map(n=>{const c=fichaDe(n), mp=Math.min(...g[n].map(precoAluguel)), pop=dkPop(c);
       return `<tr><td>${dkEstrelaBtn(n)}<a href="#dk-${semAcento(n).replace(/\W+/g,"-")}">${esc(n)}</a></td>
       <td>${c?`<span class="dk-nota ${dkCls(c.seguranca?.nota)}">${dkNum(c.seguranca?.nota)}</span>`:"⏳"}</td>
       <td class="n">${pop?Math.round(pop/1000)+" mil":"…"}</td><td class="n">${c?esc(dkPico(c.distancias?.sp?.pico)):"…"}</td>
-      <td class="n">${c?esc(dkPico(c.distancias?.itupeva?.pico)):"…"}</td><td>${c?dkTemUTI(c):"…"}</td>
+      <td class="n">${c?esc(dkPico(c.distancias?.itupeva?.pico)):"…"}</td><td>${c?dkAmilMat(c):"…"}</td>
       <td class="n">${g[n].length}</td><td class="n">${mp<Infinity?money(mp):"só compra"}</td></tr>`;}).join("")+`</table></div></div>`;
   const bts=[["seg","🛡️ mais segura"],["sp","🚗 mais perto de SP"],["itu","👨‍👩‍👧 mais perto de Itupeva"],["pop","🏡 cidade menor"],["preco","💰 casa mais barata"]];
   const barra=`<div class="dk-bar">Ordenar cidades por: ${bts.map(([k,r])=>`<button data-dkord="${k}" class="${k===DK_ORD?"on":""}">${r}</button>`).join("")}

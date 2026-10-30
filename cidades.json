@@ -387,7 +387,27 @@
    "https://www.google.com/maps (rotas com horário de saída definido, consultado em 29/10/2026)",
    "https://overpass-api.de (mapa colaborativo OpenStreetMap, consultado em 29/10/2026)",
    "https://servicodados.ibge.gov.br/api/v1/pesquisas/-/indicadores/47001%7C29765/resultados (IBGE Cidades: PIB por pessoa 2023 e salário médio 2021)"
-  ]
+  ],
+  "amil": {
+   "pronto_socorro": [
+    {
+     "nome": "Hospital Albert Sabin",
+     "cidade": "Atibaia",
+     "atende": "adulto e infantil",
+     "fonte": "Site da Amil, busca avançada da rede credenciada, rede Amil S380 QC, consultado em 29/10/2026"
+    }
+   ],
+   "maternidade": {
+    "nome": "Hospital Albert Sabin",
+    "cidade": "Atibaia",
+    "uti_neonatal": false,
+    "minutos": 4,
+    "fonte": "Site da Amil, busca avançada da rede credenciada, rede Amil S380 QC, consultado em 29/10/2026; UTI neonatal conferida no CNES (cnes.datasus.gov.br, aba leitos); CNES mostra 12 leitos de neonatologia, mas nenhum de UTI neonatal; minutos de carro aproximados, calculados por rota (OSRM) do centro da cidade"
+   },
+   "outros": "Tem laboratório (análises clínicas), pediatra e obstetra credenciados na cidade.",
+   "resumo": "Com a Amil S380, em Atibaia você resolve pronto-socorro adulto e infantil e parto no Albert Sabin; para UTI neonatal o mais perto é o Hospital Universitário São Francisco em Bragança Paulista (26 min).",
+   "confirmado_no_site_amil": true
+  }
  },
  "Boituva": {
   "cidade": "Boituva",
@@ -739,7 +759,27 @@
    "https://overpass-api.de (mapa colaborativo OpenStreetMap, consultado em 29/10/2026)",
    "https://servicodados.ibge.gov.br/api/v1/pesquisas/-/indicadores/47001%7C29765/resultados (IBGE Cidades: PIB por pessoa 2023 e salário médio 2021)",
    "https://www.minhaconexao.com.br/ranking/sp/boituva"
-  ]
+  ],
+  "amil": {
+   "pronto_socorro": [
+    {
+     "nome": "Hospital São Luiz Boituva",
+     "cidade": "Boituva",
+     "atende": "adulto e infantil",
+     "fonte": "Site da Amil, busca avançada da rede credenciada, rede Amil S380 QC, consultado em 29/10/2026"
+    }
+   ],
+   "maternidade": {
+    "nome": "Hospital São Luiz Boituva",
+    "cidade": "Boituva",
+    "uti_neonatal": false,
+    "minutos": 4,
+    "fonte": "Site da Amil, busca avançada da rede credenciada, rede Amil S380 QC, consultado em 29/10/2026; UTI neonatal conferida no CNES (cnes.datasus.gov.br, aba leitos); sem leito de UTI neonatal no CNES; minutos de carro aproximados, calculados por rota (OSRM) do centro da cidade"
+   },
+   "outros": "Tem laboratório (análises clínicas), pediatra e obstetra credenciados na cidade.",
+   "resumo": "Com a Amil S380, em Boituva você resolve pronto-socorro adulto e infantil e parto no Hospital São Luiz (4 min); UTI neonatal confirmada perto não encontrei.",
+   "confirmado_no_site_amil": true
+  }
  },
  "Bom Jesus dos Perdões": {
   "cidade": "Bom Jesus dos Perdões",
@@ -1058,7 +1098,33 @@
    "https://www.google.com/maps (rotas com horário de saída definido, consultado em 29/10/2026)",
    "https://overpass-api.de (mapa colaborativo OpenStreetMap, consultado em 29/10/2026)",
    "https://servicodados.ibge.gov.br/api/v1/pesquisas/-/indicadores/47001%7C29765/resultados (IBGE Cidades: PIB por pessoa 2023 e salário médio 2021)"
-  ]
+  ],
+  "amil": {
+   "pronto_socorro": [
+    {
+     "nome": "não encontrado na rede S380",
+     "cidade": "Bom Jesus dos Perdões",
+     "atende": "",
+     "fonte": "Site da Amil, busca avançada da rede credenciada, rede Amil S380 QC, consultado em 29/10/2026 (a cidade nem aparece na lista de municípios da rede)"
+    },
+    {
+     "nome": "Hospital Albert Sabin",
+     "cidade": "Atibaia (15 min)",
+     "atende": "adulto e infantil",
+     "fonte": "Site da Amil, busca avançada da rede credenciada, rede Amil S380 QC, consultado em 29/10/2026"
+    }
+   ],
+   "maternidade": {
+    "nome": "Hospital Albert Sabin",
+    "cidade": "Atibaia",
+    "uti_neonatal": false,
+    "minutos": 15,
+    "fonte": "Site da Amil, busca avançada da rede credenciada, rede Amil S380 QC, consultado em 29/10/2026; UTI neonatal conferida no CNES (cnes.datasus.gov.br, aba leitos); CNES mostra 12 leitos de neonatologia, mas nenhum de UTI neonatal; minutos de carro aproximados, calculados por rota (OSRM) do centro da cidade"
+   },
+   "outros": "Nada credenciado na S380 dentro da cidade.",
+   "resumo": "Com a Amil S380, em Bom Jesus dos Perdões você não resolve nada na cidade; para pronto-socorro e parto vai ao Albert Sabin em Atibaia (15 min, sem UTI neonatal), e com UTI neonatal ao Hospital Universitário São Francisco em Bragança Paulista (32 min).",
+   "confirmado_no_site_amil": true
+  }
  },
  "Bragança Paulista": {
   "cidade": "Bragança Paulista",
@@ -1466,7 +1532,33 @@
    "https://www.google.com/maps (rotas com horário de saída definido, consultado em 29/10/2026)",
    "https://overpass-api.de (mapa colaborativo OpenStreetMap, consultado em 29/10/2026)",
    "https://servicodados.ibge.gov.br/api/v1/pesquisas/-/indicadores/47001%7C29765/resultados (IBGE Cidades: PIB por pessoa 2023 e salário médio 2021)"
-  ]
+  ],
+  "amil": {
+   "pronto_socorro": [
+    {
+     "nome": "Hospital Universitário São Francisco",
+     "cidade": "Bragança Paulista",
+     "atende": "adulto e infantil",
+     "fonte": "Site da Amil, busca avançada da rede credenciada, rede Amil S380 QC, consultado em 29/10/2026"
+    },
+    {
+     "nome": "Santa Casa de Bragança Paulista",
+     "cidade": "Bragança Paulista",
+     "atende": "adulto e infantil",
+     "fonte": "Site da Amil, busca avançada da rede credenciada, rede Amil S380 QC, consultado em 29/10/2026"
+    }
+   ],
+   "maternidade": {
+    "nome": "Hospital Universitário São Francisco (também Santa Casa de Bragança Paulista)",
+    "cidade": "Bragança Paulista",
+    "uti_neonatal": true,
+    "minutos": 5,
+    "fonte": "Site da Amil, busca avançada da rede credenciada, rede Amil S380 QC, consultado em 29/10/2026; UTI neonatal conferida no CNES (cnes.datasus.gov.br, aba leitos); 7 leitos de UTI neonatal em cada um dos dois; minutos de carro aproximados, calculados por rota (OSRM) do centro da cidade"
+   },
+   "outros": "Tem laboratório (análises clínicas), pediatra e obstetra credenciados na cidade.",
+   "resumo": "Com a Amil S380, em Bragança Paulista você resolve tudo na cidade: pronto-socorro adulto e infantil e parto com UTI neonatal (Hospital Universitário São Francisco ou Santa Casa, cerca de 5 min).",
+   "confirmado_no_site_amil": true
+  }
  },
  "Cesário Lange": {
   "cidade": "Cesário Lange",
@@ -1780,7 +1872,33 @@
    "https://overpass-api.de (mapa colaborativo OpenStreetMap, consultado em 29/10/2026)",
    "https://servicodados.ibge.gov.br/api/v1/pesquisas/-/indicadores/47001%7C29765/resultados (IBGE Cidades: PIB por pessoa 2023 e salário médio 2021)",
    "https://www.minhaconexao.com.br/ranking/sp/cesario-lange"
-  ]
+  ],
+  "amil": {
+   "pronto_socorro": [
+    {
+     "nome": "não encontrado na rede S380",
+     "cidade": "Cesário Lange",
+     "atende": "",
+     "fonte": "Site da Amil, busca avançada da rede credenciada, rede Amil S380 QC, consultado em 29/10/2026 (a cidade nem aparece na lista de municípios da rede)"
+    },
+    {
+     "nome": "Hospital São Luiz Boituva",
+     "cidade": "Boituva (26 min)",
+     "atende": "adulto e infantil",
+     "fonte": "Site da Amil, busca avançada da rede credenciada, rede Amil S380 QC, consultado em 29/10/2026"
+    }
+   ],
+   "maternidade": {
+    "nome": "Hospital São Luiz Boituva",
+    "cidade": "Boituva",
+    "uti_neonatal": false,
+    "minutos": 26,
+    "fonte": "Site da Amil, busca avançada da rede credenciada, rede Amil S380 QC, consultado em 29/10/2026; UTI neonatal conferida no CNES (cnes.datasus.gov.br, aba leitos); sem leito de UTI neonatal no CNES; minutos de carro aproximados, calculados por rota (OSRM) do centro da cidade"
+   },
+   "outros": "Nada credenciado na S380 dentro da cidade (nem laboratório).",
+   "resumo": "Com a Amil S380, em Cesário Lange você não resolve nada na cidade; para pronto-socorro e parto vai ao Hospital São Luiz em Boituva (26 min, sem UTI neonatal). UTI neonatal confirmada perto não encontrei.",
+   "confirmado_no_site_amil": true
+  }
  },
  "Cosmópolis": {
   "cidade": "Cosmópolis",
@@ -2078,7 +2196,27 @@
    "https://overpass-api.de (mapa colaborativo OpenStreetMap, consultado em 29/10/2026)",
    "https://servicodados.ibge.gov.br/api/v1/pesquisas/-/indicadores/47001%7C29765/resultados (IBGE Cidades: PIB por pessoa 2023 e salário médio 2021)",
    "https://www.minhaconexao.com.br/ranking/sp/cosmopolis"
-  ]
+  ],
+  "amil": {
+   "pronto_socorro": [
+    {
+     "nome": "Santa Casa de Cosmópolis",
+     "cidade": "Cosmópolis",
+     "atende": "adulto e infantil",
+     "fonte": "Site da Amil, busca avançada da rede credenciada, rede Amil S380 QC, consultado em 29/10/2026"
+    }
+   ],
+   "maternidade": {
+    "nome": "Santa Casa de Cosmópolis",
+    "cidade": "Cosmópolis",
+    "uti_neonatal": false,
+    "minutos": 2,
+    "fonte": "Site da Amil, busca avançada da rede credenciada, rede Amil S380 QC, consultado em 29/10/2026; UTI neonatal conferida no CNES (cnes.datasus.gov.br, aba leitos); sem leito de UTI neonatal no CNES; minutos de carro aproximados, calculados por rota (OSRM) do centro da cidade"
+   },
+   "outros": "Tem laboratório (análises clínicas), pediatra e obstetra credenciados na cidade.",
+   "resumo": "Com a Amil S380, em Cosmópolis você resolve pronto-socorro adulto e infantil e parto na Santa Casa; para UTI neonatal vai ao Hospital São Francisco em Americana (33 min) ou ao Samaritano em Campinas (39 min).",
+   "confirmado_no_site_amil": true
+  }
  },
  "Hortolândia": {
   "cidade": "Hortolândia",
@@ -2397,7 +2535,39 @@
    "https://overpass-api.de (mapa colaborativo OpenStreetMap, consultado em 29/10/2026)",
    "https://servicodados.ibge.gov.br/api/v1/pesquisas/-/indicadores/47001%7C29765/resultados (IBGE Cidades: PIB por pessoa 2023 e salário médio 2021)",
    "https://www.minhaconexao.com.br/ranking/sp/hortolandia"
-  ]
+  ],
+  "amil": {
+   "pronto_socorro": [
+    {
+     "nome": "não encontrado na rede S380",
+     "cidade": "Hortolândia",
+     "atende": "",
+     "fonte": "Site da Amil, busca avançada da rede credenciada, rede Amil S380 QC, consultado em 29/10/2026"
+    },
+    {
+     "nome": "Hospital São Francisco de Americana",
+     "cidade": "Americana (21 min)",
+     "atende": "adulto e infantil",
+     "fonte": "Site da Amil, busca avançada da rede credenciada, rede Amil S380 QC, consultado em 29/10/2026"
+    },
+    {
+     "nome": "Hospital Samaritano de Campinas",
+     "cidade": "Campinas (22 min)",
+     "atende": "infantil",
+     "fonte": "Site da Amil, busca avançada da rede credenciada, rede Amil S380 QC, consultado em 29/10/2026"
+    }
+   ],
+   "maternidade": {
+    "nome": "Hospital São Francisco de Americana",
+    "cidade": "Americana",
+    "uti_neonatal": true,
+    "minutos": 21,
+    "fonte": "Site da Amil, busca avançada da rede credenciada, rede Amil S380 QC, consultado em 29/10/2026; UTI neonatal conferida no CNES (cnes.datasus.gov.br, aba leitos); 4 leitos de UTI neonatal; o Samaritano de Campinas (22 min) tem 10; minutos de carro aproximados, calculados por rota (OSRM) do centro da cidade"
+   },
+   "outros": "Tem laboratório (análises clínicas), pediatra e obstetra credenciados na cidade. Monte Mor (19 min) também tem maternidade S380, nome não aberto.",
+   "resumo": "Com a Amil S380, em Hortolândia você resolve consultas e exames na cidade; para pronto-socorro e parto com UTI neonatal vai ao Hospital São Francisco em Americana (21 min) ou ao Samaritano em Campinas (22 min).",
+   "confirmado_no_site_amil": true
+  }
  },
  "Itatiba": {
   "cidade": "Itatiba",
@@ -2763,7 +2933,39 @@
    "https://overpass-api.de (mapa colaborativo OpenStreetMap, consultado em 29/10/2026)",
    "https://servicodados.ibge.gov.br/api/v1/pesquisas/-/indicadores/47001%7C29765/resultados (IBGE Cidades: PIB por pessoa 2023 e salário médio 2021)",
    "https://www.minhaconexao.com.br/ranking/sp/itatiba"
-  ]
+  ],
+  "amil": {
+   "pronto_socorro": [
+    {
+     "nome": "Hospital Itatiba",
+     "cidade": "Itatiba",
+     "atende": "adulto",
+     "fonte": "Site da Amil, busca avançada da rede credenciada, rede Amil S380 QC, consultado em 29/10/2026"
+    },
+    {
+     "nome": "Santa Casa de Itatiba",
+     "cidade": "Itatiba",
+     "atende": "adulto",
+     "fonte": "Site da Amil, busca avançada da rede credenciada, rede Amil S380 QC, consultado em 29/10/2026"
+    },
+    {
+     "nome": "pronto-socorro infantil existe na cidade pela rede S380 (o hospital exato não consegui abrir)",
+     "cidade": "Itatiba",
+     "atende": "infantil",
+     "fonte": "Site da Amil, busca avançada da rede credenciada, rede Amil S380 QC, consultado em 29/10/2026"
+    }
+   ],
+   "maternidade": {
+    "nome": "Santa Casa de Itatiba",
+    "cidade": "Itatiba",
+    "uti_neonatal": true,
+    "minutos": 5,
+    "fonte": "Site da Amil, busca avançada da rede credenciada, rede Amil S380 QC, consultado em 29/10/2026; UTI neonatal conferida no CNES (cnes.datasus.gov.br, aba leitos); 6 leitos de UTI neonatal; o Hospital Itatiba também é maternidade S380, mas sem UTI neonatal; minutos de carro aproximados, calculados por rota (OSRM) do centro da cidade"
+   },
+   "outros": "Tem laboratório (análises clínicas), pediatra e obstetra credenciados na cidade.",
+   "resumo": "Com a Amil S380, em Itatiba você resolve tudo na cidade: pronto-socorro e parto com UTI neonatal na Santa Casa de Itatiba (cerca de 5 min).",
+   "confirmado_no_site_amil": true
+  }
  },
  "Jaguariúna": {
   "cidade": "Jaguariúna",
@@ -3069,7 +3271,39 @@
    "https://overpass-api.de (mapa colaborativo OpenStreetMap, consultado em 29/10/2026)",
    "https://servicodados.ibge.gov.br/api/v1/pesquisas/-/indicadores/47001%7C29765/resultados (IBGE Cidades: PIB por pessoa 2023 e salário médio 2021)",
    "https://www.minhaconexao.com.br/ranking/sp/jaguariuna"
-  ]
+  ],
+  "amil": {
+   "pronto_socorro": [
+    {
+     "nome": "não encontrado na rede S380",
+     "cidade": "Jaguariúna",
+     "atende": "",
+     "fonte": "Site da Amil, busca avançada da rede credenciada, rede Amil S380 QC, consultado em 29/10/2026"
+    },
+    {
+     "nome": "Hospital Samaritano de Campinas",
+     "cidade": "Campinas (30 min)",
+     "atende": "infantil",
+     "fonte": "Site da Amil, busca avançada da rede credenciada, rede Amil S380 QC, consultado em 29/10/2026"
+    },
+    {
+     "nome": "Santa Casa de Cosmópolis",
+     "cidade": "Cosmópolis (37 min)",
+     "atende": "adulto e infantil",
+     "fonte": "Site da Amil, busca avançada da rede credenciada, rede Amil S380 QC, consultado em 29/10/2026"
+    }
+   ],
+   "maternidade": {
+    "nome": "Hospital Samaritano de Campinas",
+    "cidade": "Campinas",
+    "uti_neonatal": true,
+    "minutos": 30,
+    "fonte": "Site da Amil, busca avançada da rede credenciada, rede Amil S380 QC, consultado em 29/10/2026; UTI neonatal conferida no CNES (cnes.datasus.gov.br, aba leitos); 10 leitos de UTI neonatal; minutos de carro aproximados, calculados por rota (OSRM) do centro da cidade"
+   },
+   "outros": "Tem pediatra, obstetra e ultrassom obstétrico credenciados na cidade; laboratório de análises clínicas não aparece na cidade.",
+   "resumo": "Com a Amil S380, em Jaguariúna você resolve consultas com pediatra e obstetra na cidade; para pronto-socorro e parto vai a Campinas, Hospital Samaritano (30 min, com UTI neonatal).",
+   "confirmado_no_site_amil": true
+  }
  },
  "Jarinu": {
   "cidade": "Jarinu",
@@ -3414,7 +3648,27 @@
    "https://www.google.com/maps (rotas com horário de saída definido, consultado em 29/10/2026)",
    "https://overpass-api.de (mapa colaborativo OpenStreetMap, consultado em 29/10/2026)",
    "https://servicodados.ibge.gov.br/api/v1/pesquisas/-/indicadores/47001%7C29765/resultados (IBGE Cidades: PIB por pessoa 2023 e salário médio 2021)"
-  ]
+  ],
+  "amil": {
+   "pronto_socorro": [
+    {
+     "nome": "Hospital Jarinu",
+     "cidade": "Jarinu",
+     "atende": "adulto e infantil",
+     "fonte": "Site da Amil, busca avançada da rede credenciada, rede Amil S380 QC, consultado em 29/10/2026"
+    }
+   ],
+   "maternidade": {
+    "nome": "Hospital Albert Sabin",
+    "cidade": "Atibaia",
+    "uti_neonatal": false,
+    "minutos": 23,
+    "fonte": "Site da Amil, busca avançada da rede credenciada, rede Amil S380 QC, consultado em 29/10/2026; UTI neonatal conferida no CNES (cnes.datasus.gov.br, aba leitos); sem UTI neonatal no CNES; a Santa Casa de Itatiba, a 25 min, tem 6 leitos de UTI neonatal; minutos de carro aproximados, calculados por rota (OSRM) do centro da cidade"
+   },
+   "outros": "Tem laboratório credenciado; não há pediatra nem obstetra de consultório credenciado na cidade.",
+   "resumo": "Com a Amil S380, em Jarinu você resolve pronto-socorro adulto e infantil no Hospital Jarinu; para parto vai à Santa Casa de Itatiba (25 min, com UTI neonatal) ou ao Albert Sabin em Atibaia (23 min, sem UTI neonatal).",
+   "confirmado_no_site_amil": true
+  }
  },
  "Pedreira": {
   "cidade": "Pedreira",
@@ -3759,7 +4013,33 @@
    "https://overpass-api.de (mapa colaborativo OpenStreetMap, consultado em 29/10/2026)",
    "https://servicodados.ibge.gov.br/api/v1/pesquisas/-/indicadores/47001%7C29765/resultados (IBGE Cidades: PIB por pessoa 2023 e salário médio 2021)",
    "https://www.minhaconexao.com.br/ranking/sp/pedreira"
-  ]
+  ],
+  "amil": {
+   "pronto_socorro": [
+    {
+     "nome": "não encontrado na rede S380",
+     "cidade": "Pedreira",
+     "atende": "",
+     "fonte": "Site da Amil, busca avançada da rede credenciada, rede Amil S380 QC, consultado em 29/10/2026"
+    },
+    {
+     "nome": "Hospital Samaritano de Campinas",
+     "cidade": "Campinas (43 min)",
+     "atende": "infantil",
+     "fonte": "Site da Amil, busca avançada da rede credenciada, rede Amil S380 QC, consultado em 29/10/2026"
+    }
+   ],
+   "maternidade": {
+    "nome": "Hospital Samaritano de Campinas",
+    "cidade": "Campinas",
+    "uti_neonatal": true,
+    "minutos": 43,
+    "fonte": "Site da Amil, busca avançada da rede credenciada, rede Amil S380 QC, consultado em 29/10/2026; UTI neonatal conferida no CNES (cnes.datasus.gov.br, aba leitos); 10 leitos de UTI neonatal; minutos de carro aproximados, calculados por rota (OSRM) do centro da cidade"
+   },
+   "outros": "Tem obstetra e ultrassom obstétrico credenciados na cidade; não há pediatra nem laboratório de análises clínicas credenciados. Amparo tem pronto-socorro adulto S380 (nome não aberto).",
+   "resumo": "Com a Amil S380, em Pedreira você resolve só consulta com obstetra na cidade; para pronto-socorro e parto vai ao Samaritano em Campinas (43 min, com UTI neonatal).",
+   "confirmado_no_site_amil": true
+  }
  },
  "Piracaia": {
   "cidade": "Piracaia",
@@ -4078,7 +4358,27 @@
    "https://www.google.com/maps (rotas com horário de saída definido, consultado em 29/10/2026)",
    "https://overpass-api.de (mapa colaborativo OpenStreetMap, consultado em 29/10/2026)",
    "https://servicodados.ibge.gov.br/api/v1/pesquisas/-/indicadores/47001%7C29765/resultados (IBGE Cidades: PIB por pessoa 2023 e salário médio 2021)"
-  ]
+  ],
+  "amil": {
+   "pronto_socorro": [
+    {
+     "nome": "Santa Casa de Piracaia",
+     "cidade": "Piracaia",
+     "atende": "adulto e infantil",
+     "fonte": "Site da Amil, busca avançada da rede credenciada, rede Amil S380 QC, consultado em 29/10/2026"
+    }
+   ],
+   "maternidade": {
+    "nome": "Hospital Albert Sabin",
+    "cidade": "Atibaia",
+    "uti_neonatal": false,
+    "minutos": 27,
+    "fonte": "Site da Amil, busca avançada da rede credenciada, rede Amil S380 QC, consultado em 29/10/2026; UTI neonatal conferida no CNES (cnes.datasus.gov.br, aba leitos); CNES mostra 12 leitos de neonatologia, mas nenhum de UTI neonatal; minutos de carro aproximados, calculados por rota (OSRM) do centro da cidade"
+   },
+   "outros": "Tem laboratório credenciado; não há pediatra nem obstetra de consultório credenciado na cidade.",
+   "resumo": "Com a Amil S380, em Piracaia você resolve pronto-socorro adulto e infantil na Santa Casa; para parto vai ao Albert Sabin em Atibaia (27 min, sem UTI neonatal) ou ao Hospital Universitário São Francisco em Bragança Paulista (29 min, com UTI neonatal).",
+   "confirmado_no_site_amil": true
+  }
  },
  "Salto": {
   "cidade": "Salto",
@@ -4439,7 +4739,27 @@
    "https://overpass-api.de (mapa colaborativo OpenStreetMap, consultado em 29/10/2026)",
    "https://servicodados.ibge.gov.br/api/v1/pesquisas/-/indicadores/47001%7C29765/resultados (IBGE Cidades: PIB por pessoa 2023 e salário médio 2021)",
    "https://www.minhaconexao.com.br/ranking/sp/salto"
-  ]
+  ],
+  "amil": {
+   "pronto_socorro": [
+    {
+     "nome": "Hospital Unimed Salto/Itu",
+     "cidade": "Itu (o site lista na busca de Salto)",
+     "atende": "adulto e infantil",
+     "fonte": "Site da Amil, busca avançada da rede credenciada, rede Amil S380 QC, consultado em 29/10/2026"
+    }
+   ],
+   "maternidade": {
+    "nome": "maternidade da rede S380 em Indaiatuba (o site mostra que existe, mas o nome não consegui abrir)",
+    "cidade": "Indaiatuba",
+    "uti_neonatal": null,
+    "minutos": 17,
+    "fonte": "Site da Amil, busca avançada da rede credenciada, rede Amil S380 QC, consultado em 29/10/2026; nome não aberto porque o site bloqueou novas buscas; minutos de carro aproximados, calculados por rota (OSRM) do centro da cidade"
+   },
+   "outros": "Tem laboratório (análises clínicas), pediatra e obstetra credenciados na cidade. Não há maternidade S380 em Salto.",
+   "resumo": "Com a Amil S380, em Salto você resolve consultas e exames na cidade; para pronto-socorro vai ao Hospital Unimed em Itu, e para parto a Indaiatuba (17 min, nome a confirmar) ou ao Samaritano em Campinas (36 min, com UTI neonatal).",
+   "confirmado_no_site_amil": true
+  }
  },
  "Sumaré": {
   "cidade": "Sumaré",
@@ -4764,7 +5084,27 @@
    "https://servicodados.ibge.gov.br/api/v1/pesquisas/-/indicadores/47001%7C29765/resultados (IBGE Cidades: PIB por pessoa 2023 e salário médio 2021)",
    "https://www.minhaconexao.com.br/ranking/sp/sumare",
    "https://supervarejo.com.br/varejo/assai-inaugura-primeira-loja-em-sumare-sp"
-  ]
+  ],
+  "amil": {
+   "pronto_socorro": [
+    {
+     "nome": "Hospital São Francisco de Americana",
+     "cidade": "Americana (12 min; o site lista na busca de Sumaré)",
+     "atende": "adulto e infantil",
+     "fonte": "Site da Amil, busca avançada da rede credenciada, rede Amil S380 QC, consultado em 29/10/2026"
+    }
+   ],
+   "maternidade": {
+    "nome": "Hospital São Francisco de Americana",
+    "cidade": "Americana",
+    "uti_neonatal": true,
+    "minutos": 12,
+    "fonte": "Site da Amil, busca avançada da rede credenciada, rede Amil S380 QC, consultado em 29/10/2026; UTI neonatal conferida no CNES (cnes.datasus.gov.br, aba leitos); 4 leitos de UTI neonatal; minutos de carro aproximados, calculados por rota (OSRM) do centro da cidade"
+   },
+   "outros": "Tem laboratório (análises clínicas), pediatra e obstetra credenciados na cidade.",
+   "resumo": "Com a Amil S380, em Sumaré você resolve consultas e exames na cidade; para pronto-socorro e parto com UTI neonatal vai ao Hospital São Francisco em Americana (12 min).",
+   "confirmado_no_site_amil": true
+  }
  },
  "Valinhos": {
   "cidade": "Valinhos",
@@ -5098,6 +5438,50 @@
    "https://overpass-api.de (mapa colaborativo OpenStreetMap, consultado em 29/10/2026)",
    "https://servicodados.ibge.gov.br/api/v1/pesquisas/-/indicadores/47001%7C29765/resultados (IBGE Cidades: PIB por pessoa 2023 e salário médio 2021)",
    "https://www.minhaconexao.com.br/ranking/sp/valinhos"
-  ]
+  ],
+  "amil": {
+   "pronto_socorro": [
+    {
+     "nome": "Hospital e Maternidade Galileo",
+     "cidade": "Valinhos",
+     "atende": "adulto",
+     "fonte": "Site da Amil, busca avançada da rede credenciada, rede Amil S380 QC, consultado em 29/10/2026"
+    },
+    {
+     "nome": "Santa Casa de Valinhos",
+     "cidade": "Valinhos",
+     "atende": "adulto",
+     "fonte": "Site da Amil, busca avançada da rede credenciada, rede Amil S380 QC, consultado em 29/10/2026"
+    },
+    {
+     "nome": "Hospital Samaritano de Campinas",
+     "cidade": "Campinas (14 min)",
+     "atende": "infantil",
+     "fonte": "Site da Amil, busca avançada da rede credenciada, rede Amil S380 QC, consultado em 29/10/2026"
+    },
+    {
+     "nome": "Santa Casa de Vinhedo",
+     "cidade": "Vinhedo",
+     "atende": "adulto e infantil",
+     "fonte": "Site da Amil, busca avançada da rede credenciada, rede Amil S380 QC, consultado em 29/10/2026"
+    },
+    {
+     "nome": "Casa de Saúde (Hospital Vera Cruz)",
+     "cidade": "Campinas",
+     "atende": "adulto e infantil",
+     "fonte": "Site da Amil, busca avançada da rede credenciada, rede Amil S380 QC, consultado em 29/10/2026"
+    }
+   ],
+   "maternidade": {
+    "nome": "Hospital e Maternidade Galileo",
+    "cidade": "Valinhos",
+    "uti_neonatal": true,
+    "minutos": 6,
+    "fonte": "Site da Amil, busca avançada da rede credenciada, rede Amil S380 QC, consultado em 29/10/2026; UTI neonatal conferida no CNES (cnes.datasus.gov.br, aba leitos); 10 leitos de UTI neonatal; minutos de carro aproximados, calculados por rota (OSRM) do centro da cidade"
+   },
+   "outros": "Tem laboratório (análises clínicas), pediatra e obstetra credenciados na cidade.",
+   "resumo": "Com a Amil S380, em Valinhos você resolve pronto-socorro adulto e parto com UTI neonatal (Galileo) na cidade; para pronto-socorro infantil vai ao Samaritano em Campinas (14 min) ou à Santa Casa de Vinhedo.",
+   "confirmado_no_site_amil": true
+  }
  }
 }
