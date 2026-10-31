@@ -1,0 +1,3452 @@
+{
+"fonte": "OpenStreetMap (Nominatim) + OSRM, centro a centro, sem trânsito",
+"calculado_em": "2026-10-31",
+"cidades": {
+"Americana": [
+-22.73925,
+-47.3306
+],
+"Amparo": [
+-22.70111,
+-46.76444
+],
+"Artur Nogueira": [
+-22.57274,
+-47.17268
+],
+"Atibaia": [
+-23.11774,
+-46.55479
+],
+"Boituva": [
+-23.28389,
+-47.67382
+],
+"Bom Jesus dos Perdões": [
+-23.13539,
+-46.46481
+],
+"Bragança Paulista": [
+-22.95202,
+-46.54186
+],
+"Cabreúva": [
+-23.30767,
+-47.13247
+],
+"Capivari": [
+-22.99993,
+-47.50311
+],
+"Cerquilho": [
+-23.16266,
+-47.74339
+],
+"Cesário Lange": [
+-23.22603,
+-47.95445
+],
+"Cosmópolis": [
+-22.64374,
+-47.19721
+],
+"Engenheiro Coelho": [
+-22.48967,
+-47.2119
+],
+"Guararema": [
+-23.41368,
+-46.03837
+],
+"Holambra": [
+-22.6332,
+-47.05453
+],
+"Hortolândia": [
+-22.86202,
+-47.21642
+],
+"Indaiatuba": [
+-23.09084,
+-47.21807
+],
+"Itatiba": [
+-23.00555,
+-46.83977
+],
+"Itu": [
+-23.26378,
+-47.29985
+],
+"Itupeva": [
+-23.15311,
+-47.05803
+],
+"Jaguariúna": [
+-22.70374,
+-46.98506
+],
+"Jarinu": [
+-23.09496,
+-46.71486
+],
+"Jundiaí": [
+-23.18877,
+-46.88451
+],
+"Louveira": [
+-23.08639,
+-46.95056
+],
+"Mogi Guaçu": [
+-22.37222,
+-46.9425
+],
+"Mogi Mirim": [
+-22.43312,
+-46.95825
+],
+"Monte Alegre do Sul": [
+-22.68186,
+-46.67988
+],
+"Monte Mor": [
+-22.95323,
+-47.30825
+],
+"Morungaba": [
+-22.88,
+-46.79167
+],
+"Pedreira": [
+-22.74135,
+-46.89485
+],
+"Piracaia": [
+-23.05254,
+-46.35937
+],
+"Porto Feliz": [
+-23.21107,
+-47.52472
+],
+"Rio Claro": [
+-22.41001,
+-47.56039
+],
+"Salto": [
+-23.199,
+-47.29137
+],
+"Santa Bárbara d'Oeste": [
+-22.75425,
+-47.41379
+],
+"Santo Antônio de Posse": [
+-22.60533,
+-46.91973
+],
+"Serra Negra": [
+-22.61265,
+-46.69999
+],
+"Sumaré": [
+-22.8218,
+-47.26711
+],
+"Tatuí": [
+-23.34898,
+-47.84902
+],
+"Valinhos": [
+-22.9797,
+-46.98417
+],
+"Vinhedo": [
+-23.02985,
+-46.97498
+]
+},
+"min_km": {
+"Americana|Amparo": [
+85,
+89
+],
+"Americana|Artur Nogueira": [
+38,
+34
+],
+"Americana|Atibaia": [
+78,
+103
+],
+"Americana|Boituva": [
+91,
+92
+],
+"Americana|Bom Jesus dos Perdões": [
+84,
+112
+],
+"Americana|Bragança Paulista": [
+86,
+104
+],
+"Americana|Cabreúva": [
+75,
+98
+],
+"Americana|Capivari": [
+38,
+43
+],
+"Americana|Cerquilho": [
+73,
+83
+],
+"Americana|Cesário Lange": [
+99,
+117
+],
+"Americana|Cosmópolis": [
+32,
+25
+],
+"Americana|Engenheiro Coelho": [
+39,
+47
+],
+"Americana|Guararema": [
+140,
+186
+],
+"Americana|Holambra": [
+53,
+49
+],
+"Americana|Hortolândia": [
+22,
+21
+],
+"Americana|Indaiatuba": [
+49,
+61
+],
+"Americana|Itatiba": [
+57,
+72
+],
+"Americana|Itu": [
+65,
+81
+],
+"Americana|Itupeva": [
+56,
+70
+],
+"Americana|Jaguariúna": [
+49,
+59
+],
+"Americana|Jarinu": [
+72,
+93
+],
+"Americana|Jundiaí": [
+59,
+77
+],
+"Americana|Louveira": [
+50,
+62
+],
+"Americana|Mogi Guaçu": [
+66,
+83
+],
+"Americana|Mogi Mirim": [
+60,
+74
+],
+"Americana|Monte Alegre do Sul": [
+98,
+102
+],
+"Americana|Monte Mor": [
+33,
+30
+],
+"Americana|Morungaba": [
+69,
+81
+],
+"Americana|Pedreira": [
+65,
+72
+],
+"Americana|Piracaia": [
+96,
+123
+],
+"Americana|Porto Feliz": [
+68,
+69
+],
+"Americana|Rio Claro": [
+46,
+56
+],
+"Americana|Salto": [
+57,
+73
+],
+"Americana|Santa Bárbara d'Oeste": [
+11,
+10
+],
+"Americana|Santo Antônio de Posse": [
+61,
+74
+],
+"Americana|Serra Negra": [
+101,
+107
+],
+"Americana|Sumaré": [
+13,
+13
+],
+"Americana|Tatuí": [
+92,
+109
+],
+"Americana|Valinhos": [
+46,
+52
+],
+"Americana|Vinhedo": [
+48,
+57
+],
+"Amparo|Artur Nogueira": [
+61,
+58
+],
+"Amparo|Atibaia": [
+73,
+71
+],
+"Amparo|Boituva": [
+138,
+153
+],
+"Amparo|Bom Jesus dos Perdões": [
+80,
+80
+],
+"Amparo|Bragança Paulista": [
+50,
+46
+],
+"Amparo|Cabreúva": [
+102,
+99
+],
+"Amparo|Capivari": [
+111,
+109
+],
+"Amparo|Cerquilho": [
+145,
+144
+],
+"Amparo|Cesário Lange": [
+160,
+190
+],
+"Amparo|Cosmópolis": [
+69,
+69
+],
+"Amparo|Engenheiro Coelho": [
+69,
+80
+],
+"Amparo|Guararema": [
+135,
+154
+],
+"Amparo|Holambra": [
+49,
+44
+],
+"Amparo|Hortolândia": [
+75,
+74
+],
+"Amparo|Indaiatuba": [
+89,
+82
+],
+"Amparo|Itatiba": [
+56,
+46
+],
+"Amparo|Itu": [
+105,
+103
+],
+"Amparo|Itupeva": [
+92,
+85
+],
+"Amparo|Jaguariúna": [
+37,
+31
+],
+"Amparo|Jarinu": [
+73,
+68
+],
+"Amparo|Jundiaí": [
+78,
+70
+],
+"Amparo|Louveira": [
+74,
+65
+],
+"Amparo|Mogi Guaçu": [
+59,
+57
+],
+"Amparo|Mogi Mirim": [
+50,
+51
+],
+"Amparo|Monte Alegre do Sul": [
+16,
+13
+],
+"Amparo|Monte Mor": [
+91,
+88
+],
+"Amparo|Morungaba": [
+33,
+27
+],
+"Amparo|Pedreira": [
+22,
+18
+],
+"Amparo|Piracaia": [
+78,
+74
+],
+"Amparo|Porto Feliz": [
+121,
+128
+],
+"Amparo|Rio Claro": [
+106,
+129
+],
+"Amparo|Salto": [
+97,
+95
+],
+"Amparo|Santa Bárbara d'Oeste": [
+91,
+97
+],
+"Amparo|Santo Antônio de Posse": [
+32,
+29
+],
+"Amparo|Serra Negra": [
+19,
+18
+],
+"Amparo|Sumaré": [
+77,
+78
+],
+"Amparo|Tatuí": [
+155,
+182
+],
+"Amparo|Valinhos": [
+69,
+55
+],
+"Amparo|Vinhedo": [
+76,
+62
+],
+"Artur Nogueira|Atibaia": [
+85,
+109
+],
+"Artur Nogueira|Boituva": [
+116,
+151
+],
+"Artur Nogueira|Bom Jesus dos Perdões": [
+91,
+118
+],
+"Artur Nogueira|Bragança Paulista": [
+93,
+110
+],
+"Artur Nogueira|Cabreúva": [
+92,
+117
+],
+"Artur Nogueira|Capivari": [
+74,
+75
+],
+"Artur Nogueira|Cerquilho": [
+105,
+129
+],
+"Artur Nogueira|Cesário Lange": [
+131,
+163
+],
+"Artur Nogueira|Cosmópolis": [
+9,
+10
+],
+"Artur Nogueira|Engenheiro Coelho": [
+10,
+11
+],
+"Artur Nogueira|Guararema": [
+147,
+192
+],
+"Artur Nogueira|Holambra": [
+16,
+16
+],
+"Artur Nogueira|Hortolândia": [
+40,
+44
+],
+"Artur Nogueira|Indaiatuba": [
+67,
+80
+],
+"Artur Nogueira|Itatiba": [
+64,
+78
+],
+"Artur Nogueira|Itu": [
+82,
+100
+],
+"Artur Nogueira|Itupeva": [
+74,
+89
+],
+"Artur Nogueira|Jaguariúna": [
+30,
+32
+],
+"Artur Nogueira|Jarinu": [
+80,
+99
+],
+"Artur Nogueira|Jundiaí": [
+76,
+96
+],
+"Artur Nogueira|Louveira": [
+66,
+79
+],
+"Artur Nogueira|Mogi Guaçu": [
+37,
+47
+],
+"Artur Nogueira|Mogi Mirim": [
+31,
+39
+],
+"Artur Nogueira|Monte Alegre do Sul": [
+75,
+71
+],
+"Artur Nogueira|Monte Mor": [
+57,
+61
+],
+"Artur Nogueira|Morungaba": [
+76,
+87
+],
+"Artur Nogueira|Pedreira": [
+46,
+45
+],
+"Artur Nogueira|Piracaia": [
+103,
+129
+],
+"Artur Nogueira|Porto Feliz": [
+99,
+125
+],
+"Artur Nogueira|Rio Claro": [
+49,
+62
+],
+"Artur Nogueira|Salto": [
+74,
+92
+],
+"Artur Nogueira|Santa Bárbara d'Oeste": [
+46,
+42
+],
+"Artur Nogueira|Santo Antônio de Posse": [
+29,
+29
+],
+"Artur Nogueira|Serra Negra": [
+74,
+72
+],
+"Artur Nogueira|Sumaré": [
+42,
+48
+],
+"Artur Nogueira|Tatuí": [
+124,
+155
+],
+"Artur Nogueira|Valinhos": [
+56,
+64
+],
+"Artur Nogueira|Vinhedo": [
+62,
+69
+],
+"Atibaia|Boituva": [
+126,
+161
+],
+"Atibaia|Bom Jesus dos Perdões": [
+13,
+13
+],
+"Atibaia|Bragança Paulista": [
+25,
+25
+],
+"Atibaia|Cabreúva": [
+77,
+91
+],
+"Atibaia|Capivari": [
+101,
+117
+],
+"Atibaia|Cerquilho": [
+135,
+152
+],
+"Atibaia|Cesário Lange": [
+147,
+194
+],
+"Atibaia|Cosmópolis": [
+79,
+99
+],
+"Atibaia|Engenheiro Coelho": [
+93,
+119
+],
+"Atibaia|Guararema": [
+68,
+87
+],
+"Atibaia|Holambra": [
+76,
+97
+],
+"Atibaia|Hortolândia": [
+68,
+88
+],
+"Atibaia|Indaiatuba": [
+77,
+95
+],
+"Atibaia|Itatiba": [
+31,
+38
+],
+"Atibaia|Itu": [
+87,
+106
+],
+"Atibaia|Itupeva": [
+67,
+77
+],
+"Atibaia|Jaguariúna": [
+66,
+86
+],
+"Atibaia|Jarinu": [
+23,
+25
+],
+"Atibaia|Jundiaí": [
+52,
+58
+],
+"Atibaia|Louveira": [
+48,
+58
+],
+"Atibaia|Mogi Guaçu": [
+91,
+123
+],
+"Atibaia|Mogi Mirim": [
+86,
+115
+],
+"Atibaia|Monte Alegre do Sul": [
+71,
+69
+],
+"Atibaia|Monte Mor": [
+81,
+95
+],
+"Atibaia|Morungaba": [
+46,
+51
+],
+"Atibaia|Pedreira": [
+76,
+79
+],
+"Atibaia|Piracaia": [
+25,
+24
+],
+"Atibaia|Porto Feliz": [
+109,
+135
+],
+"Atibaia|Rio Claro": [
+113,
+150
+],
+"Atibaia|Salto": [
+84,
+107
+],
+"Atibaia|Santa Bárbara d'Oeste": [
+85,
+111
+],
+"Atibaia|Santo Antônio de Posse": [
+78,
+101
+],
+"Atibaia|Serra Negra": [
+82,
+79
+],
+"Atibaia|Sumaré": [
+70,
+92
+],
+"Atibaia|Tatuí": [
+142,
+186
+],
+"Atibaia|Valinhos": [
+51,
+60
+],
+"Atibaia|Vinhedo": [
+52,
+56
+],
+"Boituva|Bom Jesus dos Perdões": [
+132,
+170
+],
+"Boituva|Bragança Paulista": [
+133,
+161
+],
+"Boituva|Cabreúva": [
+66,
+82
+],
+"Boituva|Capivari": [
+56,
+51
+],
+"Boituva|Cerquilho": [
+23,
+20
+],
+"Boituva|Cesário Lange": [
+27,
+34
+],
+"Boituva|Cosmópolis": [
+110,
+141
+],
+"Boituva|Engenheiro Coelho": [
+118,
+137
+],
+"Boituva|Guararema": [
+144,
+195
+],
+"Boituva|Holambra": [
+114,
+148
+],
+"Boituva|Hortolândia": [
+85,
+113
+],
+"Boituva|Indaiatuba": [
+58,
+75
+],
+"Boituva|Itatiba": [
+97,
+124
+],
+"Boituva|Itu": [
+42,
+51
+],
+"Boituva|Itupeva": [
+78,
+96
+],
+"Boituva|Jaguariúna": [
+104,
+137
+],
+"Boituva|Jarinu": [
+109,
+126
+],
+"Boituva|Jundiaí": [
+84,
+105
+],
+"Boituva|Louveira": [
+83,
+108
+],
+"Boituva|Mogi Guaçu": [
+130,
+175
+],
+"Boituva|Mogi Mirim": [
+124,
+167
+],
+"Boituva|Monte Alegre do Sul": [
+152,
+166
+],
+"Boituva|Monte Mor": [
+77,
+73
+],
+"Boituva|Morungaba": [
+117,
+144
+],
+"Boituva|Pedreira": [
+117,
+136
+],
+"Boituva|Piracaia": [
+144,
+181
+],
+"Boituva|Porto Feliz": [
+24,
+23
+],
+"Boituva|Rio Claro": [
+100,
+112
+],
+"Boituva|Salto": [
+46,
+58
+],
+"Boituva|Santa Bárbara d'Oeste": [
+82,
+82
+],
+"Boituva|Santo Antônio de Posse": [
+116,
+153
+],
+"Boituva|Serra Negra": [
+155,
+171
+],
+"Boituva|Sumaré": [
+90,
+121
+],
+"Boituva|Tatuí": [
+22,
+26
+],
+"Boituva|Valinhos": [
+84,
+108
+],
+"Boituva|Vinhedo": [
+81,
+105
+],
+"Bom Jesus dos Perdões|Bragança Paulista": [
+31,
+35
+],
+"Bom Jesus dos Perdões|Cabreúva": [
+83,
+100
+],
+"Bom Jesus dos Perdões|Capivari": [
+107,
+126
+],
+"Bom Jesus dos Perdões|Cerquilho": [
+141,
+160
+],
+"Bom Jesus dos Perdões|Cesário Lange": [
+153,
+203
+],
+"Bom Jesus dos Perdões|Cosmópolis": [
+85,
+108
+],
+"Bom Jesus dos Perdões|Engenheiro Coelho": [
+99,
+128
+],
+"Bom Jesus dos Perdões|Guararema": [
+60,
+75
+],
+"Bom Jesus dos Perdões|Holambra": [
+82,
+105
+],
+"Bom Jesus dos Perdões|Hortolândia": [
+74,
+96
+],
+"Bom Jesus dos Perdões|Indaiatuba": [
+83,
+104
+],
+"Bom Jesus dos Perdões|Itatiba": [
+37,
+47
+],
+"Bom Jesus dos Perdões|Itu": [
+93,
+114
+],
+"Bom Jesus dos Perdões|Itupeva": [
+73,
+86
+],
+"Bom Jesus dos Perdões|Jaguariúna": [
+72,
+95
+],
+"Bom Jesus dos Perdões|Jarinu": [
+29,
+34
+],
+"Bom Jesus dos Perdões|Jundiaí": [
+58,
+66
+],
+"Bom Jesus dos Perdões|Louveira": [
+54,
+67
+],
+"Bom Jesus dos Perdões|Mogi Guaçu": [
+98,
+132
+],
+"Bom Jesus dos Perdões|Mogi Mirim": [
+92,
+124
+],
+"Bom Jesus dos Perdões|Monte Alegre do Sul": [
+77,
+78
+],
+"Bom Jesus dos Perdões|Monte Mor": [
+87,
+104
+],
+"Bom Jesus dos Perdões|Morungaba": [
+52,
+60
+],
+"Bom Jesus dos Perdões|Pedreira": [
+82,
+88
+],
+"Bom Jesus dos Perdões|Piracaia": [
+21,
+19
+],
+"Bom Jesus dos Perdões|Porto Feliz": [
+115,
+144
+],
+"Bom Jesus dos Perdões|Rio Claro": [
+119,
+159
+],
+"Bom Jesus dos Perdões|Salto": [
+90,
+116
+],
+"Bom Jesus dos Perdões|Santa Bárbara d'Oeste": [
+91,
+119
+],
+"Bom Jesus dos Perdões|Santo Antônio de Posse": [
+84,
+110
+],
+"Bom Jesus dos Perdões|Serra Negra": [
+89,
+88
+],
+"Bom Jesus dos Perdões|Sumaré": [
+76,
+101
+],
+"Bom Jesus dos Perdões|Tatuí": [
+148,
+195
+],
+"Bom Jesus dos Perdões|Valinhos": [
+57,
+69
+],
+"Bom Jesus dos Perdões|Vinhedo": [
+58,
+65
+],
+"Bragança Paulista|Cabreúva": [
+83,
+92
+],
+"Bragança Paulista|Capivari": [
+109,
+118
+],
+"Bragança Paulista|Cerquilho": [
+143,
+152
+],
+"Bragança Paulista|Cesário Lange": [
+154,
+194
+],
+"Bragança Paulista|Cosmópolis": [
+87,
+100
+],
+"Bragança Paulista|Engenheiro Coelho": [
+101,
+120
+],
+"Bragança Paulista|Guararema": [
+87,
+109
+],
+"Bragança Paulista|Holambra": [
+84,
+97
+],
+"Bragança Paulista|Hortolândia": [
+76,
+88
+],
+"Bragança Paulista|Indaiatuba": [
+84,
+96
+],
+"Bragança Paulista|Itatiba": [
+38,
+38
+],
+"Bragança Paulista|Itu": [
+94,
+106
+],
+"Bragança Paulista|Itupeva": [
+74,
+77
+],
+"Bragança Paulista|Jaguariúna": [
+74,
+87
+],
+"Bragança Paulista|Jarinu": [
+39,
+42
+],
+"Bragança Paulista|Jundiaí": [
+59,
+62
+],
+"Bragança Paulista|Louveira": [
+55,
+58
+],
+"Bragança Paulista|Mogi Guaçu": [
+99,
+124
+],
+"Bragança Paulista|Mogi Mirim": [
+94,
+116
+],
+"Bragança Paulista|Monte Alegre do Sul": [
+47,
+44
+],
+"Bragança Paulista|Monte Mor": [
+89,
+96
+],
+"Bragança Paulista|Morungaba": [
+45,
+36
+],
+"Bragança Paulista|Pedreira": [
+64,
+60
+],
+"Bragança Paulista|Piracaia": [
+29,
+28
+],
+"Bragança Paulista|Porto Feliz": [
+116,
+135
+],
+"Bragança Paulista|Rio Claro": [
+121,
+151
+],
+"Bragança Paulista|Salto": [
+92,
+108
+],
+"Bragança Paulista|Santa Bárbara d'Oeste": [
+93,
+111
+],
+"Bragança Paulista|Santo Antônio de Posse": [
+75,
+72
+],
+"Bragança Paulista|Serra Negra": [
+59,
+54
+],
+"Bragança Paulista|Sumaré": [
+78,
+93
+],
+"Bragança Paulista|Tatuí": [
+149,
+186
+],
+"Bragança Paulista|Valinhos": [
+58,
+61
+],
+"Bragança Paulista|Vinhedo": [
+59,
+56
+],
+"Cabreúva|Capivari": [
+61,
+67
+],
+"Cabreúva|Cerquilho": [
+80,
+89
+],
+"Cabreúva|Cesário Lange": [
+87,
+115
+],
+"Cabreúva|Cosmópolis": [
+86,
+107
+],
+"Cabreúva|Engenheiro Coelho": [
+100,
+127
+],
+"Cabreúva|Guararema": [
+123,
+160
+],
+"Cabreúva|Holambra": [
+87,
+107
+],
+"Cabreúva|Hortolândia": [
+61,
+79
+],
+"Cabreúva|Indaiatuba": [
+44,
+43
+],
+"Cabreúva|Itatiba": [
+48,
+54
+],
+"Cabreúva|Itu": [
+27,
+27
+],
+"Cabreúva|Itupeva": [
+30,
+28
+],
+"Cabreúva|Jaguariúna": [
+77,
+96
+],
+"Cabreúva|Jarinu": [
+60,
+56
+],
+"Cabreúva|Jundiaí": [
+35,
+35
+],
+"Cabreúva|Louveira": [
+38,
+42
+],
+"Cabreúva|Mogi Guaçu": [
+103,
+134
+],
+"Cabreúva|Mogi Mirim": [
+98,
+125
+],
+"Cabreúva|Monte Alegre do Sul": [
+117,
+113
+],
+"Cabreúva|Monte Mor": [
+67,
+72
+],
+"Cabreúva|Morungaba": [
+70,
+73
+],
+"Cabreúva|Pedreira": [
+89,
+95
+],
+"Cabreúva|Piracaia": [
+94,
+111
+],
+"Cabreúva|Porto Feliz": [
+50,
+57
+],
+"Cabreúva|Rio Claro": [
+110,
+140
+],
+"Cabreúva|Salto": [
+30,
+29
+],
+"Cabreúva|Santa Bárbara d'Oeste": [
+78,
+106
+],
+"Cabreúva|Santo Antônio de Posse": [
+89,
+111
+],
+"Cabreúva|Serra Negra": [
+120,
+117
+],
+"Cabreúva|Sumaré": [
+66,
+87
+],
+"Cabreúva|Tatuí": [
+83,
+108
+],
+"Cabreúva|Valinhos": [
+52,
+55
+],
+"Cabreúva|Vinhedo": [
+44,
+49
+],
+"Capivari|Cerquilho": [
+37,
+37
+],
+"Capivari|Cesário Lange": [
+63,
+71
+],
+"Capivari|Cosmópolis": [
+68,
+66
+],
+"Capivari|Engenheiro Coelho": [
+73,
+88
+],
+"Capivari|Guararema": [
+161,
+210
+],
+"Capivari|Holambra": [
+85,
+89
+],
+"Capivari|Hortolândia": [
+39,
+39
+],
+"Capivari|Indaiatuba": [
+42,
+42
+],
+"Capivari|Itatiba": [
+80,
+86
+],
+"Capivari|Itu": [
+40,
+41
+],
+"Capivari|Itupeva": [
+67,
+63
+],
+"Capivari|Jaguariúna": [
+75,
+79
+],
+"Capivari|Jarinu": [
+96,
+107
+],
+"Capivari|Jundiaí": [
+74,
+89
+],
+"Capivari|Louveira": [
+68,
+75
+],
+"Capivari|Mogi Guaçu": [
+99,
+124
+],
+"Capivari|Mogi Mirim": [
+94,
+115
+],
+"Capivari|Monte Alegre do Sul": [
+125,
+123
+],
+"Capivari|Monte Mor": [
+24,
+23
+],
+"Capivari|Morungaba": [
+92,
+95
+],
+"Capivari|Pedreira": [
+91,
+88
+],
+"Capivari|Piracaia": [
+119,
+137
+],
+"Capivari|Porto Feliz": [
+33,
+29
+],
+"Capivari|Rio Claro": [
+59,
+74
+],
+"Capivari|Salto": [
+38,
+36
+],
+"Capivari|Santa Bárbara d'Oeste": [
+29,
+33
+],
+"Capivari|Santo Antônio de Posse": [
+87,
+94
+],
+"Capivari|Serra Negra": [
+128,
+127
+],
+"Capivari|Sumaré": [
+43,
+41
+],
+"Capivari|Tatuí": [
+57,
+63
+],
+"Capivari|Valinhos": [
+65,
+69
+],
+"Capivari|Vinhedo": [
+66,
+72
+],
+"Cerquilho|Cesário Lange": [
+29,
+36
+],
+"Cerquilho|Cosmópolis": [
+103,
+108
+],
+"Cerquilho|Engenheiro Coelho": [
+96,
+117
+],
+"Cerquilho|Guararema": [
+162,
+223
+],
+"Cerquilho|Holambra": [
+119,
+133
+],
+"Cerquilho|Hortolândia": [
+72,
+73
+],
+"Cerquilho|Indaiatuba": [
+72,
+82
+],
+"Cerquilho|Itatiba": [
+110,
+131
+],
+"Cerquilho|Itu": [
+55,
+59
+],
+"Cerquilho|Itupeva": [
+91,
+103
+],
+"Cerquilho|Jaguariúna": [
+109,
+113
+],
+"Cerquilho|Jarinu": [
+123,
+133
+],
+"Cerquilho|Jundiaí": [
+97,
+112
+],
+"Cerquilho|Louveira": [
+96,
+115
+],
+"Cerquilho|Mogi Guaçu": [
+123,
+153
+],
+"Cerquilho|Mogi Mirim": [
+117,
+145
+],
+"Cerquilho|Monte Alegre do Sul": [
+159,
+157
+],
+"Cerquilho|Monte Mor": [
+58,
+58
+],
+"Cerquilho|Morungaba": [
+126,
+130
+],
+"Cerquilho|Pedreira": [
+125,
+122
+],
+"Cerquilho|Piracaia": [
+153,
+171
+],
+"Cerquilho|Porto Feliz": [
+37,
+36
+],
+"Cerquilho|Rio Claro": [
+79,
+93
+],
+"Cerquilho|Salto": [
+59,
+65
+],
+"Cerquilho|Santa Bárbara d'Oeste": [
+64,
+67
+],
+"Cerquilho|Santo Antônio de Posse": [
+121,
+129
+],
+"Cerquilho|Serra Negra": [
+160,
+194
+],
+"Cerquilho|Sumaré": [
+77,
+75
+],
+"Cerquilho|Tatuí": [
+23,
+27
+],
+"Cerquilho|Valinhos": [
+97,
+115
+],
+"Cerquilho|Vinhedo": [
+95,
+112
+],
+"Cesário Lange|Cosmópolis": [
+129,
+142
+],
+"Cesário Lange|Engenheiro Coelho": [
+122,
+152
+],
+"Cesário Lange|Guararema": [
+163,
+224
+],
+"Cesário Lange|Holambra": [
+135,
+184
+],
+"Cesário Lange|Hortolândia": [
+98,
+108
+],
+"Cesário Lange|Indaiatuba": [
+80,
+112
+],
+"Cesário Lange|Itatiba": [
+118,
+157
+],
+"Cesário Lange|Itu": [
+63,
+87
+],
+"Cesário Lange|Itupeva": [
+100,
+132
+],
+"Cesário Lange|Jaguariúna": [
+126,
+174
+],
+"Cesário Lange|Jarinu": [
+130,
+159
+],
+"Cesário Lange|Jundiaí": [
+105,
+138
+],
+"Cesário Lange|Louveira": [
+105,
+144
+],
+"Cesário Lange|Mogi Guaçu": [
+149,
+187
+],
+"Cesário Lange|Mogi Mirim": [
+143,
+179
+],
+"Cesário Lange|Monte Alegre do Sul": [
+174,
+203
+],
+"Cesário Lange|Monte Mor": [
+84,
+92
+],
+"Cesário Lange|Morungaba": [
+139,
+180
+],
+"Cesário Lange|Pedreira": [
+138,
+172
+],
+"Cesário Lange|Piracaia": [
+165,
+214
+],
+"Cesário Lange|Porto Feliz": [
+48,
+54
+],
+"Cesário Lange|Rio Claro": [
+105,
+127
+],
+"Cesário Lange|Salto": [
+68,
+94
+],
+"Cesário Lange|Santa Bárbara d'Oeste": [
+90,
+101
+],
+"Cesário Lange|Santo Antônio de Posse": [
+138,
+189
+],
+"Cesário Lange|Serra Negra": [
+176,
+207
+],
+"Cesário Lange|Sumaré": [
+103,
+109
+],
+"Cesário Lange|Tatuí": [
+25,
+29
+],
+"Cesário Lange|Valinhos": [
+105,
+144
+],
+"Cesário Lange|Vinhedo": [
+103,
+141
+],
+"Cosmópolis|Engenheiro Coelho": [
+17,
+20
+],
+"Cosmópolis|Guararema": [
+141,
+182
+],
+"Cosmópolis|Holambra": [
+25,
+26
+],
+"Cosmópolis|Hortolândia": [
+34,
+34
+],
+"Cosmópolis|Indaiatuba": [
+61,
+70
+],
+"Cosmópolis|Itatiba": [
+58,
+68
+],
+"Cosmópolis|Itu": [
+76,
+90
+],
+"Cosmópolis|Itupeva": [
+68,
+79
+],
+"Cosmópolis|Jaguariúna": [
+37,
+36
+],
+"Cosmópolis|Jarinu": [
+74,
+89
+],
+"Cosmópolis|Jundiaí": [
+70,
+86
+],
+"Cosmópolis|Louveira": [
+60,
+69
+],
+"Cosmópolis|Mogi Guaçu": [
+44,
+56
+],
+"Cosmópolis|Mogi Mirim": [
+38,
+48
+],
+"Cosmópolis|Monte Alegre do Sul": [
+83,
+82
+],
+"Cosmópolis|Monte Mor": [
+51,
+50
+],
+"Cosmópolis|Morungaba": [
+70,
+77
+],
+"Cosmópolis|Pedreira": [
+53,
+49
+],
+"Cosmópolis|Piracaia": [
+97,
+119
+],
+"Cosmópolis|Porto Feliz": [
+93,
+115
+],
+"Cosmópolis|Rio Claro": [
+56,
+71
+],
+"Cosmópolis|Salto": [
+68,
+82
+],
+"Cosmópolis|Santa Bárbara d'Oeste": [
+41,
+33
+],
+"Cosmópolis|Santo Antônio de Posse": [
+38,
+40
+],
+"Cosmópolis|Serra Negra": [
+81,
+97
+],
+"Cosmópolis|Sumaré": [
+36,
+38
+],
+"Cosmópolis|Tatuí": [
+122,
+133
+],
+"Cosmópolis|Valinhos": [
+50,
+53
+],
+"Cosmópolis|Vinhedo": [
+56,
+59
+],
+"Engenheiro Coelho|Guararema": [
+155,
+202
+],
+"Engenheiro Coelho|Holambra": [
+25,
+27
+],
+"Engenheiro Coelho|Hortolândia": [
+47,
+54
+],
+"Engenheiro Coelho|Indaiatuba": [
+74,
+90
+],
+"Engenheiro Coelho|Itatiba": [
+72,
+88
+],
+"Engenheiro Coelho|Itu": [
+90,
+110
+],
+"Engenheiro Coelho|Itupeva": [
+81,
+99
+],
+"Engenheiro Coelho|Jaguariúna": [
+39,
+43
+],
+"Engenheiro Coelho|Jarinu": [
+87,
+109
+],
+"Engenheiro Coelho|Jundiaí": [
+84,
+106
+],
+"Engenheiro Coelho|Louveira": [
+74,
+89
+],
+"Engenheiro Coelho|Mogi Guaçu": [
+30,
+37
+],
+"Engenheiro Coelho|Mogi Mirim": [
+24,
+29
+],
+"Engenheiro Coelho|Monte Alegre do Sul": [
+78,
+88
+],
+"Engenheiro Coelho|Monte Mor": [
+65,
+71
+],
+"Engenheiro Coelho|Morungaba": [
+84,
+97
+],
+"Engenheiro Coelho|Pedreira": [
+55,
+56
+],
+"Engenheiro Coelho|Piracaia": [
+111,
+139
+],
+"Engenheiro Coelho|Porto Feliz": [
+103,
+114
+],
+"Engenheiro Coelho|Rio Claro": [
+41,
+50
+],
+"Engenheiro Coelho|Salto": [
+82,
+103
+],
+"Engenheiro Coelho|Santa Bárbara d'Oeste": [
+48,
+56
+],
+"Engenheiro Coelho|Santo Antônio de Posse": [
+39,
+40
+],
+"Engenheiro Coelho|Serra Negra": [
+67,
+78
+],
+"Engenheiro Coelho|Sumaré": [
+48,
+58
+],
+"Engenheiro Coelho|Tatuí": [
+115,
+143
+],
+"Engenheiro Coelho|Valinhos": [
+63,
+74
+],
+"Engenheiro Coelho|Vinhedo": [
+70,
+79
+],
+"Guararema|Holambra": [
+137,
+179
+],
+"Guararema|Hortolândia": [
+130,
+171
+],
+"Guararema|Indaiatuba": [
+131,
+177
+],
+"Guararema|Itatiba": [
+93,
+121
+],
+"Guararema|Itu": [
+132,
+173
+],
+"Guararema|Itupeva": [
+114,
+146
+],
+"Guararema|Jaguariúna": [
+128,
+169
+],
+"Guararema|Jarinu": [
+85,
+108
+],
+"Guararema|Jundiaí": [
+100,
+129
+],
+"Guararema|Louveira": [
+109,
+141
+],
+"Guararema|Mogi Guaçu": [
+153,
+206
+],
+"Guararema|Mogi Mirim": [
+148,
+198
+],
+"Guararema|Monte Alegre do Sul": [
+133,
+152
+],
+"Guararema|Monte Mor": [
+142,
+184
+],
+"Guararema|Morungaba": [
+108,
+134
+],
+"Guararema|Pedreira": [
+137,
+162
+],
+"Guararema|Piracaia": [
+76,
+93
+],
+"Guararema|Porto Feliz": [
+145,
+192
+],
+"Guararema|Rio Claro": [
+175,
+233
+],
+"Guararema|Salto": [
+136,
+178
+],
+"Guararema|Santa Bárbara d'Oeste": [
+146,
+194
+],
+"Guararema|Santo Antônio de Posse": [
+140,
+184
+],
+"Guararema|Serra Negra": [
+144,
+162
+],
+"Guararema|Sumaré": [
+132,
+175
+],
+"Guararema|Tatuí": [
+158,
+216
+],
+"Guararema|Valinhos": [
+112,
+143
+],
+"Guararema|Vinhedo": [
+114,
+144
+],
+"Holambra|Hortolândia": [
+49,
+54
+],
+"Holambra|Indaiatuba": [
+65,
+77
+],
+"Holambra|Itatiba": [
+55,
+65
+],
+"Holambra|Itu": [
+80,
+97
+],
+"Holambra|Itupeva": [
+69,
+79
+],
+"Holambra|Jaguariúna": [
+18,
+18
+],
+"Holambra|Jarinu": [
+70,
+86
+],
+"Holambra|Jundiaí": [
+68,
+79
+],
+"Holambra|Louveira": [
+57,
+67
+],
+"Holambra|Mogi Guaçu": [
+31,
+38
+],
+"Holambra|Mogi Mirim": [
+26,
+30
+],
+"Holambra|Monte Alegre do Sul": [
+63,
+57
+],
+"Holambra|Monte Mor": [
+65,
+68
+],
+"Holambra|Morungaba": [
+67,
+74
+],
+"Holambra|Pedreira": [
+34,
+31
+],
+"Holambra|Piracaia": [
+94,
+116
+],
+"Holambra|Porto Feliz": [
+97,
+122
+],
+"Holambra|Rio Claro": [
+65,
+78
+],
+"Holambra|Salto": [
+72,
+89
+],
+"Holambra|Santa Bárbara d'Oeste": [
+62,
+58
+],
+"Holambra|Santo Antônio de Posse": [
+17,
+15
+],
+"Holambra|Serra Negra": [
+62,
+52
+],
+"Holambra|Sumaré": [
+51,
+58
+],
+"Holambra|Tatuí": [
+131,
+176
+],
+"Holambra|Valinhos": [
+46,
+51
+],
+"Holambra|Vinhedo": [
+53,
+56
+],
+"Hortolândia|Indaiatuba": [
+36,
+42
+],
+"Hortolândia|Itatiba": [
+47,
+56
+],
+"Hortolândia|Itu": [
+51,
+62
+],
+"Hortolândia|Itupeva": [
+43,
+51
+],
+"Hortolândia|Jaguariúna": [
+40,
+43
+],
+"Hortolândia|Jarinu": [
+63,
+78
+],
+"Hortolândia|Jundiaí": [
+46,
+58
+],
+"Hortolândia|Louveira": [
+39,
+46
+],
+"Hortolândia|Mogi Guaçu": [
+65,
+81
+],
+"Hortolândia|Mogi Mirim": [
+60,
+73
+],
+"Hortolândia|Monte Alegre do Sul": [
+89,
+87
+],
+"Hortolândia|Monte Mor": [
+18,
+17
+],
+"Hortolândia|Morungaba": [
+60,
+66
+],
+"Hortolândia|Pedreira": [
+55,
+57
+],
+"Hortolândia|Piracaia": [
+86,
+107
+],
+"Hortolândia|Porto Feliz": [
+67,
+76
+],
+"Hortolândia|Rio Claro": [
+59,
+73
+],
+"Hortolândia|Salto": [
+44,
+54
+],
+"Hortolândia|Santa Bárbara d'Oeste": [
+28,
+28
+],
+"Hortolândia|Santo Antônio de Posse": [
+51,
+58
+],
+"Hortolândia|Serra Negra": [
+92,
+91
+],
+"Hortolândia|Sumaré": [
+10,
+8
+],
+"Hortolândia|Tatuí": [
+92,
+99
+],
+"Hortolândia|Valinhos": [
+35,
+33
+],
+"Hortolândia|Vinhedo": [
+37,
+41
+],
+"Indaiatuba|Itatiba": [
+51,
+55
+],
+"Indaiatuba|Itu": [
+25,
+24
+],
+"Indaiatuba|Itupeva": [
+30,
+26
+],
+"Indaiatuba|Jaguariúna": [
+55,
+66
+],
+"Indaiatuba|Jarinu": [
+69,
+74
+],
+"Indaiatuba|Jundiaí": [
+44,
+52
+],
+"Indaiatuba|Louveira": [
+34,
+37
+],
+"Indaiatuba|Mogi Guaçu": [
+80,
+104
+],
+"Indaiatuba|Mogi Mirim": [
+75,
+96
+],
+"Indaiatuba|Monte Alegre do Sul": [
+103,
+96
+],
+"Indaiatuba|Monte Mor": [
+25,
+24
+],
+"Indaiatuba|Morungaba": [
+68,
+73
+],
+"Indaiatuba|Pedreira": [
+68,
+65
+],
+"Indaiatuba|Piracaia": [
+94,
+115
+],
+"Indaiatuba|Porto Feliz": [
+42,
+49
+],
+"Indaiatuba|Rio Claro": [
+84,
+108
+],
+"Indaiatuba|Salto": [
+17,
+17
+],
+"Indaiatuba|Santa Bárbara d'Oeste": [
+52,
+69
+],
+"Indaiatuba|Santo Antônio de Posse": [
+67,
+82
+],
+"Indaiatuba|Serra Negra": [
+106,
+100
+],
+"Indaiatuba|Sumaré": [
+41,
+51
+],
+"Indaiatuba|Tatuí": [
+76,
+104
+],
+"Indaiatuba|Valinhos": [
+35,
+37
+],
+"Indaiatuba|Vinhedo": [
+32,
+34
+],
+"Itatiba|Itu": [
+58,
+68
+],
+"Itatiba|Itupeva": [
+39,
+40
+],
+"Itatiba|Jaguariúna": [
+45,
+54
+],
+"Itatiba|Jarinu": [
+26,
+28
+],
+"Itatiba|Jundiaí": [
+23,
+25
+],
+"Itatiba|Louveira": [
+20,
+20
+],
+"Itatiba|Mogi Guaçu": [
+70,
+92
+],
+"Itatiba|Mogi Mirim": [
+65,
+84
+],
+"Itatiba|Monte Alegre do Sul": [
+71,
+60
+],
+"Itatiba|Monte Mor": [
+60,
+64
+],
+"Itatiba|Morungaba": [
+24,
+20
+],
+"Itatiba|Pedreira": [
+55,
+48
+],
+"Itatiba|Piracaia": [
+49,
+58
+],
+"Itatiba|Porto Feliz": [
+80,
+98
+],
+"Itatiba|Rio Claro": [
+92,
+119
+],
+"Itatiba|Salto": [
+59,
+67
+],
+"Itatiba|Santa Bárbara d'Oeste": [
+64,
+79
+],
+"Itatiba|Santo Antônio de Posse": [
+57,
+70
+],
+"Itatiba|Serra Negra": [
+74,
+64
+],
+"Itatiba|Sumaré": [
+49,
+61
+],
+"Itatiba|Tatuí": [
+114,
+149
+],
+"Itatiba|Valinhos": [
+22,
+21
+],
+"Itatiba|Vinhedo": [
+22,
+18
+],
+"Itu|Itupeva": [
+40,
+42
+],
+"Itu|Jaguariúna": [
+71,
+87
+],
+"Itu|Jarinu": [
+70,
+70
+],
+"Itu|Jundiaí": [
+45,
+49
+],
+"Itu|Louveira": [
+48,
+56
+],
+"Itu|Mogi Guaçu": [
+96,
+124
+],
+"Itu|Mogi Mirim": [
+91,
+116
+],
+"Itu|Monte Alegre do Sul": [
+119,
+116
+],
+"Itu|Monte Mor": [
+46,
+46
+],
+"Itu|Morungaba": [
+80,
+87
+],
+"Itu|Pedreira": [
+83,
+85
+],
+"Itu|Piracaia": [
+105,
+125
+],
+"Itu|Porto Feliz": [
+25,
+27
+],
+"Itu|Rio Claro": [
+89,
+109
+],
+"Itu|Salto": [
+10,
+9
+],
+"Itu|Santa Bárbara d'Oeste": [
+60,
+69
+],
+"Itu|Santo Antônio de Posse": [
+83,
+102
+],
+"Itu|Serra Negra": [
+121,
+120
+],
+"Itu|Sumaré": [
+56,
+71
+],
+"Itu|Tatuí": [
+59,
+80
+],
+"Itu|Valinhos": [
+50,
+57
+],
+"Itu|Vinhedo": [
+48,
+54
+],
+"Itupeva|Jaguariúna": [
+59,
+68
+],
+"Itupeva|Jarinu": [
+51,
+42
+],
+"Itupeva|Jundiaí": [
+26,
+21
+],
+"Itupeva|Louveira": [
+24,
+19
+],
+"Itupeva|Mogi Guaçu": [
+84,
+106
+],
+"Itupeva|Mogi Mirim": [
+79,
+98
+],
+"Itupeva|Monte Alegre do Sul": [
+106,
+98
+],
+"Itupeva|Monte Mor": [
+50,
+51
+],
+"Itupeva|Morungaba": [
+61,
+59
+],
+"Itupeva|Pedreira": [
+71,
+67
+],
+"Itupeva|Piracaia": [
+85,
+97
+],
+"Itupeva|Porto Feliz": [
+61,
+70
+],
+"Itupeva|Rio Claro": [
+92,
+118
+],
+"Itupeva|Salto": [
+39,
+39
+],
+"Itupeva|Santa Bárbara d'Oeste": [
+59,
+79
+],
+"Itupeva|Santo Antônio de Posse": [
+71,
+84
+],
+"Itupeva|Serra Negra": [
+109,
+102
+],
+"Itupeva|Sumaré": [
+48,
+60
+],
+"Itupeva|Tatuí": [
+95,
+124
+],
+"Itupeva|Valinhos": [
+37,
+36
+],
+"Itupeva|Vinhedo": [
+29,
+25
+],
+"Jaguariúna|Jarinu": [
+61,
+76
+],
+"Jaguariúna|Jundiaí": [
+58,
+69
+],
+"Jaguariúna|Louveira": [
+47,
+56
+],
+"Jaguariúna|Mogi Guaçu": [
+34,
+45
+],
+"Jaguariúna|Mogi Mirim": [
+29,
+37
+],
+"Jaguariúna|Monte Alegre do Sul": [
+51,
+44
+],
+"Jaguariúna|Monte Mor": [
+55,
+57
+],
+"Jaguariúna|Morungaba": [
+55,
+38
+],
+"Jaguariúna|Pedreira": [
+17,
+14
+],
+"Jaguariúna|Piracaia": [
+84,
+106
+],
+"Jaguariúna|Porto Feliz": [
+87,
+112
+],
+"Jaguariúna|Rio Claro": [
+79,
+94
+],
+"Jaguariúna|Salto": [
+63,
+79
+],
+"Jaguariúna|Santa Bárbara d'Oeste": [
+56,
+66
+],
+"Jaguariúna|Santo Antônio de Posse": [
+18,
+15
+],
+"Jaguariúna|Serra Negra": [
+54,
+48
+],
+"Jaguariúna|Sumaré": [
+41,
+48
+],
+"Jaguariúna|Tatuí": [
+121,
+166
+],
+"Jaguariúna|Valinhos": [
+37,
+40
+],
+"Jaguariúna|Vinhedo": [
+43,
+46
+],
+"Jarinu|Jundiaí": [
+32,
+29
+],
+"Jarinu|Louveira": [
+42,
+41
+],
+"Jarinu|Mogi Guaçu": [
+86,
+113
+],
+"Jarinu|Mogi Mirim": [
+81,
+105
+],
+"Jarinu|Monte Alegre do Sul": [
+85,
+86
+],
+"Jarinu|Monte Mor": [
+75,
+85
+],
+"Jarinu|Morungaba": [
+40,
+41
+],
+"Jarinu|Pedreira": [
+70,
+69
+],
+"Jarinu|Piracaia": [
+41,
+45
+],
+"Jarinu|Porto Feliz": [
+93,
+100
+],
+"Jarinu|Rio Claro": [
+108,
+140
+],
+"Jarinu|Salto": [
+73,
+72
+],
+"Jarinu|Santa Bárbara d'Oeste": [
+79,
+101
+],
+"Jarinu|Santo Antônio de Posse": [
+73,
+91
+],
+"Jarinu|Serra Negra": [
+90,
+86
+],
+"Jarinu|Sumaré": [
+64,
+82
+],
+"Jarinu|Tatuí": [
+126,
+151
+],
+"Jarinu|Valinhos": [
+45,
+50
+],
+"Jarinu|Vinhedo": [
+47,
+46
+],
+"Jundiaí|Louveira": [
+17,
+15
+],
+"Jundiaí|Mogi Guaçu": [
+84,
+106
+],
+"Jundiaí|Mogi Mirim": [
+78,
+98
+],
+"Jundiaí|Monte Alegre do Sul": [
+92,
+83
+],
+"Jundiaí|Monte Mor": [
+54,
+67
+],
+"Jundiaí|Morungaba": [
+45,
+43
+],
+"Jundiaí|Pedreira": [
+70,
+68
+],
+"Jundiaí|Piracaia": [
+70,
+77
+],
+"Jundiaí|Porto Feliz": [
+67,
+79
+],
+"Jundiaí|Rio Claro": [
+94,
+125
+],
+"Jundiaí|Salto": [
+47,
+51
+],
+"Jundiaí|Santa Bárbara d'Oeste": [
+62,
+86
+],
+"Jundiaí|Santo Antônio de Posse": [
+70,
+84
+],
+"Jundiaí|Serra Negra": [
+95,
+88
+],
+"Jundiaí|Sumaré": [
+50,
+67
+],
+"Jundiaí|Tatuí": [
+100,
+130
+],
+"Jundiaí|Valinhos": [
+32,
+31
+],
+"Jundiaí|Vinhedo": [
+24,
+25
+],
+"Louveira|Mogi Guaçu": [
+73,
+94
+],
+"Louveira|Mogi Mirim": [
+68,
+86
+],
+"Louveira|Monte Alegre do Sul": [
+88,
+78
+],
+"Louveira|Monte Mor": [
+48,
+53
+],
+"Louveira|Morungaba": [
+42,
+38
+],
+"Louveira|Pedreira": [
+59,
+55
+],
+"Louveira|Piracaia": [
+66,
+78
+],
+"Louveira|Porto Feliz": [
+66,
+82
+],
+"Louveira|Rio Claro": [
+85,
+109
+],
+"Louveira|Salto": [
+42,
+49
+],
+"Louveira|Santa Bárbara d'Oeste": [
+56,
+69
+],
+"Louveira|Santo Antônio de Posse": [
+59,
+72
+],
+"Louveira|Serra Negra": [
+91,
+82
+],
+"Louveira|Sumaré": [
+42,
+51
+],
+"Louveira|Tatuí": [
+100,
+136
+],
+"Louveira|Valinhos": [
+19,
+15
+],
+"Louveira|Vinhedo": [
+10,
+8
+],
+"Mogi Guaçu|Mogi Mirim": [
+11,
+8
+],
+"Mogi Guaçu|Monte Alegre do Sul": [
+68,
+65
+],
+"Mogi Guaçu|Monte Mor": [
+81,
+95
+],
+"Mogi Guaçu|Morungaba": [
+83,
+101
+],
+"Mogi Guaçu|Pedreira": [
+49,
+58
+],
+"Mogi Guaçu|Piracaia": [
+109,
+143
+],
+"Mogi Guaçu|Porto Feliz": [
+113,
+149
+],
+"Mogi Guaçu|Rio Claro": [
+67,
+86
+],
+"Mogi Guaçu|Salto": [
+88,
+116
+],
+"Mogi Guaçu|Santa Bárbara d'Oeste": [
+74,
+91
+],
+"Mogi Guaçu|Santo Antônio de Posse": [
+34,
+42
+],
+"Mogi Guaçu|Serra Negra": [
+57,
+55
+],
+"Mogi Guaçu|Sumaré": [
+66,
+85
+],
+"Mogi Guaçu|Tatuí": [
+142,
+178
+],
+"Mogi Guaçu|Valinhos": [
+62,
+78
+],
+"Mogi Guaçu|Vinhedo": [
+68,
+83
+],
+"Mogi Mirim|Monte Alegre do Sul": [
+60,
+58
+],
+"Mogi Mirim|Monte Mor": [
+75,
+86
+],
+"Mogi Mirim|Morungaba": [
+78,
+93
+],
+"Mogi Mirim|Pedreira": [
+44,
+50
+],
+"Mogi Mirim|Piracaia": [
+104,
+135
+],
+"Mogi Mirim|Porto Feliz": [
+108,
+141
+],
+"Mogi Mirim|Rio Claro": [
+61,
+78
+],
+"Mogi Mirim|Salto": [
+83,
+108
+],
+"Mogi Mirim|Santa Bárbara d'Oeste": [
+69,
+83
+],
+"Mogi Mirim|Santo Antônio de Posse": [
+28,
+34
+],
+"Mogi Mirim|Serra Negra": [
+49,
+49
+],
+"Mogi Mirim|Sumaré": [
+61,
+77
+],
+"Mogi Mirim|Tatuí": [
+136,
+170
+],
+"Mogi Mirim|Valinhos": [
+57,
+70
+],
+"Mogi Mirim|Vinhedo": [
+63,
+75
+],
+"Monte Alegre do Sul|Monte Mor": [
+105,
+101
+],
+"Monte Alegre do Sul|Morungaba": [
+48,
+41
+],
+"Monte Alegre do Sul|Pedreira": [
+36,
+31
+],
+"Monte Alegre do Sul|Piracaia": [
+73,
+70
+],
+"Monte Alegre do Sul|Porto Feliz": [
+135,
+141
+],
+"Monte Alegre do Sul|Rio Claro": [
+116,
+136
+],
+"Monte Alegre do Sul|Salto": [
+111,
+108
+],
+"Monte Alegre do Sul|Santa Bárbara d'Oeste": [
+105,
+110
+],
+"Monte Alegre do Sul|Santo Antônio de Posse": [
+46,
+42
+],
+"Monte Alegre do Sul|Serra Negra": [
+12,
+10
+],
+"Monte Alegre do Sul|Sumaré": [
+90,
+92
+],
+"Monte Alegre do Sul|Tatuí": [
+169,
+195
+],
+"Monte Alegre do Sul|Valinhos": [
+83,
+68
+],
+"Monte Alegre do Sul|Vinhedo": [
+90,
+75
+],
+"Monte Mor|Morungaba": [
+72,
+73
+],
+"Monte Mor|Pedreira": [
+71,
+66
+],
+"Monte Mor|Piracaia": [
+99,
+115
+],
+"Monte Mor|Porto Feliz": [
+54,
+50
+],
+"Monte Mor|Rio Claro": [
+67,
+88
+],
+"Monte Mor|Salto": [
+40,
+41
+],
+"Monte Mor|Santa Bárbara d'Oeste": [
+34,
+38
+],
+"Monte Mor|Santo Antônio de Posse": [
+67,
+72
+],
+"Monte Mor|Serra Negra": [
+108,
+105
+],
+"Monte Mor|Sumaré": [
+21,
+18
+],
+"Monte Mor|Tatuí": [
+77,
+83
+],
+"Monte Mor|Valinhos": [
+44,
+47
+],
+"Monte Mor|Vinhedo": [
+46,
+50
+],
+"Morungaba|Pedreira": [
+40,
+25
+],
+"Morungaba|Piracaia": [
+64,
+71
+],
+"Morungaba|Porto Feliz": [
+100,
+118
+],
+"Morungaba|Rio Claro": [
+104,
+128
+],
+"Morungaba|Salto": [
+76,
+85
+],
+"Morungaba|Santa Bárbara d'Oeste": [
+76,
+89
+],
+"Morungaba|Santo Antônio de Posse": [
+57,
+46
+],
+"Morungaba|Serra Negra": [
+51,
+45
+],
+"Morungaba|Sumaré": [
+61,
+70
+],
+"Morungaba|Tatuí": [
+134,
+172
+],
+"Morungaba|Valinhos": [
+42,
+41
+],
+"Morungaba|Vinhedo": [
+43,
+35
+],
+"Pedreira|Piracaia": [
+92,
+88
+],
+"Pedreira|Porto Feliz": [
+100,
+110
+],
+"Pedreira|Rio Claro": [
+95,
+107
+],
+"Pedreira|Salto": [
+75,
+77
+],
+"Pedreira|Santa Bárbara d'Oeste": [
+71,
+80
+],
+"Pedreira|Santo Antônio de Posse": [
+24,
+23
+],
+"Pedreira|Serra Negra": [
+39,
+35
+],
+"Pedreira|Sumaré": [
+57,
+61
+],
+"Pedreira|Tatuí": [
+134,
+164
+],
+"Pedreira|Valinhos": [
+48,
+37
+],
+"Pedreira|Vinhedo": [
+55,
+44
+],
+"Piracaia|Porto Feliz": [
+127,
+155
+],
+"Piracaia|Rio Claro": [
+131,
+170
+],
+"Piracaia|Salto": [
+102,
+127
+],
+"Piracaia|Santa Bárbara d'Oeste": [
+103,
+130
+],
+"Piracaia|Santo Antônio de Posse": [
+96,
+121
+],
+"Piracaia|Serra Negra": [
+84,
+79
+],
+"Piracaia|Sumaré": [
+88,
+112
+],
+"Piracaia|Tatuí": [
+160,
+206
+],
+"Piracaia|Valinhos": [
+69,
+80
+],
+"Piracaia|Vinhedo": [
+70,
+76
+],
+"Porto Feliz|Rio Claro": [
+89,
+100
+],
+"Porto Feliz|Salto": [
+29,
+32
+],
+"Porto Feliz|Santa Bárbara d'Oeste": [
+60,
+59
+],
+"Porto Feliz|Santo Antônio de Posse": [
+99,
+127
+],
+"Porto Feliz|Serra Negra": [
+138,
+145
+],
+"Porto Feliz|Sumaré": [
+72,
+81
+],
+"Porto Feliz|Tatuí": [
+44,
+45
+],
+"Porto Feliz|Valinhos": [
+67,
+82
+],
+"Porto Feliz|Vinhedo": [
+65,
+79
+],
+"Rio Claro|Salto": [
+87,
+105
+],
+"Rio Claro|Santa Bárbara d'Oeste": [
+45,
+60
+],
+"Rio Claro|Santo Antônio de Posse": [
+78,
+91
+],
+"Rio Claro|Serra Negra": [
+105,
+127
+],
+"Rio Claro|Sumaré": [
+55,
+69
+],
+"Rio Claro|Tatuí": [
+98,
+119
+],
+"Rio Claro|Valinhos": [
+81,
+100
+],
+"Rio Claro|Vinhedo": [
+83,
+104
+],
+"Salto|Santa Bárbara d'Oeste": [
+58,
+64
+],
+"Salto|Santo Antônio de Posse": [
+75,
+94
+],
+"Salto|Serra Negra": [
+114,
+112
+],
+"Salto|Sumaré": [
+48,
+63
+],
+"Salto|Tatuí": [
+63,
+86
+],
+"Salto|Valinhos": [
+43,
+49
+],
+"Salto|Vinhedo": [
+40,
+46
+],
+"Santa Bárbara d'Oeste|Santo Antônio de Posse": [
+68,
+81
+],
+"Santa Bárbara d'Oeste|Serra Negra": [
+108,
+114
+],
+"Santa Bárbara d'Oeste|Sumaré": [
+20,
+20
+],
+"Santa Bárbara d'Oeste|Tatuí": [
+83,
+93
+],
+"Santa Bárbara d'Oeste|Valinhos": [
+53,
+64
+],
+"Santa Bárbara d'Oeste|Vinhedo": [
+55,
+64
+],
+"Santo Antônio de Posse|Serra Negra": [
+45,
+37
+],
+"Santo Antônio de Posse|Sumaré": [
+53,
+63
+],
+"Santo Antônio de Posse|Tatuí": [
+133,
+181
+],
+"Santo Antônio de Posse|Valinhos": [
+49,
+56
+],
+"Santo Antônio de Posse|Vinhedo": [
+55,
+61
+],
+"Serra Negra|Sumaré": [
+93,
+96
+],
+"Serra Negra|Tatuí": [
+172,
+199
+],
+"Serra Negra|Valinhos": [
+86,
+72
+],
+"Serra Negra|Vinhedo": [
+92,
+80
+],
+"Sumaré|Tatuí": [
+96,
+101
+],
+"Sumaré|Valinhos": [
+38,
+42
+],
+"Sumaré|Vinhedo": [
+40,
+46
+],
+"Tatuí|Valinhos": [
+101,
+137
+],
+"Tatuí|Vinhedo": [
+99,
+133
+],
+"Valinhos|Vinhedo": [
+11,
+8
+]
+}
+}

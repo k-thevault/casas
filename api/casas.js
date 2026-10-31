@@ -110,7 +110,8 @@ function filtrar(corpo, permitidos) {
       v = STATUS_VALIDOS.includes(v) ? v : null;
     } else if (k === "type") v = v === "alt" ? "alt" : "cond";
     else if (k === "pet") v = v === "sim" ? "sim" : "n/i";
-    else if (typeof v === "string") v = v.slice(0, 4000);
+    /* a nota guarda o caderno inteiro da casa (histórico em JSON): precisa de mais espaço */
+    else if (typeof v === "string") v = v.slice(0, k === "nota" ? 30000 : 4000);
     out[k] = v;
   }
   return out;

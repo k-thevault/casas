@@ -211,6 +211,64 @@
     .dk-linha{gap:9px} .dk-linha .dk-ph{width:64px;height:56px} .dk-pos{width:16px}
     .dk-linha .dk-pr{font-size:15.5px} .dk-linha .dk-info{font-size:12.5px}
     .dk-linha .dk-info b{white-space:normal;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical} }
+  /* ---------- caderno de cada casa + aba Agenda ---------- */
+  .track .tstatus{flex:1}
+  .cad-res{margin-top:10px;display:flex;flex-direction:column;gap:6px;font-size:12.8px}
+  .cad-vis{align-self:flex-start;background:#f3e6c4;color:#6e4e00;border-radius:99px;padding:3px 11px;font-weight:600;font-size:12.5px}
+  .cad-ult{background:var(--card2);border-radius:10px;padding:7px 10px;color:#5a4d3f;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+  .cad-ult b{color:var(--txt)}
+  .cad-px{color:var(--txt)}
+  .atraso{color:#b23b3b;font-weight:700}
+  .hoje{color:var(--accent-2);font-weight:700}
+  .cad-btn{align-self:flex-start;font-family:var(--sans);background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:8px 12px;font-size:13px;font-weight:600;cursor:pointer;color:var(--txt);transition:.15s}
+  .cad-btn:hover{border-color:var(--accent);color:var(--accent-2)}
+  .cad-fundo{position:fixed;inset:0;background:rgba(40,25,10,.38);z-index:60;opacity:0;pointer-events:none;transition:opacity .2s}
+  .cad-fundo.on{opacity:1;pointer-events:auto}
+  .cad-painel{position:fixed;top:0;right:0;bottom:0;width:min(460px,100%);background:var(--panel);z-index:61;overflow-y:auto;padding:20px 20px 48px;box-shadow:-12px 0 34px rgba(60,35,15,.18);transform:translateX(105%);transition:transform .25s ease;-webkit-overflow-scrolling:touch}
+  .cad-painel.on{transform:none}
+  @media(max-width:640px){ .cad-painel{top:auto;height:92vh;width:100%;border-radius:18px 18px 0 0;transform:translateY(105%);padding:18px 16px 40px} }
+  .cad-painel h3{font-family:var(--serif);font-size:21px;margin:0 34px 3px 0;line-height:1.2}
+  .cad-sub{color:var(--muted);font-size:13px}
+  .cad-sub a{color:var(--accent-2)}
+  .cad-x{position:absolute;top:10px;right:12px;border:none;background:none;font-size:28px;line-height:1;cursor:pointer;color:var(--muted);padding:4px 8px}
+  .cad-lbl{font-size:10.5px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--muted);margin:18px 0 6px}
+  .cad-painel input,.cad-painel select,.cad-painel textarea{font-family:var(--sans);font-size:16px;border:1px solid var(--line);border-radius:10px;padding:9px 11px;background:#fff;color:var(--txt);width:100%;min-width:0}
+  .cad-painel textarea{min-height:80px;resize:vertical;line-height:1.45}
+  .cad-duo{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px}
+  .cad-duo:first-child{margin-top:0}
+  .cad-b{font-family:var(--sans);border:1px solid var(--line);background:var(--card);border-radius:10px;padding:9px 12px;font-size:14px;font-weight:600;cursor:pointer;color:var(--txt)}
+  .cad-b:disabled{opacity:.45;cursor:default}
+  .cad-b.pri{background:var(--accent);border-color:var(--accent);color:var(--accent-ink);margin-top:8px;width:100%}
+  .cad-link{border:none;background:none;color:var(--muted);text-decoration:underline;font-size:12.5px;cursor:pointer;padding:6px 0 0}
+  .cad-hist{list-style:none;margin:6px 0 0;padding:0}
+  .cad-hist li{border-left:3px solid var(--line);padding:3px 0 12px 12px;font-size:14px;line-height:1.5;word-wrap:break-word}
+  .cad-hist li small{display:flex;gap:8px;align-items:center;color:var(--muted);font-size:12px}
+  .cad-del{border:none;background:none;color:var(--muted);font-size:11.5px;text-decoration:underline;cursor:pointer;padding:0;margin-left:auto}
+  .cad-vazio{color:var(--muted);font-size:13.5px}
+  .ag-sec{font-family:var(--serif);font-size:22px;margin:30px 0 10px;font-weight:600}
+  .ag-sec:first-child{margin-top:4px}
+  .ag-sec small{font-family:var(--sans);font-size:13px;color:var(--muted);font-weight:400}
+  .ag-dia{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px 16px;margin-bottom:12px;box-shadow:var(--shadow)}
+  .ag-dia h3{margin:0 0 6px;font-size:16.5px}
+  .ag-dia.hoje-dia{border-color:var(--accent);box-shadow:0 0 0 1.5px var(--accent)}
+  .ag-vis{display:grid;grid-template-columns:58px 1fr;gap:10px;padding:9px 0;border-top:1px solid var(--line);cursor:pointer}
+  .ag-vis:first-of-type{border-top:none}
+  .ag-hora{font-weight:700;font-variant-numeric:tabular-nums;font-size:15px}
+  .ag-q{font-size:12.8px;color:var(--muted)}
+  .ag-q a{color:var(--accent-2)}
+  .ag-traj{font-size:12.5px;color:#6e4e00;background:#fbf1d9;border-radius:8px;padding:5px 10px;margin:0 0 0 68px}
+  .ag-traj.alerta-curto{background:#fdeee9;color:#8a2f1d}
+  .ag-rot{display:inline-block;margin-top:10px;font-size:13px;font-weight:600;color:var(--accent-2)}
+  .ag-enc{margin-top:10px;font-size:13px;background:#eef5ef;border-radius:10px;padding:9px 12px;color:#2d5a3c;line-height:1.6}
+  .ag-enc a{color:#2d5a3c;font-weight:600;cursor:pointer;text-decoration:underline}
+  .ag-lista{background:var(--panel);border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow)}
+  .ag-it{display:flex;gap:12px;justify-content:space-between;align-items:flex-start;padding:11px 15px;border-top:1px solid var(--line);font-size:14px;cursor:pointer}
+  .ag-it:first-child{border-top:none}
+  .ag-it:hover,.ag-vis:hover{background:var(--card2)}
+  .ag-it small{color:var(--muted);display:block;font-size:12.5px}
+  .ag-dias{white-space:nowrap;font-size:12.5px;color:var(--muted);text-align:right}
+  .ag-vazio{color:var(--muted);font-size:14px;background:var(--panel);border:1px dashed var(--line);border-radius:14px;padding:16px}
+  .ag-passadas summary{cursor:pointer;color:var(--muted);font-size:14px;margin:8px 0}
 </style>
 </head>
 <body>
@@ -235,6 +293,7 @@
     <div class="tab" data-cat="mine">⭐ Minhas casas</div>
     <div class="tab" data-cat="decidir">🧭 Decidir: cidades</div>
     <div class="tab" data-cat="preco">💸 Favoritas por preço</div>
+    <div class="tab" data-cat="agenda">📅 Agenda</div>
   </div>
 
   <div class="note" id="note"></div>
@@ -394,6 +453,7 @@ async function patchRow(uid,patch,desfazer){
       sync("sem conexão — desfeito","err");
     }
     fillCities(); setStats(); apply();
+    if(CAD_UID){ CADC=lerCad(ST[CAD_UID]?.n); desenhaCad(); }
   }
 }
 
@@ -495,8 +555,8 @@ function card(d){
           <option value="gostei"${ST[id]?.s==="gostei"?" selected":""}>💚 Gostei</option>
           <option value="descartei"${ST[id]?.s==="descartei"?" selected":""}>🚫 Descartei</option>
         </select>
-        <input class="tnote" data-note placeholder="anotação (pet ok? valor negociado?...)" value="${(ST[id]?.n||"").replace(/"/g,'&quot;')}">
       </div>
+      ${cadResumo(id)}
     </div>
   </div>`;
 }
@@ -512,6 +572,8 @@ list.addEventListener("click",e=>{
     const on=!HIDDEN.has(id);
     on?HIDDEN.add(id):HIDDEN.delete(id); apply();
     patchRow(id,{hidden:on}, ()=>{ on?HIDDEN.delete(id):HIDDEN.add(id); });
+  }else if(e.target.closest("[data-cad]")){
+    abreCad(id);
   }else if(e.target.closest("[data-edit]")){
     openForm(MINE.find(m=>m.uid===id));
   }else if(e.target.closest("[data-del]")){
@@ -533,7 +595,7 @@ function saveTrack(card,imediato){
   /* lê a situação e a anotação do card agora, e atualiza o estado local */
   const ler=()=>{
     const s=card.querySelector("[data-status]")?.value||"";
-    const n=card.querySelector("[data-note]")?.value||"";
+    const n=ST[id]?.n||"";   /* a anotação agora é o caderno, editado no painel */
     if(s||n)ST[id]={s,n}; else delete ST[id];
     return {status:s||null,nota:n};
   };
@@ -550,7 +612,6 @@ list.addEventListener("change",e=>{
     else card.className="card"+(FAVS.has(id)?" isfav":"")+(val?" st-"+val:"");
   }
 });
-list.addEventListener("input",e=>{ if(e.target.matches("[data-note]")){const card=e.target.closest(".card"); if(card)saveTrack(card);} });
 /* Reflete o estado dos toggles no visual (pílula preenchida). Feito em JS
    porque :has() não existe em todo navegador. */
 function syncToggleStates(){
@@ -559,6 +620,7 @@ function syncToggleStates(){
 function apply(){
   syncToggleStates();
   if(CAT==="decidir"||CAT==="preco"){ desenhaDecidir(); return; }
+  if(CAT==="agenda"){ desenhaAgenda(); return; }
   const city=fCity.value, maxP=+$("#fPrice").value, sort=$("#fSort").value;
   const onlyCond=$("#fCond").checked, onlyPet=$("#fPet").checked, onlyOff=$("#fOffice").checked;
   const onlyFav=$("#fFav").checked, onlyNotFav=$("#fNotFav").checked, showHidden=$("#fShowHidden").checked;
@@ -607,10 +669,11 @@ function setNote(){
   else if(CAT==="buy") t='<b>À venda até R$ 850 mil, verificadas em 16/07/2026.</b> Cada card mostra a parcela estimada do financiamento — ajuste a <b>entrada</b> no seletor acima (taxa Caixa ~11,19% a.a. + TR, 30 anos; a taxa real depende do seu perfil no banco). Custos extras na compra: ITBI + escritura/registro (~4-5% do valor). Não sou consultora financeira — use como base e simule no banco.';
   else if(CAT==="decidir") t='<b>Para onde mudar.</b> As cidades das suas casas favoritas, lado a lado: segurança, periferia, distâncias, maternidade, escolas e veterinário. Embaixo de cada cidade, as suas favoritas de lá. Dar coração numa casa nova já a coloca aqui.';
   else if(CAT==="preco") t='<b>Favoritas por preço.</b> Todas as suas favoritas que estão à mostra, da mais barata para a mais cara, com as cidades misturadas. As casas à venda ficam no fim.';
+  else if(CAT==="agenda") t='<b>Agenda.</b> As casas em andamento num lugar só: visitas por dia (com o tempo de carro entre elas e outras casas perto para encaixar no mesmo dia), próximos passos e quem ainda não respondeu. Toque numa casa para abrir o caderno dela.';
   else if(CAT==="mine") t='<b>Minhas casas.</b> Anúncios que você mesma adicionou (clique em "➕ adicionar anúncio" acima). Ficam salvos na nuvem e aparecem em qualquer aparelho. Você pode favoritar, editar e excluir cada um.';
   else t='<b>Outras 3 quartos, verificadas.</b> Casas boas de 3 quartos em condomínio, conferidas no site oficial da imobiliária ou VivaReal recente.';
   $("#note").innerHTML=t;
-  document.querySelector(".controls").style.display = (CAT==="decidir"||CAT==="preco") ? "none" : "";
+  document.querySelector(".controls").style.display = (CAT==="decidir"||CAT==="preco"||CAT==="agenda") ? "none" : "";
   /* controles por aba */
   /* "minhas casas" também mostra a entrada: ela pode ter salvo casas à venda */
   $("#fEntrada").style.display = (CAT==="buy"||CAT==="mine") ? "" : "none";
@@ -871,6 +934,232 @@ function desenhaDecidir(){
   list.querySelectorAll("[data-dkord]").forEach(b=>b.onclick=()=>{ DK_ORD=b.dataset.dkord; try{localStorage.setItem("dkOrd",DK_ORD);}catch(_){} desenhaDecidir(); });
   list.querySelectorAll("[data-dkso]").forEach(b=>b.onclick=()=>{ DK_SO_ESTRELA=!DK_SO_ESTRELA; try{localStorage.setItem("dkSoEstrela",DK_SO_ESTRELA?"1":"0");}catch(_){} desenhaDecidir(); });
   list.querySelectorAll("[data-estrela]").forEach(b=>b.onclick=e=>{ e.preventDefault(); e.stopPropagation(); alternaEstrela(b.dataset.estrela); });
+}
+
+/* ---------- caderno de cada casa + aba Agenda (31/10/2026) ----------
+   O caderno mora no MESMO campo "nota" do Baserow, como JSON {"v":2,...}:
+   h = histórico [{d:"AAAA-MM-DD", hr:"HH:MM", t}], vi = visita {d,h},
+   px = próximo passo {t,d}, ct = contato {n, t, e(ndereço)}.
+   Nota antiga (texto solto) vira a primeira linha do histórico na leitura e
+   só é regravada no formato novo quando ela mexe no caderno: nada se perde. */
+const CAD_NOVO=()=>({v:2,h:[],vi:{d:"",h:""},px:{t:"",d:""},ct:{n:"",t:"",e:""}});
+function lerCad(txt){
+  const c=CAD_NOVO(); txt=txt||"";
+  if(txt.startsWith('{"v":2')){
+    try{ const j=JSON.parse(txt);
+      return {v:2,h:Array.isArray(j.h)?j.h:[],vi:{...c.vi,...j.vi},px:{...c.px,...j.px},ct:{...c.ct,...j.ct}};
+    }catch(_){}
+  }
+  if(txt.trim()){
+    /* as notas antigas começam com "30/10/2026: ..." */
+    const m=txt.match(/^(\d{2})\/(\d{2})\/(\d{4}):\s*/);
+    c.h.push({d:m?`${m[3]}-${m[2]}-${m[1]}`:"",hr:"",t:m?txt.slice(m[0].length):txt});
+  }
+  return c;
+}
+function cadVazio(c){ return !c.h.length&&!c.vi.d&&!c.vi.h&&!c.px.t&&!c.px.d&&!c.ct.n&&!c.ct.t&&!c.ct.e; }
+/* Dia e hora sempre no horário de Brasília, não no do aparelho. */
+function agoraBR(){
+  const p=Object.fromEntries(new Intl.DateTimeFormat("en-CA",{timeZone:"America/Sao_Paulo",year:"numeric",month:"2-digit",day:"2-digit",hour:"2-digit",minute:"2-digit",hourCycle:"h23"}).formatToParts(new Date()).map(x=>[x.type,x.value]));
+  return {dia:`${p.year}-${p.month}-${p.day}`,hora:`${p.hour}:${p.minute}`};
+}
+const DIAS_SEM=["domingo","segunda","terça","quarta","quinta","sexta","sábado"];
+const utcDe=iso=>{ const [a,m,d]=iso.split("-").map(Number); return Date.UTC(a,m-1,d); };
+function fmtDia(iso,semana){
+  if(!iso)return ""; const [,m,d]=iso.split("-"); const s=`${d}/${m}`;
+  return semana?DIAS_SEM[new Date(utcDe(iso)).getUTCDay()]+", "+s:s;
+}
+const diasEntre=(a,b)=>Math.round((utcDe(b)-utcDe(a))/864e5);
+const minDe=h=>{ const [a,b]=h.split(":").map(Number); return a*60+b; };
+const soDigitos=t=>String(t||"").replace(/\D/g,"");
+function linkTel(t){
+  const n=soDigitos(t); if(n.length<10)return esc(t);
+  return `<a href="https://wa.me/${n.length<=11?"55"+n:n}" target="_blank" rel="noopener" onclick="event.stopPropagation()">${esc(t)}</a>`;
+}
+function prazo(d,hoje){
+  if(!d)return "";
+  if(d<hoje)return `<span class="atraso">atrasado, era ${fmtDia(d)}</span>`;
+  if(d===hoje)return `<span class="hoje">hoje</span>`;
+  return `até ${fmtDia(d)}`;
+}
+
+/* resumo no card: visita, última anotação, próximo passo e o botão */
+function cadResumo(id){
+  const c=lerCad(ST[id]?.n), hoje=agoraBR().dia, ult=c.h[c.h.length-1];
+  let h="";
+  if(c.vi.d) h+=`<div class="cad-vis">📅 Visita ${fmtDia(c.vi.d,true)}${c.vi.h?" às "+c.vi.h:""}</div>`;
+  if(ult) h+=`<div class="cad-ult">${ult.d?`<b>${fmtDia(ult.d)}:</b> `:""}${esc(ult.t)}</div>`;
+  if(c.px.t) h+=`<div class="cad-px">➡️ <b>Próximo passo:</b> ${esc(c.px.t)}${c.px.d?" · "+prazo(c.px.d,hoje):""}</div>`;
+  return `<div class="cad-res">${h}<button class="cad-btn" data-cad>📝 Abrir caderno${c.h.length?" ("+c.h.length+")":""}</button></div>`;
+}
+
+/* ----- painel do caderno ----- */
+document.body.insertAdjacentHTML("beforeend",'<div class="cad-fundo" id="cadFundo"></div><aside class="cad-painel" id="cadPainel" role="dialog" aria-modal="true"></aside>');
+let CAD_UID=null, CADC=null;
+const itemDe=uid=>allItems().find(d=>d.uid===uid);
+function abreCad(uid){
+  CAD_UID=uid; CADC=lerCad(ST[uid]?.n); desenhaCad();
+  $("#cadFundo").classList.add("on"); $("#cadPainel").classList.add("on"); $("#cadPainel").scrollTop=0;
+  document.body.style.overflow="hidden";
+}
+function fechaCad(){
+  if(!CAD_UID)return;
+  const uid=CAD_UID;
+  /* texto digitado há menos de 0,7 s ainda não foi gravado: grava agora */
+  if(debounced[uid]) patchRow(uid,{status:ST[uid]?.s||null,nota:ST[uid]?.n||""});
+  CAD_UID=null; CADC=null;
+  $("#cadFundo").classList.remove("on"); $("#cadPainel").classList.remove("on");
+  document.body.style.overflow=""; apply();
+}
+function desenhaCad(){
+  const d=itemDe(CAD_UID); if(!d){ fechaCad(); return; }
+  const c=CADC, s=ST[CAD_UID]?.s||"";
+  const preco=d.price?`R$ ${d.price.toLocaleString("pt-BR")}${ehVenda(d)?"":"/mês"}`:"";
+  const opt=(v,t)=>`<option value="${v}"${s===v?" selected":""}>${t}</option>`;
+  const hist=c.h.map((x,i)=>({x,i})).reverse().map(({x,i})=>
+    `<li><small>${x.d?fmtDia(x.d,true):"sem data"}${x.hr?" · "+x.hr:""}<button class="cad-del" data-caddel="${i}">apagar</button></small>${esc(x.t).replace(/\n/g,"<br>")}</li>`).join("");
+  $("#cadPainel").innerHTML=`
+    <button class="cad-x" data-cadfecha aria-label="Fechar">×</button>
+    <h3>${esc(d.cond||d.title)}</h3>
+    <div class="cad-sub">${esc(d.city)}${preco?" · "+preco:""}${d.agency?" · "+esc(d.agency):""}${d.url?` · <a href="${esc(d.url)}" target="_blank" rel="noopener">ver anúncio</a>`:""}</div>
+    <div class="cad-lbl">Situação</div>
+    <select id="cS">${opt("","Situação: a definir")}${opt("contatar","📞 A contatar")}${opt("aguardando","⏳ Aguardando resposta")}${opt("visita","📅 Visita marcada")}${opt("gostei","💚 Gostei")}${opt("descartei","🚫 Descartei")}</select>
+    <div class="cad-lbl">Visita (dia e hora)</div>
+    <div class="cad-duo"><input type="date" id="cVd" value="${esc(c.vi.d)}"><input type="time" id="cVh" value="${esc(c.vi.h)}"></div>
+    ${c.vi.d||c.vi.h?'<button class="cad-link" data-cadsemvisita>tirar a visita</button>':""}
+    <div class="cad-lbl">Próximo passo (e até quando)</div>
+    <input id="cPt" placeholder="ex.: mandar documentos, ligar para confirmar" value="${esc(c.px.t)}">
+    <div class="cad-duo"><input type="date" id="cPd" value="${esc(c.px.d)}"><button class="cad-b" data-cadfeito${c.px.t?"":" disabled"}>✓ Feito</button></div>
+    <div class="cad-lbl">Quem está atendendo</div>
+    <div class="cad-duo"><input id="cCn" placeholder="nome do corretor" value="${esc(c.ct.n)}"><input id="cCt" placeholder="telefone" inputmode="tel" value="${esc(c.ct.t)}"></div>
+    <input id="cCe" placeholder="endereço da casa (ajuda a montar o roteiro)" value="${esc(c.ct.e)}" style="margin-top:8px">
+    <div class="cad-lbl">Escrever no caderno</div>
+    <textarea id="cNova" placeholder="ex.: responderam, aceitam pet, IPTU R$ 210, livre a partir de 15/11..."></textarea>
+    <button class="cad-b pri" data-cadadd>Adicionar (a data de hoje entra sozinha)</button>
+    <div class="cad-lbl">Histórico</div>
+    ${hist?`<ul class="cad-hist">${hist}</ul>`:'<div class="cad-vazio">Nada anotado ainda.</div>'}`;
+}
+function lerCampos(){
+  if(!CADC||!$("#cVd"))return;
+  CADC.vi={d:$("#cVd").value,h:$("#cVh").value};
+  CADC.px={t:$("#cPt").value.trim()?$("#cPt").value:"",d:$("#cPd").value};
+  CADC.ct={n:$("#cCn").value,t:$("#cCt").value,e:$("#cCe").value};
+}
+function salvaCad(imediato){
+  const uid=CAD_UID; if(!uid)return;
+  const antes=ST[uid]?{...ST[uid]}:null;
+  const s=$("#cS")?.value??(ST[uid]?.s||""), n=cadVazio(CADC)?"":JSON.stringify(CADC);
+  if(n.length>29000){ alert("O caderno desta casa ficou grande demais. Apague linhas antigas do histórico para continuar anotando."); return; }
+  if(s||n)ST[uid]={s,n}; else delete ST[uid];
+  const desfazer=()=>{ if(antes)ST[uid]=antes; else delete ST[uid]; };
+  const ler=()=>({status:ST[uid]?.s||null,nota:ST[uid]?.n||""});
+  if(imediato) patchRow(uid,ler(),desfazer); else patchDebounced(uid,ler,desfazer);
+}
+const cadP=$("#cadPainel");
+$("#cadFundo").addEventListener("click",fechaCad);
+document.addEventListener("keydown",e=>{ if(e.key==="Escape"&&CAD_UID)fechaCad(); });
+cadP.addEventListener("click",e=>{
+  if(e.target.closest("[data-cadfecha]")){ fechaCad(); return; }
+  const agora=agoraBR();
+  if(e.target.closest("[data-cadadd]")){
+    const t=$("#cNova").value.trim(); if(!t){ $("#cNova").focus(); return; }
+    lerCampos(); CADC.h.push({d:agora.dia,hr:agora.hora,t}); salvaCad(true); desenhaCad();
+  }else if(e.target.closest("[data-cadfeito]")){
+    lerCampos(); if(!CADC.px.t)return;
+    CADC.h.push({d:agora.dia,hr:agora.hora,t:"✓ Feito: "+CADC.px.t.trim()}); CADC.px={t:"",d:""};
+    salvaCad(true); desenhaCad();
+  }else if(e.target.closest("[data-cadsemvisita]")){
+    lerCampos(); CADC.vi={d:"",h:""};
+    if($("#cS").value==="visita") $("#cS").value="aguardando";
+    salvaCad(true); desenhaCad();
+  }else if(e.target.closest("[data-caddel]")){
+    const i=+e.target.closest("[data-caddel]").dataset.caddel;
+    if(!confirm("Apagar esta linha do caderno?"))return;
+    lerCampos(); CADC.h.splice(i,1); salvaCad(true); desenhaCad();
+  }
+});
+cadP.addEventListener("change",e=>{
+  if(!e.target.matches("select,input[type=date],input[type=time]"))return;
+  lerCampos();
+  /* marcou dia de visita numa casa que ainda estava em contato: vira "visita marcada" */
+  if(e.target.id==="cVd"&&CADC.vi.d&&["","contatar","aguardando"].includes($("#cS").value)) $("#cS").value="visita";
+  salvaCad(true);
+  if(e.target.id==="cVd"||e.target.id==="cVh") desenhaCad();
+});
+cadP.addEventListener("input",e=>{
+  if(!e.target.matches("#cPt,#cCn,#cCt,#cCe"))return;
+  lerCampos(); salvaCad(false);
+  const f=cadP.querySelector("[data-cadfeito]"); if(f) f.disabled=!CADC.px.t;
+});
+
+/* ----- aba Agenda ----- */
+let TEMPOS=null;
+function tempo(a,b){
+  if(!a||!b)return null; if(a===b)return [0,0];
+  const m=TEMPOS?.min_km||{}; return m[a+"|"+b]||m[b+"|"+a]||null;
+}
+function agItem(x,dir){ /* uma linha clicável: abre o caderno */
+  const d=x.d;
+  return `<div class="ag-it" data-agcad="${esc(d.uid)}"><div><b>${esc(d.cond||d.title)}</b><small>${esc(d.city)}${d.agency?" · "+esc(d.agency):""}</small></div><div class="ag-dias">${dir||""}</div></div>`;
+}
+function destinoMapa(x){ return x.c.ct.e||`${x.d.cond||""}, ${x.d.city}, SP`; }
+function desenhaAgenda(){
+  if(TEMPOS===null){ TEMPOS=false; fetch("/tempos.json").then(r=>r.ok?r.json():null).then(j=>{ TEMPOS=j||{}; if(CAT==="agenda")desenhaAgenda(); }).catch(()=>{ TEMPOS={}; }); }
+  const hoje=agoraBR().dia;
+  const its=allItems().map(d=>({d,s:ST[d.uid]?.s||"",c:lerCad(ST[d.uid]?.n)}))
+    .filter(x=>x.s!=="descartei"&&!HIDDEN.has(x.d.uid)&&(["contatar","aguardando","visita","gostei"].includes(x.s)||x.c.vi.d||x.c.px.t));
+  const ultData=x=>{ for(let i=x.c.h.length-1;i>=0;i--) if(x.c.h[i].d) return x.c.h[i].d; return ""; };
+  let h="";
+
+  /* visitas por dia */
+  const futuras=its.filter(x=>x.c.vi.d&&x.c.vi.d>=hoje), passadas=its.filter(x=>x.c.vi.d&&x.c.vi.d<hoje);
+  const dias=[...new Set(futuras.map(x=>x.c.vi.d))].sort();
+  h+=`<div class="ag-sec">📅 Visitas</div>`;
+  if(!dias.length) h+=`<div class="ag-vazio">Nenhuma visita marcada. Abra o caderno de uma casa e preencha o dia da visita: ela aparece aqui, junto com as outras do mesmo dia.</div>`;
+  for(const dia of dias){
+    const v=futuras.filter(x=>x.c.vi.d===dia).sort((a,b)=>(a.c.vi.h||"99")<(b.c.vi.h||"99")?-1:1);
+    const cids=[...new Set(v.map(x=>x.d.city))];
+    let corpo="";
+    v.forEach((x,i)=>{
+      const ct=[x.c.ct.n&&esc(x.c.ct.n),x.c.ct.t&&linkTel(x.c.ct.t)].filter(Boolean).join(" · ");
+      corpo+=`<div class="ag-vis" data-agcad="${esc(x.d.uid)}"><div class="ag-hora">${x.c.vi.h||"--:--"}</div><div><b>${esc(x.d.cond||x.d.title)}</b> <span class="ag-q">${esc(x.d.city)}</span><div class="ag-q">${ct||"contato não anotado"}${x.c.ct.e?` · <a href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(x.c.ct.e)}" target="_blank" rel="noopener" onclick="event.stopPropagation()">endereço no mapa</a>`:""}</div></div></div>`;
+      const y=v[i+1]; if(!y)return;
+      const t=tempo(x.d.city,y.d.city);
+      let txt=x.d.city===y.d.city?`🚗 mesma cidade (${esc(x.d.city)})`:t?`🚗 uns ${t[0]} min de carro de ${esc(x.d.city)} até ${esc(y.d.city)} (${t[1]} km, sem trânsito)`:`🚗 de ${esc(x.d.city)} até ${esc(y.d.city)}`;
+      let cls="";
+      if(x.c.vi.h&&y.c.vi.h){
+        const folga=minDe(y.c.vi.h)-minDe(x.c.vi.h), precisa=Math.max(t?t[0]:15,10)+40;
+        if(folga<precisa){ cls=" alerta-curto"; txt+=`. ⚠️ Horário apertado: só ${folga} min entre uma e outra, contando uns 40 min de visita precisaria de uns ${precisa}.`; }
+      }
+      corpo+=`<div class="ag-traj${cls}">${txt}</div>`;
+    });
+    const rota="https://www.google.com/maps/dir/"+v.map(x=>encodeURIComponent(destinoMapa(x))).join("/");
+    /* casas em andamento, sem visita marcada, perto das cidades desse dia */
+    const enc=its.filter(x=>!(x.c.vi.d>=hoje))
+      .map(x=>({x,t:Math.min(...cids.map(c=>{const q=tempo(c,x.d.city);return q?q[0]:999;}))}))
+      .filter(o=>o.t<=30).sort((a,b)=>a.t-b.t).slice(0,8);
+    const encH=enc.length?`<div class="ag-enc">💡 <b>Dá para encaixar nesse dia:</b> ${enc.map(o=>`<a data-agcad="${esc(o.x.d.uid)}">${esc(o.x.d.cond||o.x.d.title)}</a> (${esc(o.x.d.city)}${o.t===0?", mesma cidade":", uns "+o.t+" min"})`).join(" · ")}</div>`:"";
+    h+=`<div class="ag-dia${dia===hoje?" hoje-dia":""}"><h3>${fmtDia(dia,true).replace(/^./,m=>m.toUpperCase())}${dia===hoje?" (hoje)":""} · ${cids.map(esc).join(", ")}</h3>${corpo}
+      <a class="ag-rot" href="${rota}" target="_blank" rel="noopener">🗺️ Abrir o roteiro do dia no Google Maps</a>${encH}</div>`;
+  }
+  if(passadas.length) h+=`<details class="ag-passadas"><summary>Visitas que já passaram (${passadas.length}): conte no caderno como foi</summary><div class="ag-lista">${passadas.sort((a,b)=>a.c.vi.d<b.c.vi.d?1:-1).map(x=>agItem(x,fmtDia(x.c.vi.d,true))).join("")}</div></details>`;
+
+  /* próximos passos */
+  const px=its.filter(x=>x.c.px.t).sort((a,b)=>(a.c.px.d||"9999")<(b.c.px.d||"9999")?-1:1);
+  h+=`<div class="ag-sec">➡️ Próximos passos</div>`;
+  h+=px.length?`<div class="ag-lista">${px.map(x=>`<div class="ag-it" data-agcad="${esc(x.d.uid)}"><div><b>${esc(x.c.px.t)}</b><small>${esc(x.d.cond||x.d.title)} · ${esc(x.d.city)}</small></div><div class="ag-dias">${x.c.px.d?prazo(x.c.px.d,hoje):"sem data"}</div></div>`).join("")}</div>`:`<div class="ag-vazio">Nenhum próximo passo anotado.</div>`;
+
+  /* esperando resposta */
+  const ag=its.filter(x=>x.s==="aguardando").map(x=>({...x,u:ultData(x)})).sort((a,b)=>(a.u||"0")<(b.u||"0")?-1:1);
+  h+=`<div class="ag-sec">⏳ Esperando resposta <small>a que espera há mais tempo primeiro</small></div>`;
+  h+=ag.length?`<div class="ag-lista">${ag.map(x=>{ const n=x.u?diasEntre(x.u,hoje):null; return agItem(x,n===null?"":n<=0?"desde hoje":n===1?"há 1 dia":"há "+n+" dias"); }).join("")}</div>`:`<div class="ag-vazio">Nenhuma casa esperando resposta.</div>`;
+
+  const cont=its.filter(x=>x.s==="contatar");
+  if(cont.length) h+=`<div class="ag-sec">📞 A contatar</div><div class="ag-lista">${cont.map(x=>agItem(x,"")).join("")}</div>`;
+  const gos=its.filter(x=>x.s==="gostei"&&!(x.c.vi.d>=hoje));
+  if(gos.length) h+=`<div class="ag-sec">💚 Gostei <small>sem visita marcada</small></div><div class="ag-lista">${gos.map(x=>agItem(x,"")).join("")}</div>`;
+  list.innerHTML=h;
+  list.querySelectorAll("[data-agcad]").forEach(el=>el.addEventListener("click",e=>{ e.stopPropagation(); abreCad(el.dataset.agcad); }));
 }
 
 /* ---------- filtros recolhem ao rolar (celular) ---------- */
