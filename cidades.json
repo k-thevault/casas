@@ -5937,14 +5937,14 @@
     }
    ],
    "maternidade": {
-    "nome": "maternidade da rede S380 em Indaiatuba (o site mostra que existe, mas o nome não consegui abrir)",
+    "nome": "Hospital Santa Ignês de Indaiatuba",
     "cidade": "Indaiatuba",
-    "uti_neonatal": null,
-    "minutos": 17,
-    "fonte": "Site da Amil, busca avançada da rede credenciada, rede Amil S380 QC, consultado em 29/10/2026; nome não aberto porque o site bloqueou novas buscas; minutos de carro aproximados, calculados por rota (OSRM) do centro da cidade"
+    "uti_neonatal": true,
+    "minutos": 18,
+    "fonte": "Site da Amil, busca avançada da rede credenciada, rede Amil S380 QC, consultado em 04/11/2026 (busca feita para a ficha de Itu, mesma maternidade da rede para a região); UTI neonatal conferida no CNES (cnes.datasus.gov.br, aba leitos): 5 leitos de UTI neonatal tipo I (o tipo mais simples); minutos de carro aproximados, calculados por rota (OSRM) do centro de Salto até o hospital (18,6 km)"
    },
    "outros": "Tem laboratório (análises clínicas), pediatra e obstetra credenciados na cidade. Não há maternidade S380 em Salto.",
-   "resumo": "Com a Amil S380, em Salto você resolve consultas e exames na cidade; para pronto-socorro vai ao Hospital Unimed em Itu, e para parto a Indaiatuba (17 min, nome a confirmar) ou ao Samaritano em Campinas (36 min, com UTI neonatal).",
+   "resumo": "Com a Amil S380, em Salto você resolve consultas e exames na cidade; para pronto-socorro vai ao Hospital Unimed em Itu, e para parto ao Hospital Santa Ignês, em Indaiatuba (18 min, com UTI para recém-nascido, do tipo mais simples), ou ao Samaritano em Campinas (36 min, com UTI neonatal).",
    "confirmado_no_site_amil": true
   }
  },
