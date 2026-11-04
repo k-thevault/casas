@@ -1103,6 +1103,8 @@ function agItem(x,dir){ /* uma linha clicável: abre o caderno */
   return `<div class="ag-it" data-agcad="${esc(d.uid)}"><div><b>${esc(d.cond||d.title)}</b><small>${esc(d.city)}${d.agency?" · "+esc(d.agency):""}</small></div><div class="ag-dias">${dir||""}</div></div>`;
 }
 function destinoMapa(x){ return x.c.ct.e||`${x.d.cond||""}, ${x.d.city}, SP`; }
+/* "Cond. Zuleika Jabour (voce ja conhecia)" e "Condomínio Zuleika Jabour" são o mesmo lugar. */
+const nomeCond=s=>semAcento(s).replace(/\(.*?\)/g,"").replace(/^(cond\.?|condominio|residencial)\s+/,"").replace(/[^a-z0-9]+/g," ").trim();
 function desenhaAgenda(){
   if(TEMPOS===null){ TEMPOS=false; fetch("/tempos.json").then(r=>r.ok?r.json():null).then(j=>{ TEMPOS=j||{}; if(CAT==="agenda")desenhaAgenda(); }).catch(()=>{ TEMPOS={}; }); }
   const hoje=agoraBR().dia;
@@ -1125,9 +1127,10 @@ function desenhaAgenda(){
       corpo+=`<div class="ag-vis" data-agcad="${esc(x.d.uid)}"><div class="ag-hora">${x.c.vi.h||"--:--"}</div><div><b>${esc(x.d.cond||x.d.title)}</b> <span class="ag-q">${esc(x.d.city)}</span><div class="ag-q">${ct||"contato não anotado"}${x.c.ct.e?` · <a href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(x.c.ct.e)}" target="_blank" rel="noopener" onclick="event.stopPropagation()">endereço no mapa</a>`:""}</div></div></div>`;
       const y=v[i+1]; if(!y)return;
       const t=tempo(x.d.city,y.d.city);
-      let txt=x.d.city===y.d.city?`🚗 mesma cidade (${esc(x.d.city)})`:t?`🚗 uns ${t[0]} min de carro de ${esc(x.d.city)} até ${esc(y.d.city)} (${t[1]} km, sem trânsito)`:`🚗 de ${esc(x.d.city)} até ${esc(y.d.city)}`;
+      const mesmoCond=x.d.city===y.d.city&&nomeCond(x.d.cond)&&nomeCond(x.d.cond)===nomeCond(y.d.cond);
+      let txt=mesmoCond?`🏡 mesmo condomínio, é só ir de uma casa para a outra`:x.d.city===y.d.city?`🚗 mesma cidade (${esc(x.d.city)})`:t?`🚗 uns ${t[0]} min de carro de ${esc(x.d.city)} até ${esc(y.d.city)} (${t[1]} km, sem trânsito)`:`🚗 de ${esc(x.d.city)} até ${esc(y.d.city)}`;
       let cls="";
-      if(x.c.vi.h&&y.c.vi.h){
+      if(!mesmoCond&&x.c.vi.h&&y.c.vi.h){
         const folga=minDe(y.c.vi.h)-minDe(x.c.vi.h), precisa=Math.max(t?t[0]:15,10)+40;
         if(folga<precisa){ cls=" alerta-curto"; txt+=`. ⚠️ Horário apertado: só ${folga} min entre uma e outra, contando uns 40 min de visita precisaria de uns ${precisa}.`; }
       }
