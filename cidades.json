@@ -1560,6 +1560,392 @@
    "confirmado_no_site_amil": true
   }
  },
+ "Cabreúva": {
+  "cidade": "Cabreúva",
+  "pesquisado_em": "2026-11-04",
+  "populacao": {
+   "censo2022": 47011,
+   "estimativa": 48654,
+   "ano_estimativa": 2025,
+   "porte": "pequena (cerca de 49 mil habitantes), dividida em dois núcleos: o Centro, no pé da Serra do Japi, e o distrito do Jacaré, colado em Itupeva",
+   "fonte": "https://servicodados.ibge.gov.br/api/v3/agregados/6579 (estimativa 2025) e /agregados/4709 (Censo 2022)"
+  },
+  "distancias": {
+   "sp": {
+    "ponto": "Marginal Tietê, início da Rodovia dos Bandeirantes (Ponte dos Remédios, zona oeste de SP)",
+    "km": 78,
+    "sem_transito": "1h",
+    "pico": "1h05 a 1h40 até o Centro (Google Maps, sexta 6/11 18h, saindo da Ponte dos Remédios, pela Bandeirantes e Rod. Dom Gabriel Paulino Bueno Couto, 78,7 km)",
+    "rota": "Bandeirantes até Itupeva + Rod. Dom Gabriel Paulino Bueno Couto (SP-300)",
+    "obs": "Do Jacaré é bem mais perto: 68 km e cerca de 50 min sem trânsito (OSRM); até o Residencial Phytus, 50 min a 1h25 no pico (Google Maps, sexta 6/11 18h, 66 km pela Bandeirantes).",
+    "fonte": "OSRM (roteador sobre mapa OpenStreetMap, router.project-osrm.org), tempo sem trânsito; pico = estimativa"
+   },
+   "itupeva": {
+    "km": 29,
+    "sem_transito": "32 min",
+    "pico": "30 a 45 min do Centro de Cabreúva (Google Maps, segunda 9/11 8h, 27,7 a 34,4 km)",
+    "obs": "Do Jacaré ao centro de Itupeva: 17 km e 22 min sem trânsito (OSRM); 22 a 35 min no pico (Google Maps, segunda 9/11 8h, 17,2 a 23 km). Do Residencial Phytus: 20 a 28 min no pico, 14,4 km.",
+    "fonte": "OSRM (roteador sobre mapa OpenStreetMap, router.project-osrm.org), tempo sem trânsito; pico = estimativa"
+   },
+   "viracopos": {
+    "km": 63,
+    "sem_transito": "54 min",
+    "pico": "1h10 (estimativa); do Jacaré, 52 km e 44 min sem trânsito",
+    "fonte": "OSRM (roteador sobre mapa OpenStreetMap, router.project-osrm.org), tempo sem trânsito; pico = estimativa"
+   },
+   "guarulhos": {
+    "km": 105,
+    "sem_transito": "1h24",
+    "pico": "2h15 (estimativa); do Jacaré, 94 km e 1h14 sem trânsito",
+    "fonte": "OSRM (roteador sobre mapa OpenStreetMap, router.project-osrm.org), tempo sem trânsito; pico = estimativa"
+   },
+   "congonhas": {
+    "km": 94,
+    "sem_transito": "1h16",
+    "pico": "2h (estimativa); do Jacaré, 83 km e 1h06 sem trânsito",
+    "fonte": "OSRM (roteador sobre mapa OpenStreetMap, router.project-osrm.org), tempo sem trânsito; pico = estimativa"
+   }
+  },
+  "seguranca": {
+   "nota": 6,
+   "nota_porque": "Roubo é muito raro (cerca de 8 vezes menor que a média do estado) e furto fica pela metade. Mas o homicídio subiu: 4 em 2025 e 4 só de janeiro a setembro de 2026, o que dá mais que o dobro da média paulista por habitante (11,0 contra 4,9). Em fevereiro de 2026 uma mãe e a filha de 14 anos foram mortas a tiros numa briga no bairro Colina. O estupro também ficou perto do dobro da média em 2025 (60 contra 31). O IBGE registra 4 favelas pequenas, todas do lado do Jacaré. Fica no patamar de Boituva e Itu.",
+   "indicadores": [
+    {
+     "crime": "Homicídio doloso",
+     "ano": 2024,
+     "casos": 1,
+     "por_100mil": 2.1,
+     "media_estado_por_100mil": 5.5
+    },
+    {
+     "crime": "Homicídio doloso",
+     "ano": 2025,
+     "casos": 4,
+     "por_100mil": 8.2,
+     "media_estado_por_100mil": 5.3
+    },
+    {
+     "crime": "Homicídio doloso",
+     "ano": 2026,
+     "casos": 4,
+     "por_100mil": 11.0,
+     "media_estado_por_100mil": 4.9,
+     "obs": "janeiro a setembro de 2026 (9 meses publicados); taxa anualizada"
+    },
+    {
+     "crime": "Latrocínio",
+     "ano": 2024,
+     "casos": 1,
+     "por_100mil": 2.1,
+     "media_estado_por_100mil": 0.4
+    },
+    {
+     "crime": "Latrocínio",
+     "ano": 2025,
+     "casos": 0,
+     "por_100mil": 0.0,
+     "media_estado_por_100mil": 0.3
+    },
+    {
+     "crime": "Latrocínio",
+     "ano": 2026,
+     "casos": 0,
+     "por_100mil": 0.0,
+     "media_estado_por_100mil": 0.2,
+     "obs": "janeiro a setembro de 2026 (9 meses publicados); taxa anualizada"
+    },
+    {
+     "crime": "Roubo (outros)",
+     "ano": 2024,
+     "casos": 18,
+     "por_100mil": 37.1,
+     "media_estado_por_100mil": 411.0
+    },
+    {
+     "crime": "Roubo (outros)",
+     "ano": 2025,
+     "casos": 21,
+     "por_100mil": 43.2,
+     "media_estado_por_100mil": 342.5
+    },
+    {
+     "crime": "Roubo (outros)",
+     "ano": 2026,
+     "casos": 12,
+     "por_100mil": 32.9,
+     "media_estado_por_100mil": 292.7,
+     "obs": "janeiro a setembro de 2026 (9 meses publicados); taxa anualizada"
+    },
+    {
+     "crime": "Roubo de veículo",
+     "ano": 2024,
+     "casos": 5,
+     "por_100mil": 10.3,
+     "media_estado_por_100mil": 68.9
+    },
+    {
+     "crime": "Roubo de veículo",
+     "ano": 2025,
+     "casos": 7,
+     "por_100mil": 14.4,
+     "media_estado_por_100mil": 54.3
+    },
+    {
+     "crime": "Roubo de veículo",
+     "ano": 2026,
+     "casos": 4,
+     "por_100mil": 11.0,
+     "media_estado_por_100mil": 36.8,
+     "obs": "janeiro a setembro de 2026 (9 meses publicados); taxa anualizada"
+    },
+    {
+     "crime": "Furto (outros)",
+     "ano": 2024,
+     "casos": 237,
+     "por_100mil": 488.9,
+     "media_estado_por_100mil": 1209.0
+    },
+    {
+     "crime": "Furto (outros)",
+     "ano": 2025,
+     "casos": 298,
+     "por_100mil": 612.5,
+     "media_estado_por_100mil": 1193.5
+    },
+    {
+     "crime": "Furto (outros)",
+     "ano": 2026,
+     "casos": 131,
+     "por_100mil": 359.0,
+     "media_estado_por_100mil": 1094.7,
+     "obs": "janeiro a setembro de 2026 (9 meses publicados); taxa anualizada"
+    },
+    {
+     "crime": "Furto de veículo",
+     "ano": 2024,
+     "casos": 33,
+     "por_100mil": 68.1,
+     "media_estado_por_100mil": 204.5
+    },
+    {
+     "crime": "Furto de veículo",
+     "ano": 2025,
+     "casos": 19,
+     "por_100mil": 39.1,
+     "media_estado_por_100mil": 189.5
+    },
+    {
+     "crime": "Furto de veículo",
+     "ano": 2026,
+     "casos": 16,
+     "por_100mil": 43.8,
+     "media_estado_por_100mil": 175.4,
+     "obs": "janeiro a setembro de 2026 (9 meses publicados); taxa anualizada"
+    },
+    {
+     "crime": "Estupro (total, inclui estupro de vulnerável)",
+     "ano": 2024,
+     "casos": 15,
+     "por_100mil": 30.9,
+     "media_estado_por_100mil": 31.7
+    },
+    {
+     "crime": "Estupro (total, inclui estupro de vulnerável)",
+     "ano": 2025,
+     "casos": 29,
+     "por_100mil": 59.6,
+     "media_estado_por_100mil": 31.3
+    },
+    {
+     "crime": "Estupro (total, inclui estupro de vulnerável)",
+     "ano": 2026,
+     "casos": 15,
+     "por_100mil": 41.1,
+     "media_estado_por_100mil": 33.3,
+     "obs": "janeiro a setembro de 2026 (9 meses publicados); taxa anualizada"
+    }
+   ],
+   "tendencia": "Homicídio subindo: 2 (2023), 1 (2024), 4 (2025) e 4 até setembro de 2026. Roubo baixo e estável (entre 18 e 27 por ano). Furto subiu em 2025 (298) e caiu em 2026 (131 até setembro). Estupro subiu de 15 (2024) para 29 (2025). Como a cidade é pequena, um caso a mais muda muito a taxa.",
+   "rankings": [
+    {
+     "texto": "Crime Brasil (SSP, set/2025 a ago/2026): 1.336 ocorrências por 100 mil, 44% abaixo da média do estado (2.386). É a 391ª entre 625 cidades paulistas (quanto maior a posição, menos crime). Esse número soma todo tipo de ocorrência, a maioria furto.",
+     "fonte": "https://crimebrasil.com.br/cidade/sp/cabreuva"
+    },
+    {
+     "texto": "Anuário Cidades Mais Seguras 2026 (MySide) só ranqueia cidades com mais de 100 mil habitantes; Cabreúva não entra.",
+     "fonte": "https://myside.com.br/guia-imoveis/cidades-mais-seguras-sao-paulo"
+    }
+   ],
+   "noticias": [
+    {
+     "data": "2026-02",
+     "texto": "Tiroteio no bairro Colina: 4 baleados, mãe (35 anos) e filha (14) morreram; segundo a reportagem, rixa antiga entre famílias. O Google Maps mostra um lugar chamado Colina logo ao sul do Jacaré; não confirmei se é o mesmo bairro.",
+     "fonte": "https://tribunadejundiai.com.br/policia/tiroteio-cabreuva-mae-filha-mortas-bairro-colina/"
+    },
+    {
+     "data": "sem data confirmada",
+     "texto": "Homem condenado a 108 anos por cinco homicídios foi preso em Cabreúva (a página não mostra a data).",
+     "fonte": "https://tribunadejundiai.com.br/policia/homem-condenado-a-108-anos-de-prisao-por-cinco-homicidios-e-preso-em-cabreuva/"
+    }
+   ],
+   "resumo": "Cabreúva tem pouco roubo e pouco furto, mas o homicídio subiu em 2025 e 2026 e passou o dobro da média do estado, com um caso grave em fevereiro de 2026. O Jacaré, onde ficam os condomínios perto de Itupeva, é o bairro com mais ocorrências da cidade e é onde ficam as 4 comunidades do IBGE."
+  },
+  "periferia": {
+   "ibge_comunidades": "Sim: 4 favelas e comunidades urbanas no Censo 2022, com 950 moradores (2% da população). Nomes: Fazendinha / Barracão (dentro do Jacaré, a uns 1,3 km do Portal da Concórdia e 2,6 km do Residencial Phytus), Roque Barbudo, Vila dos Mineiros e Marmeleiros do Caí (as três no caminho entre o Jacaré e o Centro, a uns 3 a 5 km do Jacaré).",
+   "fonte_ibge": "https://servicodados.ibge.gov.br/api/v3/agregados/9883 e /9888 (Censo 2022, Favelas e Comunidades Urbanas); nomes pela camada CGMAT:qg_2022_670_fcu_agreg em https://geoservicos.ibge.gov.br/geoserver/ows",
+   "bairros_atencao": [
+    {
+     "bairro": "Jacaré (distrito colado em Itupeva)",
+     "porque": "Mais ocorrências da cidade (118 em 12 meses, Crime Brasil/SSP). É também a parte mais povoada e com mais comércio, o que puxa o número. A comunidade Fazendinha / Barracão fica dentro do Jacaré, e a UPA 24h da cidade também."
+    },
+    {
+     "bairro": "Villarejo Sopé da Serra (Vilarejo)",
+     "porque": "2º em ocorrências (95 em 12 meses, mais 26 registradas só como 'Vilarejo')."
+    },
+    {
+     "bairro": "Pinhal e Novo Bonfim",
+     "porque": "37 e 34 ocorrências em 12 meses."
+    },
+    {
+     "bairro": "Colina",
+     "porque": "Local do tiroteio com duas mortes em fev/2026."
+    }
+   ],
+   "bairros_seguros": [
+    "Centro (28 ocorrências), Vale Verde (17) e Bonfim (16) têm poucos registros em 12 meses (Crime Brasil).",
+    "Nova Pinhal aparece com só 1 ocorrência."
+   ],
+   "resumo": "O ponto de atenção pedido, o Jacaré, é justamente onde se concentram os registros e as comunidades do IBGE: a Fazendinha / Barracão fica a pouco mais de 1 km do Portal da Concórdia e a uns 2,6 km do Phytus. São comunidades pequenas (950 pessoas somando as 4). Do Jacaré ao centro de Itupeva são só 17 km, 22 a 35 min no pico."
+  },
+  "saude": {
+   "pronto_socorro_24h": [
+    {
+     "nome": "UPA 24h Antônio Baradel (R. Benedito Bicudo Galvão, 100, Jacaré)",
+     "tipo": "público"
+    }
+   ],
+   "maternidade": {
+    "tem": false,
+    "nome": "",
+    "uti_neonatal": false,
+    "mais_proxima_se_nao_tem": "No CNES Cabreúva não tem hospital geral nem maternidade (o único hospital é psiquiátrico). Mais perto com UTI neonatal: Santa Casa de Itu (20 leitos, SUS) e Novo Hospital Unimed Salto/Itu (7 leitos), cerca de 28 min do Centro; Hospital Pitangueiras e Hospital Universitário em Jundiaí (10 leitos cada), cerca de 34 min do Centro e 24 min do Jacaré",
+    "minutos": 28,
+    "fonte": "https://cnes.datasus.gov.br (ficha hospitalar, leitos) e https://apidadosabertos.saude.gov.br/cnes/estabelecimentos"
+   },
+   "hospital_particular": "Nenhum na cidade. Do Jacaré, o mais perto é Jundiaí (Pitangueiras, Paulo Sacramento, Santa Elisa, cerca de 24 min); do Centro, o Hospital Unimed de Itu (cerca de 27 min)."
+  },
+  "escolas": [
+   {
+    "nome": "Colégio Objetivo Cabreúva (R. Minas Gerais, 375, Distrito do Jacaré)",
+    "tipo": "particular",
+    "obs": "Ficha no Melhor Escola (https://www.melhorescola.com.br/escola/colegio-objetivo-cabreuva)."
+   },
+   {
+    "nome": "Viver Colégio (mesmo endereço, Jacaré)",
+    "tipo": "particular",
+    "obs": "Ficha no site escol.as (https://www.escol.as/286818-viver-colegio)."
+   },
+   {
+    "nome": "Colégio Anglo Cabreúva",
+    "tipo": "particular",
+    "obs": "Citado em anúncios de imóveis; endereço não confirmado."
+   },
+   {
+    "nome": "Bilíngue: não achei em Cabreúva",
+    "tipo": "bilíngue",
+    "obs": "As mais perto ficam em Itu (Maple Bear) e Jundiaí; não medi os minutos."
+   }
+  ],
+  "fontes_escolas": [
+   "https://www.melhorescola.com.br/escola/colegio-objetivo-cabreuva",
+   "https://www.escol.as/286818-viver-colegio"
+  ],
+  "veterinario_24h": {
+   "tem": false,
+   "nome": "",
+   "mais_proximo_se_nao_tem": "Cares Hospital Veterinário 24 Horas, no centro de Itupeva (R. Juliana de Oliveira Borges, 200): cerca de 22 min do Jacaré e 33 min do Centro de Cabreúva",
+   "confirmacao": "Na busca do Google Maps por veterinário 24h em Cabreúva (04/11/2026) nenhuma clínica da cidade aparece como 24h; o Cares aparece como 'Aberto 24 horas'. Não telefonei."
+  },
+  "dia_a_dia": {
+   "supermercados": "Sonda (Av. Alberto Peratello, 835), Boa Supermercados, Martins Carnes Supermercados, Miranda, Compre Mais, VS e Mercado Markim, entre outros. Lista da busca no Google Maps (04/11/2026), que mostra só os primeiros resultados. Atacados grandes ficam em Itupeva, Jundiaí e Itu.",
+   "shopping": "Não tem shopping. Do Jacaré, o Shopping SerrAzul e o Outlet Premium São Paulo, em Itupeva, ficam perto; Jundiaí tem os shoppings maiores.",
+   "fibra": "Claro, Openit, Aue, Desktop, Netsalto, Vivo, GSG Fibra e Algar. Lista de provedores com testes de velocidade feitos por usuários na cidade (minhaconexao.com.br, atualizada em outubro de 2026). O Jacaré aparece com média de 136 Mbps, abaixo de outros bairros: conferir pelo CEP da casa.",
+   "custo_de_vida": "Dados do IBGE: a riqueza produzida por morador (PIB por pessoa, 2023) é de R$ 154,0 mil por ano, contra R$ 80,7 mil em Campinas e R$ 93,2 mil em São Paulo (puxado por indústrias e logística). O salário médio de quem tem carteira assinada (2021) é de 3,0 salários mínimos, contra 3,8 em Campinas e 4,3 em São Paulo. Atenção: PIB por pessoa mede o que as empresas produzem, não o preço das coisas. Não existe índice oficial de custo de vida por cidade."
+  },
+  "resumo": "Cabreúva é uma cidade pequena e verde, no pé da Serra do Japi. O que interessa é o distrito do Jacaré, colado em Itupeva: dali a família fica a cerca de 22 min e SP a cerca de 50 min. O roubo é raro, mas o homicídio subiu em 2025 e 2026 e o Jacaré concentra as ocorrências e as 4 comunidades do IBGE. Não tem hospital nem maternidade: para o parto, Jundiaí (24 min do Jacaré) ou Itu.",
+  "pontos_fortes": [
+   "Jacaré muito perto de Itupeva (17 km, 22 a 35 min no pico)",
+   "Roubo muito raro",
+   "Furto pela metade da média de SP",
+   "Natureza (Serra do Japi) e condomínios grandes como o Phytus"
+  ],
+  "pontos_fracos": [
+   "Homicídio mais que o dobro da média do estado em 2026",
+   "Sem hospital geral nem maternidade na cidade",
+   "4 favelas no IBGE, todas do lado do Jacaré",
+   "Sem veterinário 24h, shopping ou hospital particular",
+   "Pela Amil S380 não há pronto-socorro na cidade"
+  ],
+  "condominios": [
+   {
+    "nome": "Residencial Phytus",
+    "regiao": "Jacaré (R. Vitória, 264), a 14 km do centro de Itupeva",
+    "observacao": "Nota 4,6 no Google com 465 avaliações. A comunidade do IBGE mais perto (Fazendinha / Barracão) fica a uns 2,6 km em linha reta. Nenhuma notícia de crime encontrada pelo nome."
+   },
+   {
+    "nome": "Cond. Portal da Concórdia",
+    "regiao": "Jacaré, ao lado do Jardim da Serra",
+    "observacao": "2 casas no catálogo. A comunidade Fazendinha / Barracão fica a uns 1,3 km. Nenhuma notícia de crime encontrada pelo nome."
+   },
+   {
+    "nome": "Cond. Chácaras do Pinhal",
+    "regiao": "Bairro Pinhal",
+    "observacao": "O bairro Pinhal tem 37 ocorrências em 12 meses (3º da cidade). Nenhuma notícia de crime encontrada pelo nome."
+   }
+  ],
+  "fontes": [
+   "https://www.ssp.sp.gov.br/estatistica/dados-mensais",
+   "https://www.ssp.sp.gov.br/v1/OcorrenciasMensais/RecuperaDadosMensaisAgrupados (painel Dados Mensais da SSP, consultado em 04/11/2026)",
+   "https://servicodados.ibge.gov.br/api/v3/agregados/6579 (estimativa 2025) e /agregados/4709 (Censo 2022)",
+   "https://servicodados.ibge.gov.br/api/v3/agregados/9883 e /9888 (Censo 2022, Favelas e Comunidades Urbanas); nomes pela camada CGMAT:qg_2022_670_fcu_agreg em https://geoservicos.ibge.gov.br/geoserver/ows",
+   "https://cnes.datasus.gov.br (ficha hospitalar, leitos) e https://apidadosabertos.saude.gov.br/cnes/estabelecimentos",
+   "OSRM (roteador sobre mapa OpenStreetMap, router.project-osrm.org), tempo sem trânsito; pico = estimativa",
+   "https://www.google.com/maps (rotas com horário de saída definido, consultado em 04/11/2026)",
+   "https://servicodados.ibge.gov.br/api/v3/agregados/5938 (PIB dos municípios 2023, dividido pela população do Censo 2022, mesma conta do IBGE Cidades) e /agregados/1685 (salário médio mensal 2021, CEMPRE)",
+   "https://www.amil.com.br/institucional/#/servicos/saude/rede-credenciada/amil/busca-avancada (rede Amil S380 QC, consultado em 04/11/2026)",
+   "https://crimebrasil.com.br/cidade/sp/cabreuva",
+   "https://crimebrasil.com.br/cidade/sp/cabreuva/piores-bairros",
+   "https://tribunadejundiai.com.br/policia/tiroteio-cabreuva-mae-filha-mortas-bairro-colina/",
+   "https://www.melhorescola.com.br/escola/colegio-objetivo-cabreuva",
+   "https://www.minhaconexao.com.br/ranking/sp/cabreuva"
+  ],
+  "amil": {
+   "pronto_socorro": [
+    {
+     "nome": "Hospital Pitangueiras",
+     "cidade": "Jundiaí (24 min do Jacaré, 34 min do Centro)",
+     "atende": "adulto e infantil",
+     "fonte": "Site da Amil, busca avançada da rede credenciada, rede Amil S380 QC, consultado em 04/11/2026"
+    },
+    {
+     "nome": "Novo Hospital Unimed Salto/Itu",
+     "cidade": "Itu (27 min do Centro, 28 min do Jacaré)",
+     "atende": "adulto, infantil e obstétrico",
+     "fonte": "Site da Amil, busca avançada da rede credenciada, rede Amil S380 QC, consultado em 04/11/2026"
+    }
+   ],
+   "maternidade": {
+    "nome": "Hospital Pitangueiras",
+    "cidade": "Jundiaí",
+    "uti_neonatal": true,
+    "minutos": 34,
+    "fonte": "Site da Amil, busca avançada da rede credenciada, rede Amil S380 QC, consultado em 04/11/2026; UTI neonatal conferida no CNES (cnes.datasus.gov.br, aba leitos): 10 leitos; 34 min do Centro de Cabreúva e 24 min do Jacaré; minutos de carro aproximados, calculados por rota (OSRM)"
+   },
+   "outros": "Em Cabreúva a rede S380 só tem consultórios (ginecologia, obstetrícia e pediatria). Não tem hospital, pronto-socorro nem laboratório S380 na cidade. Itupeva também não tem pronto-socorro S380.",
+   "resumo": "Com a Amil S380, em Cabreúva você só faz consulta. Para pronto-socorro e parto, do Jacaré o caminho é o Hospital Pitangueiras em Jundiaí (cerca de 24 min, com UTI para recém-nascido); do Centro, o Hospital Unimed de Itu para pronto-socorro (27 min).",
+   "confirmado_no_site_amil": true
+  }
+ },
  "Cesário Lange": {
   "cidade": "Cesário Lange",
   "pesquisado_em": "2026-10-29",
@@ -2967,6 +3353,413 @@
    "confirmado_no_site_amil": true
   }
  },
+ "Itu": {
+  "cidade": "Itu",
+  "pesquisado_em": "2026-11-04",
+  "populacao": {
+   "censo2022": 168240,
+   "estimativa": 175047,
+   "ano_estimativa": 2025,
+   "porte": "média para grande (cerca de 175 mil habitantes)",
+   "fonte": "https://servicodados.ibge.gov.br/api/v3/agregados/6579 (estimativa 2025) e /agregados/4709 (Censo 2022)"
+  },
+  "distancias": {
+   "sp": {
+    "ponto": "Início da Castello Branco no Cebolão (Marginal Tietê), junto à divisa SP/Osasco",
+    "km": 83,
+    "sem_transito": "1h",
+    "pico": "1h10 a 1h50 (Google Maps, sexta 6/11 18h, saindo da Ponte dos Remédios, na Marginal Tietê junto ao Cebolão, pela Castello, 84,4 km)",
+    "rota": "Castello Branco + Rod. Dom Gabriel Paulino Bueno Couto (SP-300 ligação). Pela Bandeirantes: 93 km, também 1h10 a 2h no pico.",
+    "fonte": "OSRM (roteador sobre mapa OpenStreetMap, router.project-osrm.org), tempo sem trânsito; pico = estimativa"
+   },
+   "itupeva": {
+    "km": 43,
+    "sem_transito": "42 min",
+    "pico": "40 min a 1h (Google Maps, segunda 9/11 8h, 48,7 km)",
+    "fonte": "OSRM (roteador sobre mapa OpenStreetMap, router.project-osrm.org), tempo sem trânsito; pico = estimativa"
+   },
+   "viracopos": {
+    "km": 44,
+    "sem_transito": "42 min",
+    "pico": "55 min (estimativa)",
+    "fonte": "OSRM (roteador sobre mapa OpenStreetMap, router.project-osrm.org), tempo sem trânsito; pico = estimativa"
+   },
+   "guarulhos": {
+    "km": 119,
+    "sem_transito": "1h34",
+    "pico": "2h30 (estimativa)",
+    "fonte": "OSRM (roteador sobre mapa OpenStreetMap, router.project-osrm.org), tempo sem trânsito; pico = estimativa"
+   },
+   "congonhas": {
+    "km": 100,
+    "sem_transito": "1h21",
+    "pico": "2h10 (estimativa)",
+    "fonte": "OSRM (roteador sobre mapa OpenStreetMap, router.project-osrm.org), tempo sem trânsito; pico = estimativa"
+   }
+  },
+  "seguranca": {
+   "nota": 6,
+   "nota_porque": "Roubo é cerca de 4 vezes menor que a média do estado e furto fica 30% abaixo. Mas o homicídio preocupa: 17 casos em 2024 e 13 de janeiro a setembro de 2026, quase o dobro da média paulista por habitante (9,9 contra 4,9 por 100 mil). Estupro também fica acima da média (48 contra 31 em 2025), furto de carro subiu em 2026 e o IBGE registra 6 favelas. Fica no mesmo patamar de Boituva e Cosmópolis.",
+   "indicadores": [
+    {
+     "crime": "Homicídio doloso",
+     "ano": 2024,
+     "casos": 17,
+     "por_100mil": 9.7,
+     "media_estado_por_100mil": 5.5
+    },
+    {
+     "crime": "Homicídio doloso",
+     "ano": 2025,
+     "casos": 10,
+     "por_100mil": 5.7,
+     "media_estado_por_100mil": 5.3
+    },
+    {
+     "crime": "Homicídio doloso",
+     "ano": 2026,
+     "casos": 13,
+     "por_100mil": 9.9,
+     "media_estado_por_100mil": 4.9,
+     "obs": "janeiro a setembro de 2026 (9 meses publicados); taxa anualizada"
+    },
+    {
+     "crime": "Latrocínio",
+     "ano": 2024,
+     "casos": 1,
+     "por_100mil": 0.6,
+     "media_estado_por_100mil": 0.4
+    },
+    {
+     "crime": "Latrocínio",
+     "ano": 2025,
+     "casos": 0,
+     "por_100mil": 0.0,
+     "media_estado_por_100mil": 0.3
+    },
+    {
+     "crime": "Latrocínio",
+     "ano": 2026,
+     "casos": 0,
+     "por_100mil": 0.0,
+     "media_estado_por_100mil": 0.2,
+     "obs": "janeiro a setembro de 2026 (9 meses publicados); taxa anualizada"
+    },
+    {
+     "crime": "Roubo (outros)",
+     "ano": 2024,
+     "casos": 217,
+     "por_100mil": 124.3,
+     "media_estado_por_100mil": 411.0
+    },
+    {
+     "crime": "Roubo (outros)",
+     "ano": 2025,
+     "casos": 131,
+     "por_100mil": 74.8,
+     "media_estado_por_100mil": 342.5
+    },
+    {
+     "crime": "Roubo (outros)",
+     "ano": 2026,
+     "casos": 94,
+     "por_100mil": 71.6,
+     "media_estado_por_100mil": 292.7,
+     "obs": "janeiro a setembro de 2026 (9 meses publicados); taxa anualizada"
+    },
+    {
+     "crime": "Roubo de veículo",
+     "ano": 2024,
+     "casos": 36,
+     "por_100mil": 20.6,
+     "media_estado_por_100mil": 68.9
+    },
+    {
+     "crime": "Roubo de veículo",
+     "ano": 2025,
+     "casos": 26,
+     "por_100mil": 14.9,
+     "media_estado_por_100mil": 54.3
+    },
+    {
+     "crime": "Roubo de veículo",
+     "ano": 2026,
+     "casos": 12,
+     "por_100mil": 9.1,
+     "media_estado_por_100mil": 36.8,
+     "obs": "janeiro a setembro de 2026 (9 meses publicados); taxa anualizada"
+    },
+    {
+     "crime": "Furto (outros)",
+     "ano": 2024,
+     "casos": 1743,
+     "por_100mil": 998.5,
+     "media_estado_por_100mil": 1209.0
+    },
+    {
+     "crime": "Furto (outros)",
+     "ano": 2025,
+     "casos": 1456,
+     "por_100mil": 831.8,
+     "media_estado_por_100mil": 1193.5
+    },
+    {
+     "crime": "Furto (outros)",
+     "ano": 2026,
+     "casos": 802,
+     "por_100mil": 610.9,
+     "media_estado_por_100mil": 1094.7,
+     "obs": "janeiro a setembro de 2026 (9 meses publicados); taxa anualizada"
+    },
+    {
+     "crime": "Furto de veículo",
+     "ano": 2024,
+     "casos": 124,
+     "por_100mil": 71.0,
+     "media_estado_por_100mil": 204.5
+    },
+    {
+     "crime": "Furto de veículo",
+     "ano": 2025,
+     "casos": 121,
+     "por_100mil": 69.1,
+     "media_estado_por_100mil": 189.5
+    },
+    {
+     "crime": "Furto de veículo",
+     "ano": 2026,
+     "casos": 136,
+     "por_100mil": 103.6,
+     "media_estado_por_100mil": 175.4,
+     "obs": "janeiro a setembro de 2026 (9 meses publicados); taxa anualizada"
+    },
+    {
+     "crime": "Estupro (total, inclui estupro de vulnerável)",
+     "ano": 2024,
+     "casos": 72,
+     "por_100mil": 41.2,
+     "media_estado_por_100mil": 31.7
+    },
+    {
+     "crime": "Estupro (total, inclui estupro de vulnerável)",
+     "ano": 2025,
+     "casos": 84,
+     "por_100mil": 48.0,
+     "media_estado_por_100mil": 31.3
+    },
+    {
+     "crime": "Estupro (total, inclui estupro de vulnerável)",
+     "ano": 2026,
+     "casos": 41,
+     "por_100mil": 31.2,
+     "media_estado_por_100mil": 33.3,
+     "obs": "janeiro a setembro de 2026 (9 meses publicados); taxa anualizada"
+    }
+   ],
+   "tendencia": "Roubo caiu forte de 2023 para 2025 (216 para 131) e furto também (2.171 para 1.456). O homicídio oscila e não caiu: 9 em 2023, 17 em 2024, 10 em 2025 e 13 só até setembro de 2026, o que já passa 2025 inteiro. Furto de veículo em 2026 (136 até setembro) já é maior que o ano de 2025 todo (121).",
+   "rankings": [
+    {
+     "texto": "Crime Brasil (SSP, set/2025 a ago/2026): 1.570 ocorrências por 100 mil, 34% abaixo da média do estado (2.386). É a 250ª maior taxa entre 625 cidades paulistas, ou seja, fica no meio da tabela.",
+     "fonte": "https://crimebrasil.com.br/cidade/sp/itu"
+    },
+    {
+     "texto": "Anuário Cidades Mais Seguras 2026 (MySide, homicídios de 2025): Itu não aparece entre as 10 cidades mais seguras de SP com mais de 100 mil habitantes (Salto é a 2ª, Itatiba a 4ª, Valinhos a 8ª).",
+     "fonte": "https://myside.com.br/guia-imoveis/cidades-mais-seguras-sao-paulo"
+    }
+   ],
+   "noticias": [
+    {
+     "data": "sem data confirmada",
+     "texto": "Jovem de 28 anos morto a tiros na frente da esposa na Av. Dr. Ulisses de Moraes; a matéria não traz mês nem ano, então não sei se é recente.",
+     "fonte": "https://www.bnewssaopaulo.com.br/amp/noticias/policia/jovem-e-morto-a-tiros-na-frente-da-esposa-em-rua-de-itu.html"
+    },
+    {
+     "data": "2022",
+     "texto": "Quadrilha entrou por um buraco no muro de um condomínio de luxo na Alameda do Laço da Fita (citado pelo SíndicoNet com link para o g1 de 2022). Não achei notícia de roubo em condomínio de Itu em 2026.",
+     "fonte": "https://www.sindiconet.com.br/informese/invasao-de-condominio-em-itu-alerta-para-falta-de-seguranca-noticias-seguranca"
+    }
+   ],
+   "resumo": "Itu tem roubo e furto abaixo da média do estado, mas homicídio perto do dobro da média paulista em 2024 e em 2026. É a cidade de números mais fracos entre Itu, Vinhedo e Louveira. Os condomínios grandes ficam afastados dos bairros com mais registros, mas isso não muda o número da cidade."
+  },
+  "periferia": {
+   "ibge_comunidades": "Sim: 6 favelas e comunidades urbanas no Censo 2022, com 3.245 moradores (1,9% da população). Nomes: Vila Lucinda (sul do Centro), Vila da Paz 1 e Vila da Paz 2 e 3 (extremo sul, perto de Salto), Monte Sião (norte), Pesqueiro Olhos D'Água (noroeste, área rural) e Pedreira do Menino Jesus da Lapa (leste, no caminho de Cabreúva).",
+   "fonte_ibge": "https://servicodados.ibge.gov.br/api/v3/agregados/9883 e /9888 (Censo 2022, Favelas e Comunidades Urbanas); nomes pela camada CGMAT:qg_2022_670_fcu_agreg em https://geoservicos.ibge.gov.br/geoserver/ows",
+   "bairros_atencao": [
+    {
+     "bairro": "Centro",
+     "porque": "Mais ocorrências (284 em 12 meses, Crime Brasil/SSP), puxado por comércio e movimento."
+    },
+    {
+     "bairro": "Fazenda Vila Real de Itu",
+     "porque": "2º em ocorrências (94 em 12 meses)."
+    },
+    {
+     "bairro": "Chácara São João, São Luiz, Cidade Nova I",
+     "porque": "Entre 81 e 92 ocorrências cada em 12 meses."
+    },
+    {
+     "bairro": "Núcleo Habitacional São Judas Tadeu, Vila Martins, Vila Padre Bento",
+     "porque": "Entre 69 e 71 ocorrências cada em 12 meses."
+    },
+    {
+     "bairro": "City Castello",
+     "porque": "67 ocorrências em 12 meses; bairro grande perto da Castello."
+    },
+    {
+     "bairro": "Vila Lucinda e Vila da Paz",
+     "porque": "Comunidades listadas pelo IBGE. Vila Lucinda fica a uns 4 km do Centro e do Parque do Varvito."
+    }
+   ],
+   "bairros_seguros": [
+    "Condomínio Terras de São José aparece com só 8 ocorrências em 12 meses (Crime Brasil).",
+    "Campos de Santo Antônio, Portal de Itu, Parque do Varvito e Portal da Vila Rica aparecem só na lista de 'poucos registros' do Crime Brasil (sem número no ranking)."
+   ],
+   "resumo": "Itu tem 6 comunidades pequenas, espalhadas, todas longe dos condomínios do catálogo (a mais perto do Parque do Varvito, Vila Lucinda, fica a uns 4 km em linha reta). As ocorrências se concentram no Centro e em bairros populares como Cidade Nova, São Luiz e Chácara São João."
+  },
+  "saude": {
+   "pronto_socorro_24h": [
+    {
+     "nome": "Santa Casa de Itu (Centro)",
+     "tipo": "público"
+    },
+    {
+     "nome": "UPA 24h Nossa Senhora Aparecida",
+     "tipo": "público"
+    },
+    {
+     "nome": "Pronto-Socorro Infantil municipal",
+     "tipo": "público"
+    },
+    {
+     "nome": "Novo Hospital Unimed Salto/Itu (rodovia, bairro Chácaras Primavera)",
+     "tipo": "particular"
+    },
+    {
+     "nome": "Hospital Santa Ignês de Itu",
+     "tipo": "particular"
+    }
+   ],
+   "maternidade": {
+    "tem": true,
+    "nome": "Santa Casa de Itu (14 leitos de obstetrícia e 20 de UTI neonatal, 16 pelo SUS) e Novo Hospital Unimed Salto/Itu (11 leitos de obstetrícia e 7 de UTI neonatal tipo III, convênio). O Hospital Santa Ignês de Itu tem 4 leitos de obstetrícia e nenhum de UTI neonatal.",
+    "uti_neonatal": true,
+    "mais_proxima_se_nao_tem": "",
+    "minutos": 3,
+    "fonte": "https://cnes.datasus.gov.br (ficha hospitalar, leitos) e https://apidadosabertos.saude.gov.br/cnes/estabelecimentos"
+   },
+   "hospital_particular": "Novo Hospital Unimed Salto/Itu (cerca de 7 min do Centro) e Hospital Santa Ignês de Itu. Para outros convênios: Hospital Santa Ignês de Indaiatuba (cerca de 25 min)."
+  },
+  "escolas": [
+   {
+    "nome": "Maple Bear Canadian School Itu (R. Dr. Graciano Geribello, 650, bairro Alto)",
+    "tipo": "bilíngue",
+    "obs": "Citada em lista comercial de colégios da cidade (https://comerciosaopaulo.com.br/10-melhores-colegios-particulares-em-itu-sp/). Não abri o site da escola."
+   },
+   {
+    "nome": "Colégio Divino Salvador",
+    "tipo": "particular",
+    "obs": "Tradicional, salesiano, com inglês reforçado segundo a mesma lista."
+   },
+   {
+    "nome": "Colégio Anglo Itu e Colégio Objetivo Itu",
+    "tipo": "particular",
+    "obs": "Redes de apostila, foco em vestibular, segundo a mesma lista."
+   },
+   {
+    "nome": "Colégio Almeida Júnior e Colégio Integrado Monteiro Lobato",
+    "tipo": "particular",
+    "obs": "Mesma fonte."
+   }
+  ],
+  "fontes_escolas": [
+   "https://comerciosaopaulo.com.br/10-melhores-colegios-particulares-em-itu-sp/",
+   "https://www.melhorescola.com.br/escola/por-mensalidade/sao-paulo/itu"
+  ],
+  "veterinario_24h": {
+   "tem": true,
+   "nome": "Ariza Hospital Veterinário 24 horas (R. José Bruni, 158, Novo Centro, cerca de 4 min do Centro) e Padre Bento Centro Veterinário (R. Padre José de Campos Lara, 264)",
+   "mais_proximo_se_nao_tem": "",
+   "confirmacao": "Confirmado só pelo Google: os dois aparecem no Google Maps como 'Aberto 24 horas' (consultado em 04/11/2026). Não abri site próprio e não telefonei."
+  },
+  "dia_a_dia": {
+   "supermercados": "Atacadão, Roldão Atacadista, Carrefour Bairro, Supermercados São Vicente, Santa Fé e Extra Jóia, entre outros. Lista da busca no Google Maps (04/11/2026), que mostra só os primeiros resultados.",
+   "shopping": "Plaza Shopping Itu, na própria cidade (https://www.plazashoppingitu.com.br/).",
+   "fibra": "Internet Ágil, Meganet, Hard Web, Vivo, Claro, Algar, Joy, Fasternet, Velonic, SW Telecom, GSG Fibra, Aue, TIM e outros. Lista de provedores com testes de velocidade feitos por usuários na cidade (minhaconexao.com.br, atualizada em outubro de 2026); a cobertura muda de rua para rua: conferir pelo CEP da casa.",
+   "custo_de_vida": "Dados do IBGE: a riqueza produzida por morador (PIB por pessoa, 2023) é de R$ 83,3 mil por ano, contra R$ 80,7 mil em Campinas e R$ 93,2 mil em São Paulo. O salário médio de quem tem carteira assinada (2021) é de 2,8 salários mínimos, contra 3,8 em Campinas e 4,3 em São Paulo. Atenção: PIB por pessoa mede o que as empresas da cidade produzem, não o preço das coisas. Não existe índice oficial de custo de vida por cidade; o aluguel é o que mais pesa no orçamento."
+  },
+  "resumo": "Itu é uma cidade grande e histórica, colada em Salto, a cerca de 1h de SP pela Castello e 45 min da família em Itupeva. Tem tudo na cidade: shopping, hospitais e duas maternidades com UTI para recém-nascido. O ponto fraco é a segurança: homicídio perto do dobro da média do estado e 6 favelas pequenas pelo IBGE.",
+  "pontos_fortes": [
+   "Duas maternidades com UTI neonatal na cidade (Santa Casa e Unimed)",
+   "Roubo cerca de 4 vezes menor que a média de SP",
+   "Shopping, atacados e veterinário 24h na cidade",
+   "Muitos condomínios grandes (Terras de São José, Campos de Santo Antônio, Portal de Itu)"
+  ],
+  "pontos_fracos": [
+   "Homicídio perto do dobro da média do estado em 2024 e 2026",
+   "6 favelas no IBGE (3.245 moradores)",
+   "Furto de carro subiu em 2026",
+   "Pela Amil S380 não há maternidade em Itu: parto em Indaiatuba (25 min)",
+   "Mais longe de Itupeva (40 min a 1h no pico)"
+  ],
+  "condominios": [
+   {
+    "nome": "Cond. Parque do Varvito",
+    "regiao": "Oeste do Centro, perto do Parque Geológico do Varvito",
+    "observacao": "Favorita no catálogo. Aparece entre os bairros de poucos registros no Crime Brasil; a comunidade do IBGE mais perto (Vila Lucinda) fica a uns 4 km em linha reta. Nenhuma notícia de crime encontrada pelo nome."
+   },
+   {
+    "nome": "Cond. Campos de Santo Antônio",
+    "regiao": "Leste, saída para Cabreúva/Jundiaí",
+    "observacao": "Aparece entre os bairros de poucos registros no Crime Brasil. Nenhuma notícia de crime encontrada pelo nome."
+   },
+   {
+    "nome": "Cond. Terras de São José",
+    "regiao": "Condomínio grande e antigo de alto padrão",
+    "observacao": "8 ocorrências em 12 meses no Crime Brasil. Nenhuma notícia recente de crime encontrada pelo nome."
+   },
+   {
+    "nome": "Cond. Portal de Itu",
+    "regiao": "Sul da cidade",
+    "observacao": "Aparece entre os bairros de poucos registros no Crime Brasil."
+   }
+  ],
+  "fontes": [
+   "https://www.ssp.sp.gov.br/estatistica/dados-mensais",
+   "https://www.ssp.sp.gov.br/v1/OcorrenciasMensais/RecuperaDadosMensaisAgrupados (painel Dados Mensais da SSP, consultado em 04/11/2026)",
+   "https://servicodados.ibge.gov.br/api/v3/agregados/6579 (estimativa 2025) e /agregados/4709 (Censo 2022)",
+   "https://servicodados.ibge.gov.br/api/v3/agregados/9883 e /9888 (Censo 2022, Favelas e Comunidades Urbanas); nomes pela camada CGMAT:qg_2022_670_fcu_agreg em https://geoservicos.ibge.gov.br/geoserver/ows",
+   "https://cnes.datasus.gov.br (ficha hospitalar, leitos) e https://apidadosabertos.saude.gov.br/cnes/estabelecimentos",
+   "OSRM (roteador sobre mapa OpenStreetMap, router.project-osrm.org), tempo sem trânsito; pico = estimativa",
+   "https://www.google.com/maps (rotas com horário de saída definido, consultado em 04/11/2026)",
+   "https://servicodados.ibge.gov.br/api/v3/agregados/5938 (PIB dos municípios 2023, dividido pela população do Censo 2022, mesma conta do IBGE Cidades) e /agregados/1685 (salário médio mensal 2021, CEMPRE)",
+   "https://www.amil.com.br/institucional/#/servicos/saude/rede-credenciada/amil/busca-avancada (rede Amil S380 QC, consultado em 04/11/2026)",
+   "https://crimebrasil.com.br/cidade/sp/itu",
+   "https://myside.com.br/guia-imoveis/cidades-mais-seguras-sao-paulo",
+   "https://comerciosaopaulo.com.br/10-melhores-colegios-particulares-em-itu-sp/",
+   "https://www.plazashoppingitu.com.br/",
+   "https://www.minhaconexao.com.br/ranking/sp/itu"
+  ],
+  "amil": {
+   "pronto_socorro": [
+    {
+     "nome": "Novo Hospital Unimed Salto/Itu (Rod. José Nelson Schincariol, bairro Chácaras Primavera)",
+     "cidade": "Itu",
+     "atende": "adulto, infantil e obstétrico",
+     "fonte": "Site da Amil, busca avançada da rede credenciada, rede Amil S380 QC, consultado em 04/11/2026"
+    }
+   ],
+   "maternidade": {
+    "nome": "Hospital Santa Ignês de Indaiatuba (bairro Vila Homero)",
+    "cidade": "Indaiatuba",
+    "uti_neonatal": true,
+    "minutos": 25,
+    "fonte": "Site da Amil, busca avançada da rede credenciada, rede Amil S380 QC, consultado em 04/11/2026; UTI neonatal conferida no CNES (cnes.datasus.gov.br, aba leitos): 5 leitos de UTI neonatal tipo I (o tipo mais simples); minutos de carro aproximados, calculados por rota (OSRM) do centro da cidade"
+   },
+   "outros": "Tem laboratório (análises clínicas e ultrassom obstétrico), pediatra, ginecologista e obstetra credenciados na cidade. A busca de maternidades S380 em Itu não traz nenhum hospital: o Novo Hospital Unimed, que tem maternidade e UTI neonatal tipo III, aparece na rede só como pronto-socorro (inclusive obstétrico). Vale perguntar à Amil se o parto pode ser feito lá.",
+   "resumo": "Com a Amil S380, em Itu você resolve consultas, exames e pronto-socorro (adulto, infantil e da gestante) no Hospital Unimed da rodovia, a cerca de 7 min. Para o parto, a maternidade da rede fica em Indaiatuba, no Santa Ignês (25 min), que tem UTI para recém-nascido.",
+   "confirmado_no_site_amil": true
+  }
+ },
  "Jaguariúna": {
   "cidade": "Jaguariúna",
   "pesquisado_em": "2026-10-29",
@@ -3667,6 +4460,400 @@
    },
    "outros": "Tem laboratório credenciado; não há pediatra nem obstetra de consultório credenciado na cidade.",
    "resumo": "Com a Amil S380, em Jarinu você resolve pronto-socorro adulto e infantil no Hospital Jarinu; para parto vai à Santa Casa de Itatiba (25 min, com UTI neonatal) ou ao Albert Sabin em Atibaia (23 min, sem UTI neonatal).",
+   "confirmado_no_site_amil": true
+  }
+ },
+ "Louveira": {
+  "cidade": "Louveira",
+  "pesquisado_em": "2026-11-04",
+  "populacao": {
+   "censo2022": 51847,
+   "estimativa": 54865,
+   "ano_estimativa": 2025,
+   "porte": "pequena (cerca de 55 mil habitantes)",
+   "fonte": "https://servicodados.ibge.gov.br/api/v3/agregados/6579 (estimativa 2025) e /agregados/4709 (Censo 2022)"
+  },
+  "distancias": {
+   "sp": {
+    "ponto": "Marginal Tietê, início da Rodovia dos Bandeirantes (Ponte dos Remédios, zona oeste de SP)",
+    "km": 61,
+    "sem_transito": "46 min",
+    "pico": "50 min a 1h15 (Google Maps, sexta 6/11 18h, saindo da Ponte dos Remédios, na Marginal Tietê junto ao Cebolão, pela Bandeirantes, 61,6 km)",
+    "rota": "Rodovia dos Bandeirantes (ou Anhanguera)",
+    "fonte": "OSRM (roteador sobre mapa OpenStreetMap, router.project-osrm.org), tempo sem trânsito; pico = estimativa"
+   },
+   "itupeva": {
+    "km": 19,
+    "sem_transito": "24 min",
+    "pico": "26 a 45 min (Google Maps, segunda 9/11 8h, 18,7 a 26,8 km conforme a rota)",
+    "fonte": "OSRM (roteador sobre mapa OpenStreetMap, router.project-osrm.org), tempo sem trânsito; pico = estimativa"
+   },
+   "viracopos": {
+    "km": 32,
+    "sem_transito": "32 min",
+    "pico": "45 min (estimativa)",
+    "fonte": "OSRM (roteador sobre mapa OpenStreetMap, router.project-osrm.org), tempo sem trânsito; pico = estimativa"
+   },
+   "guarulhos": {
+    "km": 89,
+    "sem_transito": "1h11",
+    "pico": "2h (estimativa)",
+    "fonte": "OSRM (roteador sobre mapa OpenStreetMap, router.project-osrm.org), tempo sem trânsito; pico = estimativa"
+   },
+   "congonhas": {
+    "km": 78,
+    "sem_transito": "1h03",
+    "pico": "1h50 (estimativa)",
+    "fonte": "OSRM (roteador sobre mapa OpenStreetMap, router.project-osrm.org), tempo sem trânsito; pico = estimativa"
+   }
+  },
+  "seguranca": {
+   "nota": 8,
+   "nota_porque": "Nenhum homicídio em 2024 nem em 2026 até setembro (3 em 2025; como a cidade é pequena, isso já dá 5,5 por 100 mil, igual à média de SP). Nenhum latrocínio desde 2023. Roubo cerca de 4 a 6 vezes menor que a média do estado e furto pela metade. Não dou nota maior porque o estupro ficou bem acima da média em 2024 (72 contra 32 por 100 mil, quase todo estupro de vulnerável) e há 1 pequena favela no IBGE a uns 2 km da Reserva dos Jatobás.",
+   "indicadores": [
+    {
+     "crime": "Homicídio doloso",
+     "ano": 2024,
+     "casos": 0,
+     "por_100mil": 0.0,
+     "media_estado_por_100mil": 5.5
+    },
+    {
+     "crime": "Homicídio doloso",
+     "ano": 2025,
+     "casos": 3,
+     "por_100mil": 5.5,
+     "media_estado_por_100mil": 5.3
+    },
+    {
+     "crime": "Homicídio doloso",
+     "ano": 2026,
+     "casos": 0,
+     "por_100mil": 0.0,
+     "media_estado_por_100mil": 4.9,
+     "obs": "janeiro a setembro de 2026 (9 meses publicados); taxa anualizada"
+    },
+    {
+     "crime": "Latrocínio",
+     "ano": 2024,
+     "casos": 0,
+     "por_100mil": 0.0,
+     "media_estado_por_100mil": 0.4
+    },
+    {
+     "crime": "Latrocínio",
+     "ano": 2025,
+     "casos": 0,
+     "por_100mil": 0.0,
+     "media_estado_por_100mil": 0.3
+    },
+    {
+     "crime": "Latrocínio",
+     "ano": 2026,
+     "casos": 0,
+     "por_100mil": 0.0,
+     "media_estado_por_100mil": 0.2,
+     "obs": "janeiro a setembro de 2026 (9 meses publicados); taxa anualizada"
+    },
+    {
+     "crime": "Roubo (outros)",
+     "ano": 2024,
+     "casos": 26,
+     "por_100mil": 48.0,
+     "media_estado_por_100mil": 411.0
+    },
+    {
+     "crime": "Roubo (outros)",
+     "ano": 2025,
+     "casos": 45,
+     "por_100mil": 82.0,
+     "media_estado_por_100mil": 342.5
+    },
+    {
+     "crime": "Roubo (outros)",
+     "ano": 2026,
+     "casos": 20,
+     "por_100mil": 48.6,
+     "media_estado_por_100mil": 292.7,
+     "obs": "janeiro a setembro de 2026 (9 meses publicados); taxa anualizada"
+    },
+    {
+     "crime": "Roubo de veículo",
+     "ano": 2024,
+     "casos": 6,
+     "por_100mil": 11.1,
+     "media_estado_por_100mil": 68.9
+    },
+    {
+     "crime": "Roubo de veículo",
+     "ano": 2025,
+     "casos": 10,
+     "por_100mil": 18.2,
+     "media_estado_por_100mil": 54.3
+    },
+    {
+     "crime": "Roubo de veículo",
+     "ano": 2026,
+     "casos": 3,
+     "por_100mil": 7.3,
+     "media_estado_por_100mil": 36.8,
+     "obs": "janeiro a setembro de 2026 (9 meses publicados); taxa anualizada"
+    },
+    {
+     "crime": "Furto (outros)",
+     "ano": 2024,
+     "casos": 247,
+     "por_100mil": 456.5,
+     "media_estado_por_100mil": 1209.0
+    },
+    {
+     "crime": "Furto (outros)",
+     "ano": 2025,
+     "casos": 301,
+     "por_100mil": 548.6,
+     "media_estado_por_100mil": 1193.5
+    },
+    {
+     "crime": "Furto (outros)",
+     "ano": 2026,
+     "casos": 171,
+     "por_100mil": 415.6,
+     "media_estado_por_100mil": 1094.7,
+     "obs": "janeiro a setembro de 2026 (9 meses publicados); taxa anualizada"
+    },
+    {
+     "crime": "Furto de veículo",
+     "ano": 2024,
+     "casos": 43,
+     "por_100mil": 79.5,
+     "media_estado_por_100mil": 204.5
+    },
+    {
+     "crime": "Furto de veículo",
+     "ano": 2025,
+     "casos": 42,
+     "por_100mil": 76.6,
+     "media_estado_por_100mil": 189.5
+    },
+    {
+     "crime": "Furto de veículo",
+     "ano": 2026,
+     "casos": 26,
+     "por_100mil": 63.2,
+     "media_estado_por_100mil": 175.4,
+     "obs": "janeiro a setembro de 2026 (9 meses publicados); taxa anualizada"
+    },
+    {
+     "crime": "Estupro (total, inclui estupro de vulnerável)",
+     "ano": 2024,
+     "casos": 39,
+     "por_100mil": 72.1,
+     "media_estado_por_100mil": 31.7
+    },
+    {
+     "crime": "Estupro (total, inclui estupro de vulnerável)",
+     "ano": 2025,
+     "casos": 22,
+     "por_100mil": 40.1,
+     "media_estado_por_100mil": 31.3
+    },
+    {
+     "crime": "Estupro (total, inclui estupro de vulnerável)",
+     "ano": 2026,
+     "casos": 13,
+     "por_100mil": 31.6,
+     "media_estado_por_100mil": 33.3,
+     "obs": "janeiro a setembro de 2026 (9 meses publicados); taxa anualizada"
+    }
+   ],
+   "tendencia": "Números baixos e estáveis. Homicídio: 2 (2023), 0 (2024), 3 (2025), 0 (2026 até setembro). Roubo subiu em 2025 (45, contra 26 em 2024), mas em 2026 voltou a cair (20 até setembro). Estupro caiu de 39 (2024) para 22 (2025).",
+   "rankings": [
+    {
+     "texto": "Crime Brasil (SSP, set/2025 a ago/2026): 1.345 ocorrências por 100 mil, 44% abaixo da média do estado (2.386). É a 388ª entre 625 cidades paulistas (quanto maior a posição, menos crime).",
+     "fonte": "https://crimebrasil.com.br/cidade/sp/louveira"
+    },
+    {
+     "texto": "Anuário Cidades Mais Seguras 2026 (MySide) só ranqueia cidades com mais de 100 mil habitantes; Louveira é menor e não entra.",
+     "fonte": "https://myside.com.br/guia-imoveis/cidades-mais-seguras-sao-paulo"
+    }
+   ],
+   "noticias": [
+    {
+     "data": "2025-09",
+     "texto": "Motociclista morreu atingida por carro roubado de um suspeito que fugia da polícia, no acesso da rodovia em Louveira.",
+     "fonte": "https://tribunadejundiai.com.br/policia/motociclista-morre-apos-ser-atingida-por-carro-com-suspeito-que-fugia-da-policia-em-louveira/"
+    },
+    {
+     "data": "2026",
+     "texto": "Não achei notícia de homicídio ou roubo em condomínio em Louveira em 2026.",
+     "fonte": "busca na web, 04/11/2026"
+    }
+   ],
+   "resumo": "Louveira tem números de crime baixos, parecidos com Vinhedo, e é a mais perto de Itupeva das três. Os pontos de atenção são o estupro acima da média em 2024 e uma pequena comunidade do IBGE no sul da cidade."
+  },
+  "periferia": {
+   "ibge_comunidades": "Sim, uma pequena: o IBGE (Censo 2022) registra 1 favela ou comunidade urbana em Louveira, chamada Granja Jatobá, com 246 moradores e área de 0,011 km², a cerca de 2 km ao sul do Centro.",
+   "fonte_ibge": "https://servicodados.ibge.gov.br/api/v3/agregados/9883 e /9888 (Censo 2022, Favelas e Comunidades Urbanas); nomes pela camada CGMAT:qg_2022_670_fcu_agreg em https://geoservicos.ibge.gov.br/geoserver/ows",
+   "bairros_atencao": [
+    {
+     "bairro": "Residencial Serra Azul",
+     "porque": "Mais ocorrências (88 em 12 meses, Crime Brasil/SSP)."
+    },
+    {
+     "bairro": "Jardim Lago Azul e Jardim Vista Alegre",
+     "porque": "56 e 50 ocorrências em 12 meses."
+    },
+    {
+     "bairro": "Santo Antônio, Residencial Burck, Leitão",
+     "porque": "Entre 27 e 38 ocorrências cada em 12 meses."
+    },
+    {
+     "bairro": "Granja Jatobá (sul)",
+     "porque": "Única comunidade do IBGE (246 pessoas). Fica a uns 2,2 km em linha reta do Cond. Reserva dos Jatobás, apesar do nome parecido."
+    }
+   ],
+   "bairros_seguros": [
+    "Village Capriccio, Monterrey e Videira não aparecem entre os 10 bairros com mais ocorrências (Crime Brasil); isso é um sinal, não prova."
+   ],
+   "resumo": "Louveira quase não tem favela (uma só, com 246 pessoas). Os bairros com mais registros são populares e mais novos, como Serra Azul e Lago Azul. Os números absolutos são pequenos: o 1º bairro tem 88 ocorrências no ano, contra 284 no Centro de Itu."
+  },
+  "saude": {
+   "pronto_socorro_24h": [
+    {
+     "nome": "Santa Casa de Louveira (Vila Nova)",
+     "tipo": "público"
+    },
+    {
+     "nome": "Hospital Santo Antônio de Louveira (municipal, pequeno)",
+     "tipo": "público"
+    }
+   ],
+   "maternidade": {
+    "tem": true,
+    "nome": "Santa Casa de Louveira (8 leitos de obstetrícia, atende SUS e convênio)",
+    "uti_neonatal": false,
+    "mais_proxima_se_nao_tem": "No CNES a Santa Casa de Louveira não tem leito de UTI neonatal. Mais perto: Hospital e Maternidade Galileo, em Valinhos (10 leitos), cerca de 15 min; Hospital Pitangueiras, em Jundiaí (10 leitos), cerca de 17 min; Hospital Universitário de Jundiaí (10 leitos, SUS)",
+    "minutos": 15,
+    "fonte": "https://cnes.datasus.gov.br (ficha hospitalar, leitos) e https://apidadosabertos.saude.gov.br/cnes/estabelecimentos"
+   },
+   "hospital_particular": "Não achei hospital particular geral em Louveira. Mais perto: Jundiaí (Pitangueiras, Paulo Sacramento, Santa Elisa, cerca de 17 min) e Galileo em Valinhos (15 min)."
+  },
+  "escolas": [
+   {
+    "nome": "Louveira Colégio (Estrada das Rainhas, 1305, bairro Rainha)",
+    "tipo": "particular",
+    "obs": "Ficha no site escol.as (https://www.escol.as/288409-louveira-colegio)."
+   },
+   {
+    "nome": "Santa Clara Colégio e Escola Videira",
+    "tipo": "particular",
+    "obs": "Citadas em listas do Melhor Escola, sem endereço confirmado."
+   },
+   {
+    "nome": "Bilíngue: não achei em Louveira",
+    "tipo": "bilíngue",
+    "obs": "Maple Bear Vinhedo, na cidade vizinha (minutos não medidos)."
+   }
+  ],
+  "fontes_escolas": [
+   "https://www.escol.as/288409-louveira-colegio",
+   "https://www.melhorescola.com.br/bolsas-de-estudo/sao-paulo/louveira"
+  ],
+  "veterinario_24h": {
+   "tem": false,
+   "nome": "",
+   "mais_proximo_se_nao_tem": "Hospital Veterinário Pet Son, em Vinhedo (Av. Independência, 4943), cerca de 10 min; em Jundiaí, Hospital Veterinário Dog Saúde e Clinicão e Gato",
+   "confirmacao": "Na busca do Google Maps por veterinário 24h em Louveira (04/11/2026) nenhuma clínica da cidade aparece como 'Aberto 24 horas'; o Pet Son aparece. Não telefonei."
+  },
+  "dia_a_dia": {
+   "supermercados": "Supermercado Louveira (3 lojas), Zarelli, Aliança, DIA, Varejão Santo Antônio, Decler e Amazonas, entre outros. Lista da busca no Google Maps (04/11/2026), que mostra só os primeiros resultados. Atacados grandes ficam em Vinhedo e Jundiaí.",
+   "shopping": "Não achei shopping grande em Louveira (só o Louveira Center, pequeno). Perto: Outlet Premium São Paulo e Shopping SerrAzul, em Itupeva, e os shoppings de Jundiaí.",
+   "fibra": "Magofy, Claro, Overlink, Exon, Net Turbo, Desktop, Algar, Vivo e Viafibra. Lista de provedores com testes de velocidade feitos por usuários na cidade (minhaconexao.com.br, atualizada em outubro de 2026); conferir pelo CEP da casa.",
+   "custo_de_vida": "Dados do IBGE: a riqueza produzida por morador (PIB por pessoa, 2023) é de R$ 388,7 mil por ano, quase 5 vezes a de Campinas (R$ 80,7 mil), por causa dos grandes centros de distribuição na Anhanguera e Bandeirantes. O salário médio de quem tem carteira assinada (2021) é de 3,6 salários mínimos, contra 3,8 em Campinas e 4,3 em São Paulo. Atenção: PIB por pessoa mede o que as empresas produzem, não o preço das coisas. Não existe índice oficial de custo de vida por cidade; o aluguel é o que mais pesa."
+  },
+  "resumo": "Louveira é uma cidade pequena e tranquila entre Vinhedo e Jundiaí, a cerca de 46 min de SP e só 25 min da família em Itupeva, a mais perto das três. Tem crime baixo e só uma pequena comunidade no IBGE. Não tem UTI para recém-nascido na cidade: a mais perto pela Amil S380 é o Galileo, em Valinhos, a cerca de 15 min.",
+  "pontos_fortes": [
+   "A mais perto de Itupeva (cerca de 25 min) e de SP (46 min) das três",
+   "Homicídio zero em 2024 e em 2026 até setembro",
+   "Roubo e furto bem abaixo da média de SP",
+   "Cidade com dinheiro (centros de distribuição), sem cara de periferia"
+  ],
+  "pontos_fracos": [
+   "Sem UTI neonatal na cidade (Galileo a 15 min, Pitangueiras a 17 min)",
+   "Estupro acima da média em 2024",
+   "Sem veterinário 24h confirmado na cidade",
+   "Sem shopping nem hospital particular próprio",
+   "1 pequena favela no IBGE (Granja Jatobá)"
+  ],
+  "condominios": [
+   {
+    "nome": "Villaggio Capriccio",
+    "regiao": "Norte, na Estrada Vinhedo-Louveira",
+    "observacao": "3 casas no catálogo. Não aparece entre os 10 bairros com mais ocorrências. A comunidade do IBGE fica a uns 4 km. Nenhuma notícia de crime encontrada pelo nome."
+   },
+   {
+    "nome": "Cond. Reserva dos Jatobás",
+    "regiao": "Perto do Centro, a nordeste",
+    "observacao": "A comunidade Granja Jatobá (IBGE) fica a uns 2,2 km em linha reta; não confirmei se o caminho passa por ela. Nenhuma notícia de crime encontrada pelo nome."
+   },
+   {
+    "nome": "Via Castelli, Residencial São Sebastião, Cond. Dei Fiori",
+    "regiao": "Outros condomínios do catálogo",
+    "observacao": "Nenhuma notícia de crime encontrada pelo nome."
+   }
+  ],
+  "fontes": [
+   "https://www.ssp.sp.gov.br/estatistica/dados-mensais",
+   "https://www.ssp.sp.gov.br/v1/OcorrenciasMensais/RecuperaDadosMensaisAgrupados (painel Dados Mensais da SSP, consultado em 04/11/2026)",
+   "https://servicodados.ibge.gov.br/api/v3/agregados/6579 (estimativa 2025) e /agregados/4709 (Censo 2022)",
+   "https://servicodados.ibge.gov.br/api/v3/agregados/9883 e /9888 (Censo 2022, Favelas e Comunidades Urbanas); nomes pela camada CGMAT:qg_2022_670_fcu_agreg em https://geoservicos.ibge.gov.br/geoserver/ows",
+   "https://cnes.datasus.gov.br (ficha hospitalar, leitos) e https://apidadosabertos.saude.gov.br/cnes/estabelecimentos",
+   "OSRM (roteador sobre mapa OpenStreetMap, router.project-osrm.org), tempo sem trânsito; pico = estimativa",
+   "https://www.google.com/maps (rotas com horário de saída definido, consultado em 04/11/2026)",
+   "https://servicodados.ibge.gov.br/api/v3/agregados/5938 (PIB dos municípios 2023, dividido pela população do Censo 2022, mesma conta do IBGE Cidades) e /agregados/1685 (salário médio mensal 2021, CEMPRE)",
+   "https://www.amil.com.br/institucional/#/servicos/saude/rede-credenciada/amil/busca-avancada (rede Amil S380 QC, consultado em 04/11/2026)",
+   "https://crimebrasil.com.br/cidade/sp/louveira",
+   "https://crimebrasil.com.br/cidade/sp/louveira/piores-bairros",
+   "https://myside.com.br/guia-imoveis/cidades-mais-seguras-sao-paulo",
+   "https://www.escol.as/288409-louveira-colegio",
+   "https://www.minhaconexao.com.br/ranking/sp/louveira"
+  ],
+  "amil": {
+   "pronto_socorro": [
+    {
+     "nome": "Santa Casa de Louveira",
+     "cidade": "Louveira",
+     "atende": "adulto e infantil",
+     "fonte": "Site da Amil, busca avançada da rede credenciada, rede Amil S380 QC, consultado em 04/11/2026"
+    },
+    {
+     "nome": "Santa Casa de Vinhedo",
+     "cidade": "Vinhedo (12 min)",
+     "atende": "adulto e infantil",
+     "fonte": "Site da Amil, busca avançada da rede credenciada, rede Amil S380 QC, consultado em 04/11/2026"
+    },
+    {
+     "nome": "Hospital e Maternidade Galileo",
+     "cidade": "Valinhos (15 min)",
+     "atende": "adulto",
+     "fonte": "Site da Amil, busca avançada da rede credenciada, rede Amil S380 QC, consultado em 04/11/2026"
+    },
+    {
+     "nome": "Hospital Pitangueiras",
+     "cidade": "Jundiaí (17 min)",
+     "atende": "adulto e infantil",
+     "fonte": "Site da Amil, busca avançada da rede credenciada, rede Amil S380 QC, consultado em 04/11/2026"
+    }
+   ],
+   "maternidade": {
+    "nome": "Hospital e Maternidade Galileo",
+    "cidade": "Valinhos",
+    "uti_neonatal": true,
+    "minutos": 15,
+    "fonte": "Site da Amil, busca avançada da rede credenciada, rede Amil S380 QC, consultado em 04/11/2026; UTI neonatal conferida no CNES (cnes.datasus.gov.br, aba leitos): 10 leitos; outra opção S380 com UTI neonatal é o Hospital Pitangueiras em Jundiaí (10 leitos, cerca de 17 min); a Santa Casa de Louveira (2 min) também é maternidade S380, mas sem UTI neonatal; minutos de carro aproximados, calculados por rota (OSRM) do centro da cidade"
+   },
+   "outros": "Tem laboratório (análises clínicas e ultrassom obstétrico), pediatra, ginecologista e obstetra credenciados na cidade.",
+   "resumo": "Com a Amil S380, em Louveira você resolve consulta, exame e pronto-socorro adulto e infantil na Santa Casa de Louveira. Para o parto com UTI para recém-nascido: Galileo em Valinhos (15 min) ou Pitangueiras em Jundiaí (17 min).",
    "confirmado_no_site_amil": true
   }
  },
@@ -5481,6 +6668,413 @@
    },
    "outros": "Tem laboratório (análises clínicas), pediatra e obstetra credenciados na cidade.",
    "resumo": "Com a Amil S380, em Valinhos você resolve pronto-socorro adulto e parto com UTI neonatal (Galileo) na cidade; para pronto-socorro infantil vai ao Samaritano em Campinas (14 min) ou à Santa Casa de Vinhedo.",
+   "confirmado_no_site_amil": true
+  }
+ },
+ "Vinhedo": {
+  "cidade": "Vinhedo",
+  "pesquisado_em": "2026-11-04",
+  "populacao": {
+   "censo2022": 76540,
+   "estimativa": 79089,
+   "ano_estimativa": 2025,
+   "porte": "pequena para média (cerca de 79 mil habitantes)",
+   "fonte": "https://servicodados.ibge.gov.br/api/v3/agregados/6579 (estimativa 2025) e /agregados/4709 (Censo 2022)"
+  },
+  "distancias": {
+   "sp": {
+    "ponto": "Marginal Tietê, início da Rodovia dos Bandeirantes (Ponte dos Remédios, zona oeste de SP)",
+    "km": 68,
+    "sem_transito": "52 min",
+    "pico": "55 min a 1h25 (Google Maps, sexta 6/11 18h, saindo da Ponte dos Remédios, na Marginal Tietê junto ao Cebolão, pela Bandeirantes, 68,3 km)",
+    "rota": "Rodovia dos Bandeirantes (ou Anhanguera)",
+    "fonte": "OSRM (roteador sobre mapa OpenStreetMap, router.project-osrm.org), tempo sem trânsito; pico = estimativa"
+   },
+   "itupeva": {
+    "km": 26,
+    "sem_transito": "29 min",
+    "pico": "35 a 55 min (Google Maps, segunda 9/11 8h, 25,5 a 33,7 km conforme a rota)",
+    "fonte": "OSRM (roteador sobre mapa OpenStreetMap, router.project-osrm.org), tempo sem trânsito; pico = estimativa"
+   },
+   "viracopos": {
+    "km": 29,
+    "sem_transito": "32 min",
+    "pico": "45 min (estimativa)",
+    "fonte": "OSRM (roteador sobre mapa OpenStreetMap, router.project-osrm.org), tempo sem trânsito; pico = estimativa"
+   },
+   "guarulhos": {
+    "km": 96,
+    "sem_transito": "1h18",
+    "pico": "2h10 (estimativa)",
+    "fonte": "OSRM (roteador sobre mapa OpenStreetMap, router.project-osrm.org), tempo sem trânsito; pico = estimativa"
+   },
+   "congonhas": {
+    "km": 85,
+    "sem_transito": "1h10",
+    "pico": "2h (estimativa)",
+    "fonte": "OSRM (roteador sobre mapa OpenStreetMap, router.project-osrm.org), tempo sem trânsito; pico = estimativa"
+   }
+  },
+  "seguranca": {
+   "nota": 8.5,
+   "nota_porque": "Homicídio muito baixo: 1 em 2024, 2 em 2025 e 1 até setembro de 2026 (2,5 por 100 mil em 2025, menos da metade da média de SP). Roubo cerca de 5 vezes menor que a média do estado, roubo e furto de carro bem abaixo e nenhuma favela no IBGE. Não dou nota maior porque houve 1 latrocínio (roubo seguido de morte) em 2025, que não consegui achar em notícia, e o estupro fica acima da média paulista em 2025 e 2026 (45 contra 31 por 100 mil). Fica um pouco abaixo de Valinhos (9).",
+   "indicadores": [
+    {
+     "crime": "Homicídio doloso",
+     "ano": 2024,
+     "casos": 1,
+     "por_100mil": 1.3,
+     "media_estado_por_100mil": 5.5
+    },
+    {
+     "crime": "Homicídio doloso",
+     "ano": 2025,
+     "casos": 2,
+     "por_100mil": 2.5,
+     "media_estado_por_100mil": 5.3
+    },
+    {
+     "crime": "Homicídio doloso",
+     "ano": 2026,
+     "casos": 1,
+     "por_100mil": 1.7,
+     "media_estado_por_100mil": 4.9,
+     "obs": "janeiro a setembro de 2026 (9 meses publicados); taxa anualizada"
+    },
+    {
+     "crime": "Latrocínio",
+     "ano": 2024,
+     "casos": 0,
+     "por_100mil": 0.0,
+     "media_estado_por_100mil": 0.4
+    },
+    {
+     "crime": "Latrocínio",
+     "ano": 2025,
+     "casos": 1,
+     "por_100mil": 1.3,
+     "media_estado_por_100mil": 0.3
+    },
+    {
+     "crime": "Latrocínio",
+     "ano": 2026,
+     "casos": 0,
+     "por_100mil": 0.0,
+     "media_estado_por_100mil": 0.2,
+     "obs": "janeiro a setembro de 2026 (9 meses publicados); taxa anualizada"
+    },
+    {
+     "crime": "Roubo (outros)",
+     "ano": 2024,
+     "casos": 69,
+     "por_100mil": 87.1,
+     "media_estado_por_100mil": 411.0
+    },
+    {
+     "crime": "Roubo (outros)",
+     "ano": 2025,
+     "casos": 55,
+     "por_100mil": 69.5,
+     "media_estado_por_100mil": 342.5
+    },
+    {
+     "crime": "Roubo (outros)",
+     "ano": 2026,
+     "casos": 28,
+     "por_100mil": 47.2,
+     "media_estado_por_100mil": 292.7,
+     "obs": "janeiro a setembro de 2026 (9 meses publicados); taxa anualizada"
+    },
+    {
+     "crime": "Roubo de veículo",
+     "ano": 2024,
+     "casos": 16,
+     "por_100mil": 20.2,
+     "media_estado_por_100mil": 68.9
+    },
+    {
+     "crime": "Roubo de veículo",
+     "ano": 2025,
+     "casos": 11,
+     "por_100mil": 13.9,
+     "media_estado_por_100mil": 54.3
+    },
+    {
+     "crime": "Roubo de veículo",
+     "ano": 2026,
+     "casos": 10,
+     "por_100mil": 16.9,
+     "media_estado_por_100mil": 36.8,
+     "obs": "janeiro a setembro de 2026 (9 meses publicados); taxa anualizada"
+    },
+    {
+     "crime": "Furto (outros)",
+     "ano": 2024,
+     "casos": 540,
+     "por_100mil": 681.5,
+     "media_estado_por_100mil": 1209.0
+    },
+    {
+     "crime": "Furto (outros)",
+     "ano": 2025,
+     "casos": 568,
+     "por_100mil": 718.2,
+     "media_estado_por_100mil": 1193.5
+    },
+    {
+     "crime": "Furto (outros)",
+     "ano": 2026,
+     "casos": 335,
+     "por_100mil": 564.8,
+     "media_estado_por_100mil": 1094.7,
+     "obs": "janeiro a setembro de 2026 (9 meses publicados); taxa anualizada"
+    },
+    {
+     "crime": "Furto de veículo",
+     "ano": 2024,
+     "casos": 64,
+     "por_100mil": 80.8,
+     "media_estado_por_100mil": 204.5
+    },
+    {
+     "crime": "Furto de veículo",
+     "ano": 2025,
+     "casos": 71,
+     "por_100mil": 89.8,
+     "media_estado_por_100mil": 189.5
+    },
+    {
+     "crime": "Furto de veículo",
+     "ano": 2026,
+     "casos": 53,
+     "por_100mil": 89.4,
+     "media_estado_por_100mil": 175.4,
+     "obs": "janeiro a setembro de 2026 (9 meses publicados); taxa anualizada"
+    },
+    {
+     "crime": "Estupro (total, inclui estupro de vulnerável)",
+     "ano": 2024,
+     "casos": 22,
+     "por_100mil": 27.8,
+     "media_estado_por_100mil": 31.7
+    },
+    {
+     "crime": "Estupro (total, inclui estupro de vulnerável)",
+     "ano": 2025,
+     "casos": 36,
+     "por_100mil": 45.5,
+     "media_estado_por_100mil": 31.3
+    },
+    {
+     "crime": "Estupro (total, inclui estupro de vulnerável)",
+     "ano": 2026,
+     "casos": 24,
+     "por_100mil": 40.5,
+     "media_estado_por_100mil": 33.3,
+     "obs": "janeiro a setembro de 2026 (9 meses publicados); taxa anualizada"
+    }
+   ],
+   "tendencia": "Estável e baixo. Homicídio entre 1 e 2 por ano desde 2023. Roubo caiu de 68 (2023) para 55 (2025) e está mais baixo em 2026 (28 até setembro). Furto subiu um pouco em 2025 (568) e o estupro subiu de 22 (2024) para 36 (2025).",
+   "rankings": [
+    {
+     "texto": "Crime Brasil (SSP, set/2025 a ago/2026): 1.501 ocorrências por 100 mil, 37% abaixo da média do estado (2.386).",
+     "fonte": "https://crimebrasil.com.br/cidade/sp/vinhedo"
+    },
+    {
+     "texto": "Anuário Cidades Mais Seguras 2026 (MySide) só ranqueia cidades com mais de 100 mil habitantes; Vinhedo é menor e não entra.",
+     "fonte": "https://myside.com.br/guia-imoveis/cidades-mais-seguras-sao-paulo"
+    }
+   ],
+   "noticias": [
+    {
+     "data": "2021-12",
+     "texto": "Dupla cortou a cerca, pulou o muro do condomínio Estância Marambaia, rendeu um casal e levou armas e joias; as vítimas foram soltas sem ferimentos. É antigo, mas mostra que condomínio de alto padrão também é alvo.",
+     "fonte": "https://tribunadejundiai.com.br/policia/dupla-pula-muro-de-condominio-e-rouba-armas-e-joias-em-vinhedo/"
+    },
+    {
+     "data": "2025",
+     "texto": "A SSP registra 1 latrocínio em Vinhedo em 2025. Procurei a notícia e não achei qual foi o caso nem o bairro.",
+     "fonte": "https://www.ssp.sp.gov.br/estatistica/dados-mensais"
+    }
+   ],
+   "resumo": "Vinhedo tem números muito bons, perto de Valinhos: quase nenhum homicídio, roubo baixo e nenhuma favela. Os pontos de atenção são o latrocínio de 2025 e o estupro acima da média."
+  },
+  "periferia": {
+   "ibge_comunidades": "Nenhuma. O IBGE (Censo 2022, Favelas e Comunidades Urbanas) não registra favela ou comunidade urbana em Vinhedo.",
+   "bairros_atencao": [
+    {
+     "bairro": "Capela",
+     "porque": "Mais ocorrências (193 em 12 meses, Crime Brasil/SSP); bairro grande e misto, com comércio e o Flex Atacarejo."
+    },
+    {
+     "bairro": "Centro",
+     "porque": "2º em ocorrências (137 em 12 meses)."
+    },
+    {
+     "bairro": "Santa Rosa",
+     "porque": "96 ocorrências em 12 meses."
+    },
+    {
+     "bairro": "Vista Alegre",
+     "porque": "66 ocorrências em 12 meses. Atenção: é o nome do condomínio favorito; não consegui separar o que é dentro do condomínio e o que é no entorno."
+    },
+    {
+     "bairro": "Nova Vinhedo, Moinho, João XXIII",
+     "porque": "Entre 53 e 64 ocorrências cada em 12 meses."
+    }
+   ],
+   "bairros_seguros": [
+    "Santa Claudina aparece em 10º com 37 ocorrências; a maioria dos 88 bairros com dados tem poucos registros (Crime Brasil).",
+    "Condomínios grandes como Estância Marambaia, São Bento e Terras de São Francisco não aparecem entre os 10 com mais ocorrências; isso é um sinal, não prova."
+   ],
+   "resumo": "Vinhedo não tem favela pelo IBGE. As ocorrências se concentram na Capela, no Centro e no Santa Rosa. O Vista Alegre aparece em 4º, mas é um bairro-condomínio enorme, então o número pode refletir o tamanho."
+  },
+  "saude": {
+   "pronto_socorro_24h": [
+    {
+     "nome": "Santa Casa de Vinhedo (Barra Funda)",
+     "tipo": "público"
+    },
+    {
+     "nome": "Pronto Atendimento Dr. Tomaz Ortale Castiglione",
+     "tipo": "público"
+    },
+    {
+     "nome": "UPA de Vinhedo",
+     "tipo": "público"
+    }
+   ],
+   "maternidade": {
+    "tem": true,
+    "nome": "Santa Casa de Vinhedo (11 leitos de obstetrícia, atende SUS e convênio)",
+    "uti_neonatal": false,
+    "mais_proxima_se_nao_tem": "No CNES a Santa Casa de Vinhedo não tem leito de UTI neonatal. Mais perto: Hospital e Maternidade Galileo, em Valinhos (10 leitos), cerca de 7 min; Hospital Pitangueiras, em Jundiaí (10 leitos), cerca de 24 min",
+    "minutos": 7,
+    "fonte": "https://cnes.datasus.gov.br (ficha hospitalar, leitos) e https://apidadosabertos.saude.gov.br/cnes/estabelecimentos"
+   },
+   "hospital_particular": "Não achei hospital particular geral no CNES em Vinhedo (só clínicas e hospital-dia). Mais perto: Galileo em Valinhos (7 min) e os hospitais de Campinas (Samaritano, cerca de 23 min)."
+  },
+  "escolas": [
+   {
+    "nome": "Maple Bear Canadian School Vinhedo",
+    "tipo": "bilíngue",
+    "obs": "Aparece nos sites de bolsas Quero Bolsa e Melhor Escola. Não abri o site da escola."
+   },
+   {
+    "nome": "Rede Decisão Vinhedo (Jardim Primavera)",
+    "tipo": "particular",
+    "obs": "Infantil ao Ensino Médio; a mais bem avaliada nas listas desses sites."
+   },
+   {
+    "nome": "Novo Anglo Colégio, unidade Vinhedo",
+    "tipo": "particular",
+    "obs": "Mesma fonte."
+   },
+   {
+    "nome": "Sant'Anna Colégio, Beneditino de Vinhedo, The Joy School",
+    "tipo": "particular",
+    "obs": "Citadas nas mesmas listas, sem detalhes."
+   }
+  ],
+  "fontes_escolas": [
+   "https://www.melhorescola.com.br/bolsas-de-estudo/sao-paulo/vinhedo",
+   "https://querobolsa.com.br/escolas/etapa-de-ensino/ensino-medio/vinhedo-sp"
+  ],
+  "veterinario_24h": {
+   "tem": true,
+   "nome": "Hospital Veterinário Pet Son (Av. Independência, 4943) e VetAdvanced (Av. Independência, 4727)",
+   "mais_proximo_se_nao_tem": "",
+   "confirmacao": "Confirmado só pelo Google: os dois aparecem no Google Maps como 'Aberto 24 horas' (consultado em 04/11/2026). Não abri site próprio e não telefonei."
+  },
+  "dia_a_dia": {
+   "supermercados": "Covabra, Carrefour Bairro, Infanger (2 lojas), Flex Atacarejo, Zarelli, Tulipas, Vizinho e Jordão, entre outros. Lista da busca no Google Maps (04/11/2026), que mostra só os primeiros resultados.",
+   "shopping": "Não achei shopping grande em Vinhedo; há centros comerciais (Best Center, Vinhedo Premium Mall). Shopping Valinhos, ao lado, e os shoppings de Campinas; Outlet Premium e Shopping SerrAzul em Itupeva.",
+   "fibra": "Desktop, Vivo, Viafibra, Claro, Net Turbo e Wireless Telecom. Lista de provedores com testes de velocidade feitos por usuários na cidade (minhaconexao.com.br, atualizada em outubro de 2026); conferir pelo CEP da casa.",
+   "custo_de_vida": "Dados do IBGE: a riqueza produzida por morador (PIB por pessoa, 2023) é de R$ 192,1 mil por ano, mais que o dobro de Campinas (R$ 80,7 mil) e São Paulo (R$ 93,2 mil), por causa das indústrias e centros de distribuição. O salário médio de quem tem carteira assinada (2021) é de 3,2 salários mínimos, contra 3,8 em Campinas e 4,3 em São Paulo. Atenção: PIB por pessoa mede o que as empresas produzem, não o preço das coisas. Vinhedo tem fama de cidade cara para morar; não existe índice oficial de custo de vida por cidade."
+  },
+  "resumo": "Vinhedo é uma cidade pequena, rica e muito segura, entre Valinhos e Louveira, a cerca de 52 min de SP e 30 min da família em Itupeva. Não tem favela no IBGE e o homicídio é dos mais baixos da lista. Tem maternidade, mas a UTI para recém-nascido fica no Galileo, em Valinhos, a cerca de 7 min.",
+  "pontos_fortes": [
+   "Homicídio muito baixo (1 a 2 por ano)",
+   "Nenhuma favela no IBGE",
+   "Perto de Itupeva (30 min) e de SP (52 min)",
+   "Maternidade com UTI neonatal pela Amil S380 a 7 min (Galileo)",
+   "Veterinário 24h na cidade"
+  ],
+  "pontos_fracos": [
+   "1 latrocínio em 2025",
+   "Estupro acima da média do estado em 2025 e 2026",
+   "Sem shopping grande próprio",
+   "Sem hospital particular geral na cidade"
+  ],
+  "condominios": [
+   {
+    "nome": "Cond. Vista Alegre (Sede e Café)",
+    "regiao": "Condomínio-bairro grande a oeste do Centro",
+    "observacao": "Favorito no catálogo. O bairro Vista Alegre tem 66 ocorrências em 12 meses no Crime Brasil (4º da cidade); não deu para separar o que é dentro do condomínio. Nenhuma notícia de crime encontrada pelo nome."
+   },
+   {
+    "nome": "Estância Marambaia",
+    "regiao": "Condomínio de chácaras de alto padrão",
+    "observacao": "Roubo a casa em dez/2021 (dupla pulou o muro). Nenhuma notícia mais recente encontrada."
+   },
+   {
+    "nome": "Cond. São Bento, Terras de São Francisco, Bosque do Grevílea",
+    "regiao": "Outros condomínios do catálogo",
+    "observacao": "Não aparecem entre os 10 bairros com mais ocorrências. Nenhuma notícia de crime encontrada pelo nome."
+   }
+  ],
+  "fontes": [
+   "https://www.ssp.sp.gov.br/estatistica/dados-mensais",
+   "https://www.ssp.sp.gov.br/v1/OcorrenciasMensais/RecuperaDadosMensaisAgrupados (painel Dados Mensais da SSP, consultado em 04/11/2026)",
+   "https://servicodados.ibge.gov.br/api/v3/agregados/6579 (estimativa 2025) e /agregados/4709 (Censo 2022)",
+   "https://servicodados.ibge.gov.br/api/v3/agregados/9883 e /9888 (Censo 2022, Favelas e Comunidades Urbanas); nomes pela camada CGMAT:qg_2022_670_fcu_agreg em https://geoservicos.ibge.gov.br/geoserver/ows",
+   "https://cnes.datasus.gov.br (ficha hospitalar, leitos) e https://apidadosabertos.saude.gov.br/cnes/estabelecimentos",
+   "OSRM (roteador sobre mapa OpenStreetMap, router.project-osrm.org), tempo sem trânsito; pico = estimativa",
+   "https://www.google.com/maps (rotas com horário de saída definido, consultado em 04/11/2026)",
+   "https://servicodados.ibge.gov.br/api/v3/agregados/5938 (PIB dos municípios 2023, dividido pela população do Censo 2022, mesma conta do IBGE Cidades) e /agregados/1685 (salário médio mensal 2021, CEMPRE)",
+   "https://www.amil.com.br/institucional/#/servicos/saude/rede-credenciada/amil/busca-avancada (rede Amil S380 QC, consultado em 04/11/2026)",
+   "https://crimebrasil.com.br/cidade/sp/vinhedo",
+   "https://crimebrasil.com.br/cidade/sp/vinhedo/piores-bairros",
+   "https://myside.com.br/guia-imoveis/cidades-mais-seguras-sao-paulo",
+   "https://www.melhorescola.com.br/bolsas-de-estudo/sao-paulo/vinhedo",
+   "https://www.minhaconexao.com.br/ranking/sp/vinhedo"
+  ],
+  "amil": {
+   "pronto_socorro": [
+    {
+     "nome": "Santa Casa de Vinhedo",
+     "cidade": "Vinhedo",
+     "atende": "adulto e infantil",
+     "fonte": "Site da Amil, busca avançada da rede credenciada, rede Amil S380 QC, consultado em 04/11/2026"
+    },
+    {
+     "nome": "Hospital e Maternidade Galileo",
+     "cidade": "Valinhos (7 min)",
+     "atende": "adulto",
+     "fonte": "Site da Amil, busca avançada da rede credenciada, rede Amil S380 QC, consultado em 04/11/2026"
+    },
+    {
+     "nome": "Santa Casa de Louveira",
+     "cidade": "Louveira (12 min)",
+     "atende": "adulto e infantil",
+     "fonte": "Site da Amil, busca avançada da rede credenciada, rede Amil S380 QC, consultado em 04/11/2026"
+    },
+    {
+     "nome": "Santa Casa de Misericórdia de Valinhos",
+     "cidade": "Valinhos",
+     "atende": "adulto",
+     "fonte": "Site da Amil, busca avançada da rede credenciada, rede Amil S380 QC, consultado em 04/11/2026"
+    }
+   ],
+   "maternidade": {
+    "nome": "Hospital e Maternidade Galileo",
+    "cidade": "Valinhos",
+    "uti_neonatal": true,
+    "minutos": 7,
+    "fonte": "Site da Amil, busca avançada da rede credenciada, rede Amil S380 QC, consultado em 04/11/2026; UTI neonatal conferida no CNES (cnes.datasus.gov.br, aba leitos): 10 leitos de UTI neonatal; a Santa Casa de Vinhedo e a Santa Casa de Louveira também são maternidades S380, mas sem UTI neonatal; minutos de carro aproximados, calculados por rota (OSRM) do centro da cidade"
+   },
+   "outros": "Tem laboratório (análises clínicas e ultrassom obstétrico), pediatra, ginecologista e obstetra credenciados na cidade.",
+   "resumo": "Com a Amil S380, em Vinhedo você resolve consulta, exame e pronto-socorro adulto e infantil na Santa Casa de Vinhedo. Para o parto com UTI para recém-nascido, o Galileo em Valinhos fica a cerca de 7 min.",
    "confirmado_no_site_amil": true
   }
  }
