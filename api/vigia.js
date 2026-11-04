@@ -330,6 +330,12 @@ export default async function handler(req, res) {
   /* O WhatsApp engasga com mensagem muito longa: cortar é melhor que perder. */
   if (texto.length > 3500) texto = texto.slice(0, 3400) + "\n\n[…cortado — veio longo esta semana]";
 
+  /* { "silencioso": true }: grava no site e não manda WhatsApp. Para rodada
+   * pedida no chat, quando ela prefere ler o resumo ali (04/11/2026). */
+  if (corpo.silencioso === true) {
+    return res.status(200).json({ ok: true, enviado: false, envio_detalhe: "silencioso: WhatsApp não enviado", ...resultado });
+  }
+
   let envio = { ok: false, detalhe: "" };
   try {
     envio = await enviarWhatsapp(texto);
