@@ -295,6 +295,10 @@
   .vz-op.on{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
   .vz-op.on.p{background:#6b5d4d;border-color:#6b5d4d;color:#fff}
   .vz-ajuda{font-size:12px;color:var(--muted);margin-top:6px}
+  .ag-tot{display:block;font-size:12.8px;color:#6b5d4d;margin-top:2px}
+  .ag-tot b{color:var(--accent-2);font-weight:700}
+  .ag-tot i{color:#8a2f1d;font-style:normal;font-weight:600}
+  .ag-tot span{color:#8a7c6a}
   .vz-tot{margin-top:6px;background:#fbf1d9;border-radius:10px;padding:7px 10px;color:#5a4d3f;font-size:12.5px;line-height:1.45}
   .vz-tot b{display:block;font-family:var(--serif);font-size:20px;font-weight:600;color:var(--accent-2)}
   .vz-tot b small{font-family:var(--sans);font-size:12px;color:#8a7c6a;font-weight:400}
@@ -985,6 +989,7 @@ function lerCad(txt){
     try{ const j=JSON.parse(txt);
       const r={v:2,h:Array.isArray(j.h)?j.h:[],vi:{...c.vi,...j.vi},px:{...c.px,...j.px},ct:{...c.ct,...j.ct}};
       if(j.av) r.av={...AV_NOVO(),...j.av};
+      if(j.cu) r.cu={...j.cu};
       return r;
     }catch(_){}
   }
@@ -995,7 +1000,7 @@ function lerCad(txt){
   }
   return c;
 }
-function cadVazio(c){ return !c.av&&!c.h.length&&!c.vi.d&&!c.vi.h&&!c.px.t&&!c.px.d&&!c.ct.n&&!c.ct.t&&!c.ct.e; }
+function cadVazio(c){ return !c.av&&!c.cu&&!c.h.length&&!c.vi.d&&!c.vi.h&&!c.px.t&&!c.px.d&&!c.ct.n&&!c.ct.t&&!c.ct.e; }
 /* Dia e hora sempre no horário de Brasília, não no do aparelho. */
 function agoraBR(){
   const p=Object.fromEntries(new Intl.DateTimeFormat("en-CA",{timeZone:"America/Sao_Paulo",year:"numeric",month:"2-digit",day:"2-digit",hour:"2-digit",minute:"2-digit",hourCycle:"h23"}).formatToParts(new Date()).map(x=>[x.type,x.value]));
@@ -1060,8 +1065,9 @@ function desenhaCad(){
   $("#cadPainel").innerHTML=`
     <button class="cad-x" data-cadfecha aria-label="Fechar">×</button>
     <h3>${esc(d.cond||d.title)}</h3>
-    <div class="cad-sub">${esc(d.city)}${preco&&!(c.av&&!ehVenda(d))?" · "+preco:""}${d.agency?" · "+esc(d.agency):""}${d.url?` · <a href="${esc(d.url)}" target="_blank" rel="noopener">ver anúncio</a>`:""}</div>
-    ${c.av?vzTotal(d,c.av):""}
+    <div class="cad-sub">${esc(d.city)}${preco&&ehVenda(d)?" · "+preco:""}${d.agency?" · "+esc(d.agency):""}${d.url?` · <a href="${esc(d.url)}" target="_blank" rel="noopener">ver anúncio</a>`:""}</div>
+    ${vzTotal(d,c)}
+    ${ehVenda(d)?"":vzCamposCusto(d,c)}
     <div class="cad-lbl">Situação</div>
     <select id="cS">${opt("","Situação: a definir")}${opt("contatar","📞 A contatar")}${opt("aguardando","⏳ Aguardando resposta")}${opt("visita","📅 Visita marcada")}${opt("gostei","💚 Gostei")}${opt("descartei","🚫 Descartei")}</select>
     <div class="cad-lbl">Visita (dia e hora)</div>
@@ -1086,7 +1092,11 @@ function lerCampos(){
   CADC.px={t:$("#cPt").value.trim()?$("#cPt").value:"",d:$("#cPd").value};
   CADC.ct={n:$("#cCn").value,t:$("#cCt").value,e:$("#cCe").value};
   if(CADC.av&&$("#cAg")){ CADC.av.g=$("#cAg").value; CADC.av.ng=$("#cAn").value; CADC.av.o=$("#cAo").value; }
-  if(CADC.av&&$("#cAc")){ CADC.av.cd=$("#cAc").value.trim(); CADC.av.ip=$("#cAi").value.trim(); }
+  if($("#cAc")){ const a=vzCustos(itemDe(CAD_UID),CADC), v=x=>x==null?"":String(x).replace(".",",");
+    const cd=$("#cAc").value.trim(), ip=$("#cAi").value.trim();
+    /* só guarda quando ela mudou algo: assim o valor do anúncio continua valendo se for atualizado */
+    if(CADC.cu||cd!==v(a.cd)||ip!==v(a.ip)) CADC.cu={cd,ip};
+    if(CADC.av){ delete CADC.av.cd; delete CADC.av.ip; } }
 }
 function salvaCad(imediato){
   const uid=CAD_UID; if(!uid)return;
@@ -1141,7 +1151,7 @@ cadP.addEventListener("change",e=>{
 cadP.addEventListener("input",e=>{
   if(!e.target.matches("#cPt,#cCn,#cCt,#cCe,#cAg,#cAn,#cAo,#cAc,#cAi"))return;
   lerCampos(); salvaCad(false);
-  if(e.target.matches("#cAc,#cAi")){ const t=cadP.querySelector(".vz-tot"); if(t) t.outerHTML=vzTotal(itemDe(CAD_UID),CADC.av); }
+  if(e.target.matches("#cAc,#cAi")){ const t=cadP.querySelector(".vz-tot"); if(t) t.outerHTML=vzTotal(itemDe(CAD_UID),CADC); }
   const f=cadP.querySelector("[data-cadfeito]"); if(f) f.disabled=!CADC.px.t;
 });
 
@@ -1158,7 +1168,6 @@ function vzPainel(c){
     <div class="cad-lbl">Seguir com esta casa?</div>
     <div class="vz-ops">${VZ_OPS.map(([v,t])=>`<button class="vz-op${a.op===v?" on":""}${v==="p"?" p":""}" data-vzop="${v}">${t}</button>`).join("")}</div>
     <div class="vz-ajuda">"Não seguir agora" não descarta: a casa continua guardada e pode voltar a ser opção depois.</div>
-    ${ehVenda(itemDe(CAD_UID)||{})?"":vzCamposCusto(itemDe(CAD_UID),a)}
     <div class="cad-lbl">💚 O que gostamos</div>
     <textarea id="cAg" placeholder="ex.: quintal grande para o Joaquim, cozinha nova, rua calma">${esc(a.g)}</textarea>
     <div class="cad-lbl">👎 O que não gostamos</div>
@@ -1171,14 +1180,15 @@ function vzPainel(c){
    Condomínio e IPTU vêm do anúncio (fee e o texto da ficha); se ela digitar no caderno,
    vale o que ela digitou (av.cd / av.ip, texto; vazio = não informado; 0 = incluso). */
 const numBR=t=>{ t=String(t).trim(); if(!t)return null; t=t.replace(/\./g,"").replace(",","."); const n=parseFloat(t); return isNaN(n)?null:n; };
-function vzCamposCusto(d,a){
+function vzCamposCusto(d,c){
   if(!d) return "";
-  const {cd,ip}=vzCustos(d,a), v=x=>x==null?"":String(x).replace(".",",");
+  const {cd,ip}=vzCustos(d,c), v=x=>x==null?"":String(x).replace(".",",");
   return `<div class="cad-lbl">💰 Condomínio e IPTU por mês</div>
     <div class="cad-duo"><label class="vz-ajuda" style="margin:0;color:#6b5d4d">Condomínio (R$)<input id="cAc" inputmode="decimal" placeholder="não informado" value="${esc(v(cd))}" style="margin-top:3px"></label><label class="vz-ajuda" style="margin:0;color:#6b5d4d">IPTU por mês (R$)<input id="cAi" inputmode="decimal" placeholder="não informado" value="${esc(v(ip))}" style="margin-top:3px"></label></div>
     <div class="vz-ajuda">Já vem do anúncio. Se a imobiliária disser outro valor, troque aqui. 0 = incluso no aluguel. O IPTU é o valor por mês.</div>`;
 }
-function vzCustos(d,a){
+function vzCustos(d,c){
+  const a=c?.cu||c?.av||null;
   const f=d.ficha||"";
   const incl=/inclu\S*\s+(?:o\s+)?condom\S*\s+e\s+(?:o\s+)?iptu|condom\S*\s+e\s+iptu\s+inclus|tudo\s+inclus/i.test(f);
   let cd=d.fee??null, ip=null;
@@ -1188,10 +1198,23 @@ function vzCustos(d,a){
   if(a&&a.ip!==undefined) ip=numBR(a.ip);
   return {al:d.price,cd,ip};
 }
+function vzTotalCurto(d,c){
+  if(ehVenda(d)) return d.price?`<span class="ag-tot">${brl(d.price)} compra</span>`:"";
+  const {al,cd,ip}=vzCustos(d,c);
+  if(al==null) return `<span class="ag-tot">aluguel a consultar</span>`;
+  const tot=al+(cd||0)+(ip||0), falta=cd==null||ip==null;
+  const p=(n,v)=>v==null?`${n} ?`:v===0?`${n} incluso`:`${n} ${Math.round(v).toLocaleString("pt-BR")}`;
+  return `<span class="ag-tot"><b>${brl(tot)}/mês</b>${falta?" <i>falta confirmar</i>":""} <span>(aluguel ${al.toLocaleString("pt-BR")} + ${p("cond.",cd)} + ${p("IPTU",ip)})</span></span>`;
+}
+function vzSoTotal(d,c){
+  if(ehVenda(d)) return d.price?", "+brl(d.price)+" compra":"";
+  const {al,cd,ip}=vzCustos(d,c); if(al==null) return "";
+  return ", "+brl(al+(cd||0)+(ip||0))+"/mês"+(cd==null||ip==null?" ou mais":"");
+}
 const brl=v=>"R$ "+Math.round(v).toLocaleString("pt-BR");
-function vzTotal(d,a){
+function vzTotal(d,c){
   if(ehVenda(d)) return "";
-  const {al,cd,ip}=vzCustos(d,a);
+  const {al,cd,ip}=vzCustos(d,c);
   if(al==null) return `<div class="vz-tot">Aluguel a consultar</div>`;
   const tot=al+(cd||0)+(ip||0), falta=cd==null||ip==null;
   const parte=(nome,v)=>v==null?`<span class="vz-falta">${nome} não informado</span>`:v===0?`${nome} incluso`:`${nome} ${brl(v)}`;
@@ -1219,7 +1242,7 @@ function vzCasa(x){
   return `<div class="vz-casa${cls}" data-agcad="${esc(d.uid)}"><div class="vz-ph">${dkFoto(d)}</div>
     <div class="vz-in">${vzTag(a.op)}<b class="vz-nome">${esc(d.cond||d.title)}</b>
     <div class="vz-meta">${esc(d.city)}${ehVenda(d)&&d.price?" · "+money(d.price)+" compra":""}${a.d?" · visitada "+fmtDia(a.d,true):""}</div>
-    ${vzTotal(d,a)}
+    ${vzTotal(d,x.c)}
     ${textos||'<div class="vz-sem">Toque para escrever o que vocês acharam.</div>'}</div></div>`;
 }
 
@@ -1231,7 +1254,7 @@ function tempo(a,b){
 }
 function agItem(x,dir){ /* uma linha clicável: abre o caderno */
   const d=x.d;
-  return `<div class="ag-it" data-agcad="${esc(d.uid)}"><div><b>${esc(d.cond||d.title)}</b><small>${esc(d.city)}${d.agency?" · "+esc(d.agency):""}</small></div><div class="ag-dias">${dir||""}</div></div>`;
+  return `<div class="ag-it" data-agcad="${esc(d.uid)}"><div><b>${esc(d.cond||d.title)}</b><small>${esc(d.city)}${d.agency?" · "+esc(d.agency):""}</small>${vzTotalCurto(d,x.c)}</div><div class="ag-dias">${dir||""}</div></div>`;
 }
 function destinoMapa(x){ return x.c.ct.e||`${x.d.cond||""}, ${x.d.city}, SP`; }
 /* "Cond. Zuleika Jabour (voce ja conhecia)" e "Condomínio Zuleika Jabour" são o mesmo lugar. */
@@ -1264,7 +1287,7 @@ function desenhaAgenda(){
     let corpo="";
     v.forEach((x,i)=>{
       const ct=[x.c.ct.n&&esc(x.c.ct.n),x.c.ct.t&&linkTel(x.c.ct.t)].filter(Boolean).join(" · ");
-      corpo+=`<div class="ag-vis" data-agcad="${esc(x.d.uid)}"><div class="ag-hora">${x.c.vi.h||"--:--"}</div><div><b>${esc(x.d.cond||x.d.title)}</b> <span class="ag-q">${esc(x.d.city)}</span><div class="ag-q">${ct||"contato não anotado"}${x.c.ct.e?` · <a href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(x.c.ct.e)}" target="_blank" rel="noopener" onclick="event.stopPropagation()">endereço no mapa</a>`:""}</div></div></div>`;
+      corpo+=`<div class="ag-vis" data-agcad="${esc(x.d.uid)}"><div class="ag-hora">${x.c.vi.h||"--:--"}</div><div><b>${esc(x.d.cond||x.d.title)}</b> <span class="ag-q">${esc(x.d.city)}</span>${vzTotalCurto(x.d,x.c)}<div class="ag-q">${ct||"contato não anotado"}${x.c.ct.e?` · <a href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(x.c.ct.e)}" target="_blank" rel="noopener" onclick="event.stopPropagation()">endereço no mapa</a>`:""}</div></div></div>`;
       const y=v[i+1]; if(!y)return;
       const t=tempo(x.d.city,y.d.city);
       const mesmoCond=x.d.city===y.d.city&&nomeCond(x.d.cond)&&nomeCond(x.d.cond)===nomeCond(y.d.cond);
@@ -1281,7 +1304,7 @@ function desenhaAgenda(){
     const enc=its.filter(x=>!(x.c.vi.d>=hoje))
       .map(x=>({x,t:Math.min(...cids.map(c=>{const q=tempo(c,x.d.city);return q?q[0]:999;}))}))
       .filter(o=>o.t<=30).sort((a,b)=>a.t-b.t).slice(0,8);
-    const encH=enc.length?`<div class="ag-enc">💡 <b>Dá para encaixar nesse dia:</b> ${enc.map(o=>`<a data-agcad="${esc(o.x.d.uid)}">${esc(o.x.d.cond||o.x.d.title)}</a> (${esc(o.x.d.city)}${o.t===0?", mesma cidade":", uns "+o.t+" min"})`).join(" · ")}</div>`:"";
+    const encH=enc.length?`<div class="ag-enc">💡 <b>Dá para encaixar nesse dia:</b> ${enc.map(o=>`<a data-agcad="${esc(o.x.d.uid)}">${esc(o.x.d.cond||o.x.d.title)}</a> (${esc(o.x.d.city)}${o.t===0?", mesma cidade":", uns "+o.t+" min"}${vzSoTotal(o.x.d,o.x.c)})`).join(" · ")}</div>`:"";
     h+=`<div class="ag-dia${dia===hoje?" hoje-dia":""}"><h3>${fmtDia(dia,true).replace(/^./,m=>m.toUpperCase())}${dia===hoje?" (hoje)":""} · ${cids.map(esc).join(", ")}</h3>${corpo}
       <a class="ag-rot" href="${rota}" target="_blank" rel="noopener">🗺️ Abrir o roteiro do dia no Google Maps</a>${encH}</div>`;
   }
@@ -1290,7 +1313,7 @@ function desenhaAgenda(){
   /* próximos passos */
   const px=its.filter(x=>x.c.px.t).sort((a,b)=>(a.c.px.d||"9999")<(b.c.px.d||"9999")?-1:1);
   h+=`<div class="ag-sec">➡️ Próximos passos</div>`;
-  h+=px.length?`<div class="ag-lista">${px.map(x=>`<div class="ag-it" data-agcad="${esc(x.d.uid)}"><div><b>${esc(x.c.px.t)}</b><small>${esc(x.d.cond||x.d.title)} · ${esc(x.d.city)}</small></div><div class="ag-dias">${x.c.px.d?prazo(x.c.px.d,hoje):"sem data"}</div></div>`).join("")}</div>`:`<div class="ag-vazio">Nenhum próximo passo anotado.</div>`;
+  h+=px.length?`<div class="ag-lista">${px.map(x=>`<div class="ag-it" data-agcad="${esc(x.d.uid)}"><div><b>${esc(x.c.px.t)}</b><small>${esc(x.d.cond||x.d.title)} · ${esc(x.d.city)}</small>${vzTotalCurto(x.d,x.c)}</div><div class="ag-dias">${x.c.px.d?prazo(x.c.px.d,hoje):"sem data"}</div></div>`).join("")}</div>`:`<div class="ag-vazio">Nenhum próximo passo anotado.</div>`;
 
   /* esperando resposta */
   const ag=its.filter(x=>x.s==="aguardando").map(x=>({...x,u:ultData(x)})).sort((a,b)=>(a.u||"0")<(b.u||"0")?-1:1);
