@@ -269,6 +269,33 @@
   .ag-dias{white-space:nowrap;font-size:12.5px;color:var(--muted);text-align:right}
   .ag-vazio{color:var(--muted);font-size:14px;background:var(--panel);border:1px dashed var(--line);border-radius:14px;padding:16px}
   .ag-passadas summary{cursor:pointer;color:var(--muted);font-size:14px;margin:8px 0}
+  /* ---------- casas visitadas (05/11/2026) ---------- */
+  .vz-casa{display:flex;gap:12px;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px;margin-bottom:10px;cursor:pointer;box-shadow:var(--shadow);color:var(--txt)}
+  .vz-casa:hover{border-color:var(--accent)}
+  .vz-casa.op1{border-color:#c99a1e;box-shadow:0 0 0 2px rgba(201,154,30,.35)}
+  .vz-casa.op2{border-color:#9aa3ad;box-shadow:0 0 0 1.5px rgba(154,163,173,.45)}
+  .vz-casa.op3{border-color:#b9773f;box-shadow:0 0 0 1.5px rgba(185,119,63,.4)}
+  .vz-casa.pausa{opacity:.72}
+  .vz-ph{width:96px;height:80px;border-radius:10px;overflow:hidden;background:var(--chip);flex-shrink:0}
+  .vz-ph img{width:100%;height:100%;object-fit:cover;display:block}
+  .vz-in{flex:1;min-width:0;font-size:13.5px;color:var(--txt)}
+  .vz-in b.vz-nome{display:block;font-size:15px;color:var(--txt)}
+  .vz-in .vz-meta{color:var(--muted);font-size:12.5px}
+  .vz-g,.vz-n,.vz-o{margin-top:5px;font-size:13px;line-height:1.45;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+  .vz-g{color:#2d5a3c}.vz-n{color:#8a2f1d}.vz-o{color:#5a4d3f}
+  .vz-sem{color:var(--muted);font-size:12.5px;margin-top:5px;font-style:italic}
+  .vz-tag{display:inline-block;border-radius:99px;padding:3px 10px;font-size:12px;font-weight:700;margin-bottom:4px}
+  .vz-t1{background:#f6e7b8;color:#6e4e00}.vz-t2{background:#e6e9ed;color:#3d4650}.vz-t3{background:#f3dcc6;color:#6b3a12}
+  .vz-tp{background:#ece6dc;color:#6b5d4d}.vz-td{background:#e7f0df;color:#2d5a3c}
+  .vz-btn{display:block;width:100%;margin-top:14px;font-family:var(--sans);font-size:15px;font-weight:600;border:1px dashed var(--accent);background:#fbefe9;color:var(--accent-2);border-radius:12px;padding:12px;cursor:pointer}
+  .vz-box{margin-top:16px;background:#fbf6ee;border:1px solid var(--line);border-radius:14px;padding:4px 14px 14px;color:var(--txt)}
+  .vz-box h4{font-family:var(--serif);font-size:18px;margin:12px 0 0;color:var(--txt)}
+  .vz-ops{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+  .vz-op{font-family:var(--sans);font-size:13.5px;font-weight:600;border:1px solid var(--line);background:#fff;color:var(--txt);border-radius:10px;padding:9px 6px;cursor:pointer}
+  .vz-op.on{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+  .vz-op.on.p{background:#6b5d4d;border-color:#6b5d4d;color:#fff}
+  .vz-ajuda{font-size:12px;color:var(--muted);margin-top:6px}
+  @media(max-width:640px){ .vz-ph{width:70px;height:64px} }
 </style>
 </head>
 <body>
@@ -669,7 +696,7 @@ function setNote(){
   else if(CAT==="buy") t='<b>À venda até R$ 850 mil, verificadas em 16/07/2026.</b> Cada card mostra a parcela estimada do financiamento — ajuste a <b>entrada</b> no seletor acima (taxa Caixa ~11,19% a.a. + TR, 30 anos; a taxa real depende do seu perfil no banco). Custos extras na compra: ITBI + escritura/registro (~4-5% do valor). Não sou consultora financeira — use como base e simule no banco.';
   else if(CAT==="decidir") t='<b>Para onde mudar.</b> As cidades das suas casas favoritas, lado a lado: segurança, periferia, distâncias, maternidade, escolas e veterinário. Embaixo de cada cidade, as suas favoritas de lá. Dar coração numa casa nova já a coloca aqui.';
   else if(CAT==="preco") t='<b>Favoritas por preço.</b> Todas as suas favoritas que estão à mostra, da mais barata para a mais cara, com as cidades misturadas. As casas à venda ficam no fim.';
-  else if(CAT==="agenda") t='<b>Agenda.</b> As casas em andamento num lugar só: visitas por dia (com o tempo de carro entre elas e outras casas perto para encaixar no mesmo dia), próximos passos e quem ainda não respondeu. Toque numa casa para abrir o caderno dela.';
+  else if(CAT==="agenda") t='<b>Agenda.</b> As casas em andamento num lugar só: visitas por dia (com o tempo de carro entre elas e outras casas perto para encaixar no mesmo dia), próximos passos e quem ainda não respondeu. Toque numa casa para abrir o caderno dela. Depois da visita, marque "Já visitamos" no caderno: a casa vai para "Casas que visitamos", onde vocês anotam o que acharam e escolhem a 1ª, 2ª e 3ª opção.';
   else if(CAT==="mine") t='<b>Minhas casas.</b> Anúncios que você mesma adicionou (clique em "➕ adicionar anúncio" acima). Ficam salvos na nuvem e aparecem em qualquer aparelho. Você pode favoritar, editar e excluir cada um.';
   else t='<b>Outras 3 quartos, verificadas.</b> Casas boas de 3 quartos em condomínio, conferidas no site oficial da imobiliária ou VivaReal recente.';
   $("#note").innerHTML=t;
@@ -942,12 +969,17 @@ function desenhaDecidir(){
    px = próximo passo {t,d}, ct = contato {n, t, e(ndereço)}.
    Nota antiga (texto solto) vira a primeira linha do histórico na leitura e
    só é regravada no formato novo quando ela mexe no caderno: nada se perde. */
+/* av = avaliação depois da visita (05/11/2026): {d: dia, op: ""|"1"|"2"|"3"|"p", g: gostamos, ng: não gostamos, o: o que vimos}.
+   Sem av = ainda não visitou. op "p" = "não seguir agora": NÃO é descartar, a casa continua no catálogo. */
 const CAD_NOVO=()=>({v:2,h:[],vi:{d:"",h:""},px:{t:"",d:""},ct:{n:"",t:"",e:""}});
+const AV_NOVO=()=>({d:"",op:"",g:"",ng:"",o:""});
 function lerCad(txt){
   const c=CAD_NOVO(); txt=txt||"";
   if(txt.startsWith('{"v":2')){
     try{ const j=JSON.parse(txt);
-      return {v:2,h:Array.isArray(j.h)?j.h:[],vi:{...c.vi,...j.vi},px:{...c.px,...j.px},ct:{...c.ct,...j.ct}};
+      const r={v:2,h:Array.isArray(j.h)?j.h:[],vi:{...c.vi,...j.vi},px:{...c.px,...j.px},ct:{...c.ct,...j.ct}};
+      if(j.av) r.av={...AV_NOVO(),...j.av};
+      return r;
     }catch(_){}
   }
   if(txt.trim()){
@@ -957,7 +989,7 @@ function lerCad(txt){
   }
   return c;
 }
-function cadVazio(c){ return !c.h.length&&!c.vi.d&&!c.vi.h&&!c.px.t&&!c.px.d&&!c.ct.n&&!c.ct.t&&!c.ct.e; }
+function cadVazio(c){ return !c.av&&!c.h.length&&!c.vi.d&&!c.vi.h&&!c.px.t&&!c.px.d&&!c.ct.n&&!c.ct.t&&!c.ct.e; }
 /* Dia e hora sempre no horário de Brasília, não no do aparelho. */
 function agoraBR(){
   const p=Object.fromEntries(new Intl.DateTimeFormat("en-CA",{timeZone:"America/Sao_Paulo",year:"numeric",month:"2-digit",day:"2-digit",hour:"2-digit",minute:"2-digit",hourCycle:"h23"}).formatToParts(new Date()).map(x=>[x.type,x.value]));
@@ -987,7 +1019,8 @@ function prazo(d,hoje){
 function cadResumo(id){
   const c=lerCad(ST[id]?.n), hoje=agoraBR().dia, ult=c.h[c.h.length-1];
   let h="";
-  if(c.vi.d) h+=`<div class="cad-vis">📅 Visita ${fmtDia(c.vi.d,true)}${c.vi.h?" às "+c.vi.h:""}</div>`;
+  if(c.av) h+=`<div>${vzTag(c.av.op)}</div>`;
+  if(c.vi.d&&!c.av) h+=`<div class="cad-vis">📅 Visita ${fmtDia(c.vi.d,true)}${c.vi.h?" às "+c.vi.h:""}</div>`;
   if(ult) h+=`<div class="cad-ult">${ult.d?`<b>${fmtDia(ult.d)}:</b> `:""}${esc(ult.t)}</div>`;
   if(c.px.t) h+=`<div class="cad-px">➡️ <b>Próximo passo:</b> ${esc(c.px.t)}${c.px.d?" · "+prazo(c.px.d,hoje):""}</div>`;
   return `<div class="cad-res">${h}<button class="cad-btn" data-cad>📝 Abrir caderno${c.h.length?" ("+c.h.length+")":""}</button></div>`;
@@ -1033,6 +1066,7 @@ function desenhaCad(){
     <div class="cad-lbl">Quem está atendendo</div>
     <div class="cad-duo"><input id="cCn" placeholder="nome do corretor" value="${esc(c.ct.n)}"><input id="cCt" placeholder="telefone" inputmode="tel" value="${esc(c.ct.t)}"></div>
     <input id="cCe" placeholder="endereço da casa (ajuda a montar o roteiro)" value="${esc(c.ct.e)}" style="margin-top:8px">
+    ${vzPainel(c)}
     <div class="cad-lbl">Escrever no caderno</div>
     <textarea id="cNova" placeholder="ex.: responderam, aceitam pet, IPTU R$ 210, livre a partir de 15/11..."></textarea>
     <button class="cad-b pri" data-cadadd>Adicionar (a data de hoje entra sozinha)</button>
@@ -1044,6 +1078,7 @@ function lerCampos(){
   CADC.vi={d:$("#cVd").value,h:$("#cVh").value};
   CADC.px={t:$("#cPt").value.trim()?$("#cPt").value:"",d:$("#cPd").value};
   CADC.ct={n:$("#cCn").value,t:$("#cCt").value,e:$("#cCe").value};
+  if(CADC.av&&$("#cAg")){ CADC.av.g=$("#cAg").value; CADC.av.ng=$("#cAn").value; CADC.av.o=$("#cAo").value; }
 }
 function salvaCad(imediato){
   const uid=CAD_UID; if(!uid)return;
@@ -1072,6 +1107,15 @@ cadP.addEventListener("click",e=>{
     lerCampos(); CADC.vi={d:"",h:""};
     if($("#cS").value==="visita") $("#cS").value="aguardando";
     salvaCad(true); desenhaCad();
+  }else if(e.target.closest("[data-vzmarca]")){
+    lerCampos(); CADC.av={...AV_NOVO(),d:CADC.vi.d&&CADC.vi.d<=agora.dia?CADC.vi.d:agora.dia};
+    salvaCad(true); desenhaCad();
+    setTimeout(()=>$("#cAg")?.focus(),50);
+  }else if(e.target.closest("[data-vzop]")){
+    lerCampos(); vzMudaOpcao(CAD_UID,CADC,e.target.closest("[data-vzop]").dataset.vzop); salvaCad(true); desenhaCad();
+  }else if(e.target.closest("[data-vztira]")){
+    if(!confirm("Tirar esta casa da lista de visitadas? O que vocês escreveram sobre a visita será apagado."))return;
+    lerCampos(); delete CADC.av; salvaCad(true); desenhaCad();
   }else if(e.target.closest("[data-caddel]")){
     const i=+e.target.closest("[data-caddel]").dataset.caddel;
     if(!confirm("Apagar esta linha do caderno?"))return;
@@ -1087,10 +1131,55 @@ cadP.addEventListener("change",e=>{
   if(e.target.id==="cVd"||e.target.id==="cVh") desenhaCad();
 });
 cadP.addEventListener("input",e=>{
-  if(!e.target.matches("#cPt,#cCn,#cCt,#cCe"))return;
+  if(!e.target.matches("#cPt,#cCn,#cCt,#cCe,#cAg,#cAn,#cAo"))return;
   lerCampos(); salvaCad(false);
   const f=cadP.querySelector("[data-cadfeito]"); if(f) f.disabled=!CADC.px.t;
 });
+
+/* ----- casas visitadas: o que achamos + 1ª/2ª/3ª opção (05/11/2026) ----- */
+const VZ_OPS=[["1","🥇 1ª opção"],["2","🥈 2ª opção"],["3","🥉 3ª opção"],["p","⏸️ Não seguir agora"],["","🤔 Ainda decidindo"]];
+function vzTag(op){
+  const m={"1":["vz-t1","🥇 1ª opção para alugar"],"2":["vz-t2","🥈 2ª opção"],"3":["vz-t3","🥉 3ª opção"],"p":["vz-tp","⏸️ Não seguir agora"]}[op]||["vz-td","✅ Visitamos · ainda decidindo"];
+  return `<span class="vz-tag ${m[0]}">${m[1]}</span>`;
+}
+function vzPainel(c){
+  if(!c.av) return `<button class="vz-btn" data-vzmarca>🏡 Já visitamos esta casa: contar o que achamos</button>`;
+  const a=c.av;
+  return `<div class="vz-box"><h4>🏡 O que achamos da visita${a.d?` <small style="font-family:var(--sans);font-size:12.5px;color:var(--muted);font-weight:400">(${fmtDia(a.d,true)})</small>`:""}</h4>
+    <div class="cad-lbl">Seguir com esta casa?</div>
+    <div class="vz-ops">${VZ_OPS.map(([v,t])=>`<button class="vz-op${a.op===v?" on":""}${v==="p"?" p":""}" data-vzop="${v}">${t}</button>`).join("")}</div>
+    <div class="vz-ajuda">"Não seguir agora" não descarta: a casa continua guardada e pode voltar a ser opção depois.</div>
+    <div class="cad-lbl">💚 O que gostamos</div>
+    <textarea id="cAg" placeholder="ex.: quintal grande para o Joaquim, cozinha nova, rua calma">${esc(a.g)}</textarea>
+    <div class="cad-lbl">👎 O que não gostamos</div>
+    <textarea id="cAn" placeholder="ex.: quartos pequenos, umidade no banheiro, longe do mercado">${esc(a.ng)}</textarea>
+    <div class="cad-lbl">👀 O que vimos na casa</div>
+    <textarea id="cAo" placeholder="ex.: estado da pintura, sol da manhã na sala, portaria 24h, vizinhança">${esc(a.o)}</textarea>
+    <button class="cad-link" data-vztira>tirar das visitadas</button></div>`;
+}
+/* 1ª, 2ª e 3ª são únicas: quem já tinha a posição troca de lugar com esta casa. */
+function vzMudaOpcao(uid,c,nova){
+  const velha=c.av.op; c.av.op=nova;
+  if(!["1","2","3"].includes(nova)||velha===nova) return;
+  for(const d of allItems()){
+    if(d.uid===uid) continue;
+    const o=lerCad(ST[d.uid]?.n);
+    if(o.av?.op!==nova) continue;
+    o.av.op=["1","2","3"].includes(velha)?velha:"";
+    const n=JSON.stringify(o), s=ST[d.uid]?.s||"";
+    ST[d.uid]={s,n}; patchRow(d.uid,{status:s||null,nota:n});
+  }
+}
+function vzCasa(x){
+  const a=x.c.av, d=x.d;
+  const cls=a.op==="p"?" pausa":a.op?" op"+a.op:"";
+  const linha=(k,ic,t)=>t.trim()?`<div class="${k}">${ic} ${esc(t)}</div>`:"";
+  const textos=linha("vz-g","💚",a.g)+linha("vz-n","👎",a.ng)+linha("vz-o","👀",a.o);
+  return `<div class="vz-casa${cls}" data-agcad="${esc(d.uid)}"><div class="vz-ph">${dkFoto(d)}</div>
+    <div class="vz-in">${vzTag(a.op)}<b class="vz-nome">${esc(d.cond||d.title)}</b>
+    <div class="vz-meta">${esc(d.city)}${d.price?" · "+money(d.price)+(ehVenda(d)?"":"/mês"):""}${a.d?" · visitada "+fmtDia(a.d,true):""}</div>
+    ${textos||'<div class="vz-sem">Toque para escrever o que vocês acharam.</div>'}</div></div>`;
+}
 
 /* ----- aba Agenda ----- */
 let TEMPOS=null;
@@ -1109,12 +1198,21 @@ function desenhaAgenda(){
   if(TEMPOS===null){ TEMPOS=false; fetch("/tempos.json").then(r=>r.ok?r.json():null).then(j=>{ TEMPOS=j||{}; if(CAT==="agenda")desenhaAgenda(); }).catch(()=>{ TEMPOS={}; }); }
   const hoje=agoraBR().dia;
   const its=allItems().map(d=>({d,s:ST[d.uid]?.s||"",c:lerCad(ST[d.uid]?.n)}))
-    .filter(x=>x.s!=="descartei"&&!HIDDEN.has(x.d.uid)&&(["contatar","aguardando","visita","gostei"].includes(x.s)||x.c.vi.d||x.c.px.t));
+    .filter(x=>x.s!=="descartei"&&!HIDDEN.has(x.d.uid)&&(["contatar","aguardando","visita","gostei"].includes(x.s)||x.c.vi.d||x.c.px.t||x.c.av));
   const ultData=x=>{ for(let i=x.c.h.length-1;i>=0;i--) if(x.c.h[i].d) return x.c.h[i].d; return ""; };
   let h="";
 
   /* visitas por dia */
-  const futuras=its.filter(x=>x.c.vi.d&&x.c.vi.d>=hoje), passadas=its.filter(x=>x.c.vi.d&&x.c.vi.d<hoje);
+  /* casas que já visitamos: 1ª, 2ª, 3ª opção no topo, depois as em dúvida, e "não seguir agora" guardadas embaixo */
+  const vis=its.filter(x=>x.c.av), ordOp={"1":1,"2":2,"3":3,"":4};
+  const ativas=vis.filter(x=>x.c.av.op!=="p").sort((a,b)=>ordOp[a.c.av.op]-ordOp[b.c.av.op]||(a.c.av.d<b.c.av.d?1:-1));
+  const pausadas=vis.filter(x=>x.c.av.op==="p");
+  h+=`<div class="ag-sec">🏡 Casas que visitamos <small>o que achamos e a ordem de preferência</small></div>`;
+  if(!vis.length) h+=`<div class="ag-vazio">Nenhuma casa marcada como visitada ainda. Depois da visita, abra o caderno da casa e toque em "Já visitamos esta casa".</div>`;
+  h+=ativas.map(vzCasa).join("");
+  if(pausadas.length) h+=`<details class="ag-passadas"><summary>⏸️ Não seguir agora (${pausadas.length}): guardadas, podem voltar a ser opção</summary>${pausadas.map(vzCasa).join("")}</details>`;
+
+  const futuras=its.filter(x=>x.c.vi.d&&x.c.vi.d>=hoje&&!x.c.av), passadas=its.filter(x=>x.c.vi.d&&x.c.vi.d<hoje&&!x.c.av);
   const dias=[...new Set(futuras.map(x=>x.c.vi.d))].sort();
   h+=`<div class="ag-sec">📅 Visitas</div>`;
   if(!dias.length) h+=`<div class="ag-vazio">Nenhuma visita marcada. Abra o caderno de uma casa e preencha o dia da visita: ela aparece aqui, junto com as outras do mesmo dia.</div>`;
@@ -1145,7 +1243,7 @@ function desenhaAgenda(){
     h+=`<div class="ag-dia${dia===hoje?" hoje-dia":""}"><h3>${fmtDia(dia,true).replace(/^./,m=>m.toUpperCase())}${dia===hoje?" (hoje)":""} · ${cids.map(esc).join(", ")}</h3>${corpo}
       <a class="ag-rot" href="${rota}" target="_blank" rel="noopener">🗺️ Abrir o roteiro do dia no Google Maps</a>${encH}</div>`;
   }
-  if(passadas.length) h+=`<details class="ag-passadas"><summary>Visitas que já passaram (${passadas.length}): conte no caderno como foi</summary><div class="ag-lista">${passadas.sort((a,b)=>a.c.vi.d<b.c.vi.d?1:-1).map(x=>agItem(x,fmtDia(x.c.vi.d,true))).join("")}</div></details>`;
+  if(passadas.length) h+=`<details class="ag-passadas"><summary>Visitas que já passaram (${passadas.length}): toque e marque "Já visitamos" para contar como foi</summary><div class="ag-lista">${passadas.sort((a,b)=>a.c.vi.d<b.c.vi.d?1:-1).map(x=>agItem(x,fmtDia(x.c.vi.d,true))).join("")}</div></details>`;
 
   /* próximos passos */
   const px=its.filter(x=>x.c.px.t).sort((a,b)=>(a.c.px.d||"9999")<(b.c.px.d||"9999")?-1:1);
@@ -1159,7 +1257,7 @@ function desenhaAgenda(){
 
   const cont=its.filter(x=>x.s==="contatar");
   if(cont.length) h+=`<div class="ag-sec">📞 A contatar</div><div class="ag-lista">${cont.map(x=>agItem(x,"")).join("")}</div>`;
-  const gos=its.filter(x=>x.s==="gostei"&&!(x.c.vi.d>=hoje));
+  const gos=its.filter(x=>x.s==="gostei"&&!(x.c.vi.d>=hoje)&&!x.c.av);
   if(gos.length) h+=`<div class="ag-sec">💚 Gostei <small>sem visita marcada</small></div><div class="ag-lista">${gos.map(x=>agItem(x,"")).join("")}</div>`;
   list.innerHTML=h;
   list.querySelectorAll("[data-agcad]").forEach(el=>el.addEventListener("click",e=>{ e.stopPropagation(); abreCad(el.dataset.agcad); }));
