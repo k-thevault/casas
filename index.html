@@ -295,6 +295,12 @@
   .vz-op.on{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
   .vz-op.on.p{background:#6b5d4d;border-color:#6b5d4d;color:#fff}
   .vz-ajuda{font-size:12px;color:var(--muted);margin-top:6px}
+  .vz-tot{margin-top:6px;background:#fbf1d9;border-radius:10px;padding:7px 10px;color:#5a4d3f;font-size:12.5px;line-height:1.45}
+  .vz-tot b{display:block;font-family:var(--serif);font-size:20px;font-weight:600;color:var(--accent-2)}
+  .vz-tot b small{font-family:var(--sans);font-size:12px;color:#8a7c6a;font-weight:400}
+  .vz-tot .vz-falta{color:#8a2f1d;font-weight:600}
+  .cad-painel .vz-tot{margin-top:10px;font-size:13px}
+  .cad-painel .vz-tot b{font-size:24px}
   @media(max-width:640px){ .vz-ph{width:70px;height:64px} }
 </style>
 </head>
@@ -1054,7 +1060,8 @@ function desenhaCad(){
   $("#cadPainel").innerHTML=`
     <button class="cad-x" data-cadfecha aria-label="Fechar">×</button>
     <h3>${esc(d.cond||d.title)}</h3>
-    <div class="cad-sub">${esc(d.city)}${preco?" · "+preco:""}${d.agency?" · "+esc(d.agency):""}${d.url?` · <a href="${esc(d.url)}" target="_blank" rel="noopener">ver anúncio</a>`:""}</div>
+    <div class="cad-sub">${esc(d.city)}${preco&&!(c.av&&!ehVenda(d))?" · "+preco:""}${d.agency?" · "+esc(d.agency):""}${d.url?` · <a href="${esc(d.url)}" target="_blank" rel="noopener">ver anúncio</a>`:""}</div>
+    ${c.av?vzTotal(d,c.av):""}
     <div class="cad-lbl">Situação</div>
     <select id="cS">${opt("","Situação: a definir")}${opt("contatar","📞 A contatar")}${opt("aguardando","⏳ Aguardando resposta")}${opt("visita","📅 Visita marcada")}${opt("gostei","💚 Gostei")}${opt("descartei","🚫 Descartei")}</select>
     <div class="cad-lbl">Visita (dia e hora)</div>
@@ -1079,6 +1086,7 @@ function lerCampos(){
   CADC.px={t:$("#cPt").value.trim()?$("#cPt").value:"",d:$("#cPd").value};
   CADC.ct={n:$("#cCn").value,t:$("#cCt").value,e:$("#cCe").value};
   if(CADC.av&&$("#cAg")){ CADC.av.g=$("#cAg").value; CADC.av.ng=$("#cAn").value; CADC.av.o=$("#cAo").value; }
+  if(CADC.av&&$("#cAc")){ CADC.av.cd=$("#cAc").value.trim(); CADC.av.ip=$("#cAi").value.trim(); }
 }
 function salvaCad(imediato){
   const uid=CAD_UID; if(!uid)return;
@@ -1131,8 +1139,9 @@ cadP.addEventListener("change",e=>{
   if(e.target.id==="cVd"||e.target.id==="cVh") desenhaCad();
 });
 cadP.addEventListener("input",e=>{
-  if(!e.target.matches("#cPt,#cCn,#cCt,#cCe,#cAg,#cAn,#cAo"))return;
+  if(!e.target.matches("#cPt,#cCn,#cCt,#cCe,#cAg,#cAn,#cAo,#cAc,#cAi"))return;
   lerCampos(); salvaCad(false);
+  if(e.target.matches("#cAc,#cAi")){ const t=cadP.querySelector(".vz-tot"); if(t) t.outerHTML=vzTotal(itemDe(CAD_UID),CADC.av); }
   const f=cadP.querySelector("[data-cadfeito]"); if(f) f.disabled=!CADC.px.t;
 });
 
@@ -1149,6 +1158,7 @@ function vzPainel(c){
     <div class="cad-lbl">Seguir com esta casa?</div>
     <div class="vz-ops">${VZ_OPS.map(([v,t])=>`<button class="vz-op${a.op===v?" on":""}${v==="p"?" p":""}" data-vzop="${v}">${t}</button>`).join("")}</div>
     <div class="vz-ajuda">"Não seguir agora" não descarta: a casa continua guardada e pode voltar a ser opção depois.</div>
+    ${ehVenda(itemDe(CAD_UID)||{})?"":vzCamposCusto(itemDe(CAD_UID),a)}
     <div class="cad-lbl">💚 O que gostamos</div>
     <textarea id="cAg" placeholder="ex.: quintal grande para o Joaquim, cozinha nova, rua calma">${esc(a.g)}</textarea>
     <div class="cad-lbl">👎 O que não gostamos</div>
@@ -1157,6 +1167,37 @@ function vzPainel(c){
     <textarea id="cAo" placeholder="ex.: estado da pintura, sol da manhã na sala, portaria 24h, vizinhança">${esc(a.o)}</textarea>
     <button class="cad-link" data-vztira>tirar das visitadas</button></div>`;
 }
+/* Custo do mês (06/11/2026): aluguel + condomínio + IPTU, só nas casas visitadas.
+   Condomínio e IPTU vêm do anúncio (fee e o texto da ficha); se ela digitar no caderno,
+   vale o que ela digitou (av.cd / av.ip, texto; vazio = não informado; 0 = incluso). */
+const numBR=t=>{ t=String(t).trim(); if(!t)return null; t=t.replace(/\./g,"").replace(",","."); const n=parseFloat(t); return isNaN(n)?null:n; };
+function vzCamposCusto(d,a){
+  if(!d) return "";
+  const {cd,ip}=vzCustos(d,a), v=x=>x==null?"":String(x).replace(".",",");
+  return `<div class="cad-lbl">💰 Condomínio e IPTU por mês</div>
+    <div class="cad-duo"><label class="vz-ajuda" style="margin:0;color:#6b5d4d">Condomínio (R$)<input id="cAc" inputmode="decimal" placeholder="não informado" value="${esc(v(cd))}" style="margin-top:3px"></label><label class="vz-ajuda" style="margin:0;color:#6b5d4d">IPTU por mês (R$)<input id="cAi" inputmode="decimal" placeholder="não informado" value="${esc(v(ip))}" style="margin-top:3px"></label></div>
+    <div class="vz-ajuda">Já vem do anúncio. Se a imobiliária disser outro valor, troque aqui. 0 = incluso no aluguel. O IPTU é o valor por mês.</div>`;
+}
+function vzCustos(d,a){
+  const f=d.ficha||"";
+  const incl=/inclu\S*\s+(?:o\s+)?condom\S*\s+e\s+(?:o\s+)?iptu|condom\S*\s+e\s+iptu\s+inclus|tudo\s+inclus/i.test(f);
+  let cd=d.fee??null, ip=null;
+  if(incl){ cd=0; ip=0; }
+  else{ const m=f.match(/IPTU\s*(?:de\s*)?(?:R\$\s*)?(\d[\d.]*(?:,\d+)?)/i); if(m) ip=numBR(m[1]); }
+  if(a&&a.cd!==undefined) cd=numBR(a.cd);
+  if(a&&a.ip!==undefined) ip=numBR(a.ip);
+  return {al:d.price,cd,ip};
+}
+const brl=v=>"R$ "+Math.round(v).toLocaleString("pt-BR");
+function vzTotal(d,a){
+  if(ehVenda(d)) return "";
+  const {al,cd,ip}=vzCustos(d,a);
+  if(al==null) return `<div class="vz-tot">Aluguel a consultar</div>`;
+  const tot=al+(cd||0)+(ip||0), falta=cd==null||ip==null;
+  const parte=(nome,v)=>v==null?`<span class="vz-falta">${nome} não informado</span>`:v===0?`${nome} incluso`:`${nome} ${brl(v)}`;
+  return `<div class="vz-tot"><b>${brl(tot)}<small>/mês no total${falta?", falta confirmar":""}</small></b>aluguel ${brl(al)} · ${parte("condomínio",cd)} · ${parte("IPTU",ip)}</div>`;
+}
+
 /* 1ª, 2ª e 3ª são únicas: quem já tinha a posição troca de lugar com esta casa. */
 function vzMudaOpcao(uid,c,nova){
   const velha=c.av.op; c.av.op=nova;
@@ -1177,7 +1218,8 @@ function vzCasa(x){
   const textos=linha("vz-g","💚",a.g)+linha("vz-n","👎",a.ng)+linha("vz-o","👀",a.o);
   return `<div class="vz-casa${cls}" data-agcad="${esc(d.uid)}"><div class="vz-ph">${dkFoto(d)}</div>
     <div class="vz-in">${vzTag(a.op)}<b class="vz-nome">${esc(d.cond||d.title)}</b>
-    <div class="vz-meta">${esc(d.city)}${d.price?" · "+money(d.price)+(ehVenda(d)?"":"/mês"):""}${a.d?" · visitada "+fmtDia(a.d,true):""}</div>
+    <div class="vz-meta">${esc(d.city)}${ehVenda(d)&&d.price?" · "+money(d.price)+" compra":""}${a.d?" · visitada "+fmtDia(a.d,true):""}</div>
+    ${vzTotal(d,a)}
     ${textos||'<div class="vz-sem">Toque para escrever o que vocês acharam.</div>'}</div></div>`;
 }
 
