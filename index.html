@@ -327,6 +327,7 @@
     <div class="tab" data-cat="3qoff">💼 3 quartos + escritório</div>
     <div class="tab" data-cat="3q">🏠 Outras 3 quartos</div>
     <div class="tab" data-cat="buy">💰 Comprar (até R$ 850 mil)</div>
+    <div class="tab" data-cat="sv">🏡 Salto e Valinhos · 2-3 dorm</div>
     <div class="tab" data-cat="mine">⭐ Minhas casas</div>
     <div class="tab" data-cat="decidir">🧭 Decidir: cidades</div>
     <div class="tab" data-cat="preco">💸 Favoritas por preço</div>
@@ -370,6 +371,7 @@
       <label class="toggle"><input type="checkbox" id="fCond"> só condomínio fechado</label>
       <label class="toggle"><input type="checkbox" id="fPet"> aceita pet</label>
       <label class="toggle"><input type="checkbox" id="fOffice"> com escritório</label>
+      <label class="toggle" id="fMobWrap" style="display:none"><input type="checkbox" id="fMob"> só mobiliadas</label>
       <label class="toggle"><input type="checkbox" id="fFav"> só favoritas ❤️</label>
       <label class="toggle"><input type="checkbox" id="fNotFav"> só não-favoritas 🤍</label>
       <label class="toggle"><input type="checkbox" id="fShowHidden"> mostrar ocultas</label>
@@ -510,7 +512,19 @@ function allItems(){return D.concat(MINE);}
    filtrar por situação reexibe. */
 function arquivada(d){return HIDDEN.has(d.uid) || (ST[d.uid]&&ST[d.uid].s==="descartei");}
 const cityOrder=["Salto","Tatuí","Jarinu","Monte Mor","Monte Alegre do Sul","Piracaia","Morungaba","Cosmópolis","Capivari","Porto Feliz","Artur Nogueira","Amparo","Santo Antônio de Posse","Boituva","Cesário Lange","Cerquilho","Pedreira","Bom Jesus dos Perdões","Holambra","Jaguariúna","Engenheiro Coelho","Serra Negra","Atibaia","Itatiba","Bragança Paulista","Santa Bárbara d'Oeste","Americana","Rio Claro"];
-function inCat(d){return CAT==="3qoff" ? (d.cat==="3q"&&d.office) : d.cat===CAT;}
+/* Aba "Salto e Valinhos · 2-3 dorm" (05/11/2026): casas menores, até R$ 4.000,
+   achadas pela vigia semanal própria. O Baserow não aceita categoria nova no
+   campo cat (é seleção fechada), então elas entram como cat "3q" com uid
+   começando em "sv-" — e é o uid que as separa das outras abas. */
+function ehSV(d){return String(d.uid||"").startsWith("sv-");}
+/* Só o título conta: a ficha pode dizer "não é mobiliada". A vigia põe
+   "mobiliada" ou "semimobiliada" no título quando o anúncio confirma. */
+function mobiliada(d){return /mobiliad/i.test(d.title||"");}
+function inCat(d){
+  if(CAT==="sv") return ehSV(d);
+  if(ehSV(d)) return false;
+  return CAT==="3qoff" ? (d.cat==="3q"&&d.office) : d.cat===CAT;
+}
 /* Um anúncio é de venda se veio do catálogo "buy" ou se você marcou "à venda"
    ao adicioná-lo. Importa porque R$ 700.000 e R$ 3.000/mês não se comparam. */
 function ehVenda(d){return d.cat==="buy"||(d.cat==="mine"&&!!d.sale);}
@@ -544,6 +558,7 @@ function card(d){
   chips.push(d.type==="cond"?'<span class="chip c-cond">condomínio fechado</span>':'<span class="chip c-alt">casa de rua</span>');
   if(d.pet==="sim")chips.push('<span class="chip c-pet">aceita pet</span>');
   if(d.office)chips.push('<span class="chip c-office">escritório</span>');
+  if(ehSV(d)&&mobiliada(d))chips.push('<span class="chip c-pet">🛋️ mobiliada</span>');
   const fee=d.fee?`<small>+ cond. R$ ${d.fee.toLocaleString("pt-BR")}</small>`:(d.fee===0?'<small>cond. incluso</small>':'');
   let finHtml='';
   if(ehVenda(d)&&d.price){
@@ -659,7 +674,7 @@ function apply(){
   if(CAT==="decidir"||CAT==="preco"){ desenhaDecidir(); return; }
   if(CAT==="agenda"){ desenhaAgenda(); return; }
   const city=fCity.value, maxP=+$("#fPrice").value, sort=$("#fSort").value;
-  const onlyCond=$("#fCond").checked, onlyPet=$("#fPet").checked, onlyOff=$("#fOffice").checked;
+  const onlyMob=CAT==="sv"&&$("#fMob").checked, onlyCond=$("#fCond").checked, onlyPet=$("#fPet").checked, onlyOff=$("#fOffice").checked;
   const onlyFav=$("#fFav").checked, onlyNotFav=$("#fNotFav").checked, showHidden=$("#fShowHidden").checked;
   const stFilter=$("#fStatus").value;
   let r=allItems().filter(d=>{
@@ -678,6 +693,7 @@ function apply(){
        quando for da mesma natureza — senão uma casa à venda some ao aparecer
        numa aba de aluguel (via "só favoritas" ou "minhas casas"). */
     if(d.price!=null&&ehVenda(d)===(CAT==="buy")&&d.price>maxP)return false;
+    if(onlyMob&&!mobiliada(d))return false;
     if(onlyCond&&d.type!=="cond")return false;
     if(onlyPet&&d.pet!=="sim")return false;
     if(onlyOff&&!d.office)return false;
@@ -707,6 +723,7 @@ function setNote(){
   else if(CAT==="decidir") t='<b>Para onde mudar.</b> As cidades das suas casas favoritas, lado a lado: segurança, periferia, distâncias, maternidade, escolas e veterinário. Embaixo de cada cidade, as suas favoritas de lá. Dar coração numa casa nova já a coloca aqui.';
   else if(CAT==="preco") t='<b>Favoritas por preço.</b> Todas as suas favoritas que estão à mostra, da mais barata para a mais cara, com as cidades misturadas. As casas à venda ficam no fim.';
   else if(CAT==="agenda") t='<b>Agenda.</b> As casas em andamento num lugar só: visitas por dia (com o tempo de carro entre elas e outras casas perto para encaixar no mesmo dia), próximos passos e quem ainda não respondeu. Toque numa casa para abrir o caderno dela. Depois da visita, marque "Já visitamos" no caderno: a casa vai para "Casas que visitamos", onde vocês anotam o que acharam e escolhem a 1ª, 2ª e 3ª opção.';
+  else if(CAT==="sv") t='<b>Salto e Valinhos · 2 e 3 dormitórios, até R$ 4.000.</b> Casas em condomínio, modernas, com as mobiliadas em destaque. Chegam toda segunda pela vigia própria desta aba e não se misturam com as outras abas. Use "só mobiliadas" para ver só as que já vêm com móveis.';
   else if(CAT==="mine") t='<b>Minhas casas.</b> Anúncios que você mesma adicionou (clique em "➕ adicionar anúncio" acima). Ficam salvos na nuvem e aparecem em qualquer aparelho. Você pode favoritar, editar e excluir cada um.';
   else t='<b>Outras 3 quartos, verificadas.</b> Casas boas de 3 quartos em condomínio, conferidas no site oficial da imobiliária ou VivaReal recente.';
   $("#note").innerHTML=t;
@@ -714,9 +731,12 @@ function setNote(){
   /* controles por aba */
   /* "minhas casas" também mostra a entrada: ela pode ter salvo casas à venda */
   $("#fEntrada").style.display = (CAT==="buy"||CAT==="mine") ? "" : "none";
+  $("#fMobWrap").style.display = CAT==="sv" ? "" : "none";
   const fp=$("#fPrice");
   if(CAT==="buy"){
     fp.innerHTML='<option value="99999999">Qualquer preço</option><option value="600000">até R$ 600 mil</option><option value="700000">até R$ 700 mil</option><option value="800000">até R$ 800 mil</option><option value="850000">até R$ 850 mil</option>';
+  }else if(CAT==="sv"){
+    fp.innerHTML='<option value="99999">Qualquer aluguel</option><option value="3000">até R$ 3.000</option><option value="3500">até R$ 3.500</option><option value="4000">até R$ 4.000</option>';
   }else if(CAT==="mine"){
     /* aqui convivem aluguel e venda: faixa de aluguel confundiria */
     fp.innerHTML='<option value="99999999">Qualquer preço</option>';
@@ -742,7 +762,7 @@ document.querySelectorAll(".tab").forEach(t=>t.addEventListener("click",()=>{
    o outro, para nao pedir "favorita E nao-favorita" (resultado sempre zero). */
 $("#fFav").addEventListener("change",e=>{ if(e.target.checked) $("#fNotFav").checked=false; });
 $("#fNotFav").addEventListener("change",e=>{ if(e.target.checked) $("#fFav").checked=false; });
-["change","input"].forEach(ev=>document.querySelectorAll("#fCity,#fPrice,#fSort,#fCond,#fPet,#fOffice,#fFav,#fNotFav,#fShowHidden,#fStatus,#fEntrada").forEach(el=>el.addEventListener(ev,apply)));
+["change","input"].forEach(ev=>document.querySelectorAll("#fCity,#fPrice,#fSort,#fCond,#fPet,#fOffice,#fMob,#fFav,#fNotFav,#fShowHidden,#fStatus,#fEntrada").forEach(el=>el.addEventListener(ev,apply)));
 
 /* ===== Adicionar / editar meus anúncios ===== */
 const panel=$("#addPanel");
