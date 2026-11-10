@@ -10,7 +10,7 @@ Até 08/2026 esta rotina gastava ~28 das suas ~40 chamadas pagas RE-VERIFICANDO 
 
 Agora é assim:
 - **A limpeza (parte A) é da diária. Você quase não gasta chamada nela.**
-- **A busca (parte B) usa r.jina.ai, que é GRÁTIS e sem chave.** Testado em 10/08/2026 e reconfirmado em 20/08/2026: abre VivaReal, OLX e Chaves na Mão, HTTP 200, com os anúncios todos. Você pode varrer TODAS as cidades toda semana.
+- **A busca (parte B) usa r.jina.ai, que é GRÁTIS e sem chave.** Testado em 10/08/2026, reconfirmado em 20/08/2026 e em 10/11/2026: abre VivaReal, OLX e Chaves na Mão, HTTP 200, com os anúncios todos. Você pode varrer TODAS as cidades toda semana.
 - **BUSQUE ALUGUEL E COMPRA.** Aluguel é o foco; compra (teto R$ 850.000) entra como caça-oportunidade — poucas e ótimas. Detalhe em PARTE B.
 - **O `/api/buscar` pago só entra para FICHA de candidata que já passou no filtro.**
 
@@ -21,7 +21,7 @@ Não existe navegador local nesta rotina. Chromium existe no container mas NÃO 
 `curl -s https://casas-three.vercel.app/api/casas`
 
 - FAVORITAS = `"fav": true`.
-- JÁ CADASTRADOS = todos (340+). Serve para não repetir na parte (B). Já há dezenas de entradas de COMPRA (`"cat":"buy"`), quase todas descartadas — respeite-as igual às de aluguel.
+- JÁ CADASTRADOS = todos (500+). Serve para não repetir na parte (B). Já há dezenas de entradas de COMPRA (`"cat":"buy"`), quase todas descartadas — respeite-as igual às de aluguel.
 - Itens com 🚫 no título: já marcados como mortos pela diária. Pule.
 - **DESCARTADAS** = `"hidden": true` SEM 🚫 no título, ou `"status": "descartei"`. Guarde de cada uma **cidade + condomínio + área**. Ela NÃO quer ver essas de novo — vale para aluguel E compra.
 
@@ -31,9 +31,9 @@ Faça UMA chamada de teste ao `/api/buscar` e olhe o campo `motor`:
 
 1. `"motor": "firecrawl"` — normal. Com `prompt`, volta `json` mastigado.
 2. `"motor": "scrape.do"` — motor reserva. O `prompt` é ignorado, volta `markdown` cru com `"json": null` — leia e conclua você mesma. Se `creditos_restantes` < ~150, diga no relatório. **A execução segue inteira.**
-3. erro `"Firecrawl E scrape.do sem crédito"` — **os dois motores pagos zerados**. Isso agora é MUITO menos grave que antes: a parte (B) roda quase toda pelo r.jina.ai, que é grátis. Então: faça a busca normalmente pelo jina, e apenas NÃO abra fichas pagas — trabalhe com o que o slug e a listagem já dizem, marcando na ficha "detalhes não confirmados, Firecrawl sem crédito". A parte (A) segue pela diária. Escreva na PRIMEIRA linha do `text`: `⚠️ Firecrawl e scrape.do sem crédito — busquei pelo jina (grátis), mas não abri fichas. Reponha crédito.`
+3. erro `"Firecrawl E scrape.do sem crédito"` — **os dois motores pagos zerados**. Isso agora é MUITO menos grave que antes: a parte (B) roda quase toda pelo r.jina.ai, que é grátis. Então: faça a busca normalmente pelo jina, e apenas NÃO abra fichas pagas — trabalhe com o que o slug e a listagem já dizem, marcando na ficha "detalhes não confirmados, Firecrawl sem crédito". A parte (A) segue pela diária. Escreva na PRIMEIRA linha do `text`: `⚠️ Firecrawl e scrape.do sem crédito: busquei pelo jina (grátis), mas não abri fichas. Reponha crédito.`
 
-Diagnóstico para quem for repor: conta 1 em `curl -H "Authorization: Bearer $FIRECRAWL_API_KEY" https://api.firecrawl.dev/v2/team/credit-usage`. **Atenção: `FIRECRAWL_API_KEY` normalmente NÃO existe no ambiente desta rotina** — se o curl responder `Unauthorized: Token missing`, não é sinal de problema, é só a variável ausente; use o `motor` da chamada de teste como prova de que há crédito. A chave da conta 2 é *sensitive* na Vercel e não pode ser lida — o teste dela é o próprio 402 do `/api/buscar` (o failover só devolve 402 quando a ÚLTIMA chave também falhou). Saldo do scrape.do vem de graça em `creditos_restantes`.
+Diagnóstico: `FIRECRAWL_API_KEY` normalmente NÃO existe no ambiente desta rotina; use o `motor` da chamada de teste como prova de que há crédito. Saldo do scrape.do vem de graça em `creditos_restantes`.
 
 ## PARTE A — LIMPEZA (agora é barata)
 
@@ -41,10 +41,10 @@ Diagnóstico para quem for repor: conta 1 em `curl -H "Authorization: Bearer $FI
 
 O que VOCÊ faz na parte (A), e só isso:
 
-1. Leia o catálogo e conte quantos ganharam 🚫 desde a semana passada (a ficha traz a data do carimbo). Reporte no `text`: quantos e quais (cidade + condomínio). Custo: zero chamada.
+1. Leia o catálogo e conte quantos ganharam 🚫 desde a última rodada (a ficha traz a data do carimbo). Reporte no `text`: quantos e quais (cidade + condomínio). Custo: zero chamada.
 2. **Preço das favoritas** — isso a diária NÃO faz. Pegue as favoritas e leia a listagem/ficha **pelo r.jina.ai (grátis)** para ver se o aluguel mudou. Se mudou e o anúncio segue vivo, reporte no `text`; **não** marque indisponível.
    - Se o jina voltar com corpo vazio, muito curto, ou só "Carregando..." (sites que renderizam por JS, como imovelweb, casamineira e loftsites), isso **não é** morte nem mudança de preço. Diga "não deu para ler o preço" e siga.
-3. **RESSURREIÇÃO:** se durante a parte (B) você topar com uma casa que está no catálogo marcada com 🚫 mas o anúncio novo está vivo, isso é notícia boa — cadastre como novidade com a URL nova e escreva na ficha "VOLTOU AO AR: estava marcada como indisponível". Reporte no `text`.
+3. **RESSURREIÇÃO:** se durante a parte (B) você topar com uma casa que está no catálogo marcada com 🚫 mas o anúncio novo está vivo, isso é notícia boa — mande em `casas` com a URL nova, a MESMA cidade, o MESMO nome de condomínio e a MESMA área da entrada 🚫 (o site reativa a ficha antiga, com o coração e as anotações dela, e conta em `"voltaram"`). Reporte no `text`.
 4. Só use `indisponiveis` no POST final se você mesma topar com um anúncio claramente morto que a diária deixou passar (404 explícito, "anúncio removido", virou só venda). Não force. **Antes de marcar "virou só venda", confirme com UMA leitura paga** — o jina às vezes renderiza parcial.
 
 **NÃO marque indisponível** com status 403/429/5xx — é bloqueio, não morte.
@@ -61,26 +61,23 @@ Formato: `https://r.jina.ai/<URL COMPLETA COM https://>`
 curl -sS "https://r.jina.ai/https://www.vivareal.com.br/aluguel/sp/CIDADE/casa_residencial/?quartos=4"
 ```
 
-Volta markdown com os anúncios (~30 cards, a primeira página inteira). É grátis e não precisa de chave. Vá **sequencialmente, com ~2-3s entre chamadas** — o tier grátis tem limite de taxa; se vier 429, espere ~30s e siga. Se o jina falhar teimosamente numa cidade, aí sim use o `/api/buscar` pago naquela URL.
+Volta markdown com os anúncios (~30 cards, a primeira página inteira). É grátis e não precisa de chave. Vá **sequencialmente, com ~2-3s entre chamadas** — o tier grátis tem limite de taxa; se vier 429, espere ~30s e siga. Se o jina devolver página do Cloudflare ("Attention Required", 403), tente de novo mais tarde; se falhar teimosamente numa cidade, aí sim use o `/api/buscar` pago naquela URL.
 
-**Rode as varreduras em segundo plano e em paralelo (aluguel / venda / OLX+ChavesNaMão / favoritas), com cache em disco por URL.** São ~250 fetches com a compra incluída; em série demora demais e um crash no meio perde tudo.
+**Rode as varreduras em segundo plano e em paralelo (aluguel / venda / OLX+ChavesNaMão / favoritas), com cache em disco por URL.** São ~50 fetches com a compra incluída; em série demora demais e um crash no meio perde tudo.
 
-**Cidades — cubra TODAS:**
-Prioridade (mais renderam): Bom Jesus dos Perdões, Boituva, Tatuí, Itatiba, Atibaia.
-Pequenas: Salto, Jarinu, Monte Mor, Monte Alegre do Sul, Piracaia, Morungaba, Cosmópolis, Capivari, Porto Feliz, Artur Nogueira, Amparo, Sto. A. de Posse, Cerquilho, Cesário Lange, Pedreira, Holambra, Jaguariúna, Serra Negra, Engenheiro Coelho.
-Maiores (modernidade rigorosa): Atibaia, Itatiba, Bragança Paulista.
-Vizinhas que já renderam: Vinhedo, Louveira, Valinhos, Itupeva, Cabreúva, Jundiaí, Itu, Indaiatuba, Guararema, Mogi Mirim, Mogi Guaçu, Hortolândia, Sumaré, Nova Odessa, Americana, Santa Bárbara d'Oeste.
-Historicamente secas (deixe por último, mas com o jina grátis vale passar): Amparo, Pedreira, Engenheiro Coelho, Artur Nogueira, Cosmópolis, Nazaré Paulista, Cerquilho, Cesário Lange, Morungaba, Monte Alegre do Sul, Tietê.
+**Cidades: SOMENTE estas 7, e cubra TODAS:**
+Valinhos, Vinhedo, Itatiba, Salto, Boituva, Bragança Paulista, Atibaia.
+Modernidade rigorosa: Atibaia, Itatiba e Bragança Paulista.
+**Não busque em nenhuma outra cidade.** Anúncio de outra cidade (mesmo vizinha) não sobe para o site nem entra no `text`.
 
 **Fontes por cidade:**
 ALUGUEL (rode sempre):
-- VivaReal aluguel: `https://www.vivareal.com.br/aluguel/sp/CIDADE/casa_residencial/?quartos=4` e `?quartos=3`
-- OLX: `https://www.olx.com.br/imoveis/aluguel/casas/estado-sp?q=casa+condominio+CIDADE&ros=4&pe=7600` (e `ros=3`) — pelo menos nas prioritárias
-- Chaves na Mão: `https://www.chavesnamao.com.br/casas-para-alugar/sp-CIDADE/4-quartos/` — pelo menos nas prioritárias
+- VivaReal aluguel: `https://www.vivareal.com.br/aluguel/sp/CIDADE/casa_residencial/?quartos=4` e `?quartos=3`. A 1ª página mostra só ~30 casas: rode também `?quartos=N&preco-ate=7500&pagina=1`, `&pagina=2` e `&pagina=3`.
+- OLX: `https://www.olx.com.br/imoveis/aluguel/casas/estado-sp?q=casa+condominio+CIDADE&ros=4&pe=7600` (e `ros=3`), em todas as 7 cidades
+- Chaves na Mão: `https://www.chavesnamao.com.br/casas-para-alugar/sp-CIDADE/4-quartos/`, em todas as 7 cidades
 COMPRA (rode em TODAS as cidades também, com o teto no próprio filtro):
 - VivaReal venda: `https://www.vivareal.com.br/venda/sp/CIDADE/casa_residencial/?quartos=4&preco-ate=850000` e `?quartos=3&preco-ate=850000`
-- Chaves na Mão venda (prioritárias + Eng. Coelho e Tietê, que dão 404 no VivaReal): `https://www.chavesnamao.com.br/casas-a-venda/sp-CIDADE/4-quartos/`
-Engenheiro Coelho e Tietê dão 404 no VivaReal (aluguel e venda) — use Chaves na Mão.
+- Chaves na Mão venda (em todas as 7 cidades): `https://www.chavesnamao.com.br/casas-a-venda/sp-CIDADE/4-quartos/`
 
 **UMA CIDADE POR VEZ.** Juntar cidades dá falso negativo — já aconteceu.
 
@@ -88,15 +85,15 @@ Engenheiro Coelho e Tietê dão 404 no VivaReal (aluguel e venda) — use Chaves
 
 A URL do VivaReal traz área, preço e id no próprio slug (`...-<area>m2-aluguel-RS<preco>-id-<id>/` ou `...-venda-RS<preco>-id-...`). Filtre a listagem inteira sem gastar nada: fora do orçamento, área pequena, ou já cadastrada/descartada → descarte na hora.
 
-O **bloco da OLX no markdown do jina já traz tudo** — área, quartos, banheiros, vagas, preço, IPTU, condomínio, cidade+bairro e data. Use isso para filtrar e até para montar ficha sem gastar. Cuidado: o `### R$` da OLX é o valor principal (aluguel ou venda); o valor que às vezes aparece no título pode ser o CUSTO TOTAL.
+O **bloco da OLX no markdown do jina já traz tudo** — área, quartos, banheiros, vagas, preço, IPTU, condomínio, cidade+bairro e data. Use isso para filtrar e até para montar ficha sem gastar. Cuidado: o `### R$` da OLX é o valor principal (aluguel ou venda); o valor que às vezes aparece no título pode ser o CUSTO TOTAL. A contagem de quartos lida dos números soltos da OLX é pouco confiável: confira no título ou na ficha.
 
 O slug do Chaves na Mão traz área que muitas vezes é do **TERRENO**, não da construída. Não filtre por ela sem confirmar.
 
-Compare com o catálogo do PASSO 0 (por id no slug e por cidade+condomínio+área) para não repetir o que já está no site. **Compare também depois de abrir a ficha**, usando o `nome_do_condominio` que ela devolve — muita casa entra por outro portal e só o nome do condomínio revela que já está no site.
+Compare com o catálogo do PASSO 0 (por id no slug e por cidade+condomínio+área) para não repetir o que já está no site. **Compare também depois de abrir a ficha**, usando o `nome_do_condominio` que ela devolve — muita casa entra por outro portal e só o nome do condomínio revela que já está no site. Cuidado: casar só por preço+área dá falso positivo; confira o nome do condomínio.
 
 ### Passo 3 — abra ficha só das candidatas (aqui sim gasta)
 
-Use o `/api/buscar` pago só nas que sobraram do filtro, com prompt pedindo: condomínio fechado com portaria? quartos/suítes? cômodo fechado que sirva de escritório? box de vidro? aceita pet? acabamento (moderno ou datado)? valor de condomínio e IPTU? imobiliária e telefone? (para compra: valor de venda e se aceita financiamento).
+Leia primeiro a página da candidata pelo r.jina.ai (grátis; OLX e VivaReal abrem com descrição). Use o `/api/buscar` pago só nas que sobraram do filtro e quando o jina não trouxer a descrição, com prompt pedindo: condomínio fechado com portaria? quartos/suítes? cômodo fechado que sirva de escritório? box de vidro? aceita pet? acabamento (moderno ou datado)? valor de condomínio e IPTU? imobiliária e telefone? (para compra: valor de venda e se aceita financiamento). Não confie cegamente no "moderno" que o extrator pago devolve: só escreva moderno se o texto do anúncio disser.
 
 **Orçamento: até ~60 chamadas pagas ao `/api/buscar` por execução.** Reserve a maior parte para aluguel; a compra é seletiva, então poucas fichas de venda bastam (só as realmente excepcionais passam do filtro do slug). Se o `creditos_restantes` do scrape.do aparecer e estiver abaixo de ~150, corte pela metade e avise no relatório.
 
@@ -112,12 +109,12 @@ Ao casar nomes, normalize: tire acentos, tire prefixos ("Cond.", "Condomínio", 
 
 - ALUGUEL até R$ 6.500 é a preferência; aceita até R$ 7.500 se valer muito. **SEMPRE informe o CUSTO TOTAL**: aluguel + condomínio + IPTU.
 - COMPRA até R$ 850.000, e SÓ se for excepcional (`cat: "buy"`). Os requisitos são os MESMOS do aluguel — condomínio fechado com portaria, 4+ quartos (ou 3 com cômodo fechado extra), espaçosa, bem conservada, acabamento moderno nas cidades rigorosas. "Excepcional" quer dizer: casa muito boa por um preço claramente bom para o que entrega — não encha o site de casa de compra mediana. Se na dúvida entre subir ou não uma de compra, NÃO suba. Melhor 2 ótimas que 15 comuns.
-- Casa em CONDOMÍNIO FECHADO com portaria. Sem confirmação → `type: "alt"` e escreva "portaria A CONFIRMAR". Se a ficha disser explicitamente que NÃO é condomínio fechado, descarte.
+- Casa em CONDOMÍNIO FECHADO com portaria. Sem confirmação → `type: "alt"` e escreva "portaria A CONFIRMAR". Se a ficha disser explicitamente que NÃO é condomínio fechado (ou "casa de rua", "bolsão"), descarte.
 - **4+ QUARTOS → aprovado direto.**
 - **3 QUARTOS → só com escritório OU outro cômodo FECHADO** (paredes e porta): quartinho, 4º dormitório, home office, sala de TV com porta, edícula fechada, depósito com porta. **MEZANINO ABERTO NÃO CONTA** — nem varanda, vão de escada, nicho, closet aberto, sótão sem porta, "office no hall". Busque também por "home office".
 - BOX DE VIDRO: CONFIRMADO ou A CONFIRMAR. Nunca invente, **nunca descarte por falta de box**.
 - Espaçosa (150 m²+, ideal 200 m²+). Aceita pet é diferencial.
-- ESTADO: cidades pequenas aceitam casa não tão moderna, desde que GRANDE e BEM CONSERVADA. Atibaia/Itatiba/Bragança: modernidade rigorosa — nada de acabamento datado, madeira escura, azulejo antigo, telhado colonial, lareira, "pedras naturais", "estilo rústico". **Se o anúncio não descreve o acabamento, ESCREVA ISSO** — não suponha.
+- ESTADO: cidades pequenas aceitam casa não tão moderna, desde que GRANDE e BEM CONSERVADA. Atibaia/Itatiba/Bragança Paulista: modernidade rigorosa — nada de acabamento datado, madeira escura, azulejo antigo, telhado colonial, lareira, "pedras naturais", "estilo rústico". **Se o anúncio não descreve o acabamento, ESCREVA ISSO** — não suponha.
 - A antiga lista de "condomínios descartados" NÃO vale mais: ela descartou casas específicas, não condomínios inteiros. Escreva "condomínio que você já conhecia" na ficha.
 
 ## ARMADILHAS VERIFICADAS
@@ -155,7 +152,8 @@ Passar string (`["d7"]`) ou a URL **NÃO funciona** — o endpoint responde 200 
 ### CONFIRA A RESPOSTA DO POST — ELA MENTE POR OMISSÃO
 
 O endpoint devolve 200 OK mesmo quando parte do trabalho falhou. Leia sempre:
-- `"gravadas"` — deve bater com o número de casas enviadas.
+- `"gravadas"` + `"voltaram"` — juntas devem bater com o número de casas enviadas. `"voltaram"` = casas 🚫 que o site reativou.
+- `"repetidas"` / `"descartadas"` — se > 0, alguma casa que você citou NÃO entrou no site: descubra qual (compare com o catálogo) e NÃO a anuncie no `text` como novidade. Por isso, mande primeiro um POST só com `casas` e `"silencioso": true`, leia a resposta, e só depois mande o POST com o `text` final.
 - `"falhas"` — se > 0, alguma casa ou algum `indisponiveis` foi rejeitado. Investigue e reenvie só o que falhou.
 - `"marcadas_indisponiveis"` — deve bater com o tamanho do array enviado.
 - `"enviado"` — `true` = WhatsApp saiu; `false` = não chegou.
@@ -163,21 +161,21 @@ O endpoint devolve 200 OK mesmo quando parte do trabalho falhou. Leia sempre:
 
 Se `enviado` vier `false`, repita o POST só com `text` (as casas já estão gravadas, não duplicam). Para diagnosticar sem enviar, use `POST /api/vigia?diag=1` com o mesmo header — ele sonda a conexão do WhatsApp (servidor de pé, instância conectada) sem gastar nada. Se `envio_detalhe` indicar problema de conexão/instância (e não de texto), avise no relatório que a instância do Evolution precisa de atenção — mas as casas já entraram no site de qualquer forma.
 
-**O `text` vai por WhatsApp — seja econômico:**
-1. Até 6 novidades, uma linha cada: `Cidade — Condomínio · Xq/Ysuítes · Z m² · [aluguel: total R$ C] ou [compra: R$ C] · escritório: … · box: … · pet: … · estado em poucas palavras`. Marque claramente o que é COMPRA. Se achar mais, diga quantas ficaram de fora (grave todas mesmo assim).
-2. O que saiu do ar na semana (segundo os 🚫 novos da diária): quantos e quais.
+**O `text` vai por WhatsApp — seja econômico (e sem travessão):**
+1. Até 6 novidades, uma linha cada: `Cidade: Condomínio · Xq/Ysuítes · Z m² · [aluguel: total R$ C] ou [compra: R$ C] · escritório: … · box: … · pet: … · estado em poucas palavras`. Marque claramente o que é COMPRA. Se achar mais, diga quantas ficaram de fora (grave todas mesmo assim).
+2. O que saiu do ar desde a última rodada (segundo os 🚫 novos da diária): quantos e quais.
 3. Favoritas: alguma mudou de preço? Alguma ressurreição?
 4. **UMA** recomendação: qual olhar primeiro e por quê.
 5. Quantas cidades você varreu (aluguel e compra), e se alguma fonte não abriu.
 
 **O `casas` é array no formato do site (máx. 20 por POST):**
 `[{"uid":"cidade-nomecurto","cat":"4q","city":"Cidade","near":false,"cond":"Nome","title":"Casa 4 quartos, 250 m²","price":5800,"fee":550,"area":250,"q":4,"su":2,"ba":3,"vg":2,"type":"cond","pet":"sim","office":true,"ficha":"...","img":"URL","agency":"Imobiliária","tel":"(11) 99999-9999","wa":"5511999999999","url":"link"}]`
-`cat`: "4q", "3q" (com `office: true`) ou **"buy"** (compra — ponha o valor de venda em `price`). `type`: "cond" só com portaria confirmada. `near: true` para Atibaia, Itatiba, Bragança, Boituva, Jaguariúna, Vinhedo, Louveira, Valinhos, Itupeva, Jundiaí. `wa`: só dígitos com 55. `null` onde não souber — **nunca invente**. A `ficha` é o que ela mais lê: estado real e ressalvas ali; em compra, diga por que vale a pena.
+`cat`: "4q", "3q" (com `office: true`) ou **"buy"** (compra — ponha o valor de venda em `price`). `type`: "cond" só com portaria confirmada. `near: true` para Atibaia, Itatiba, Bragança Paulista, Boituva e Valinhos (Salto fica `false`). `wa`: só dígitos com 55. `null` onde não souber — **nunca invente**. A `ficha` é o que ela mais lê: estado real e ressalvas ali; em compra, diga por que vale a pena.
 
 Se achar mais de 20, mande em POSTs separados (o primeiro com o `text`, os seguintes só com `casas`).
 
 ## REGRA DE OURO
 
-Um "nada novo essa semana" honesto vale mais que lista inflada — ela já se frustrou com listas grandes cheias de casa ruim. Mas agora não há desculpa para cobertura pobre: a varredura pelo jina é grátis, então **varra todas as cidades (aluguel E compra)** e seja seletiva no que sobe para o site, não no que você olha. Na compra, seja MAIS seletiva ainda.
+Um "nada novo" honesto vale mais que lista inflada — ela já se frustrou com listas grandes cheias de casa ruim. Mas agora não há desculpa para cobertura pobre: a varredura pelo jina é grátis, então **varra todas as 7 cidades (aluguel E compra)** e seja seletiva no que sobe para o site, não no que você olha. Na compra, seja MAIS seletiva ainda.
 
 Termine lembrando que ela pode adicionar qualquer anúncio pelo botão "➕ adicionar anúncio".
