@@ -182,7 +182,7 @@ export default async function handler(req, res) {
     return res.status(400).json({ error: `No máximo ${TETO_POR_CHAMADA} casas por chamada.` });
   }
 
-  const resultado = { gravadas: 0, repetidas: 0, descartadas: 0, falhas: 0, marcadas_indisponiveis: 0 };
+  const resultado = { gravadas: 0, voltaram: 0, repetidas: 0, descartadas: 0, falhas: 0, marcadas_indisponiveis: 0 };
 
   /* ---- marca como indisponível o que saiu do ar ----
    *
@@ -245,14 +245,25 @@ export default async function handler(req, res) {
       return res.status(502).json({ error: "Não consegui ler o catálogo pra checar repetidos." });
     }
 
+    /* Casa carimbada com 🚫 (saiu do ar) que ela NÃO descartou pode voltar.
+     * Até 10/11/2026 ela contava como "repetida" e o anúncio novo era recusado
+     * em silêncio: a Reserva Central Parque (Salto), favorita, voltou em 06/11,
+     * foi anunciada no WhatsApp e não entrou no site. Agora essas linhas ficam
+     * fora da checagem de repetidas e, se o anúncio novo bater com uma delas,
+     * a MESMA linha é reativada (mantém o coração e o caderno dela). */
+    const assinaturaDe = (l) =>
+      [(l.city || "").toLowerCase(), (l.cond || "").toLowerCase(), l.price, l.area].join("|");
+    const podeVoltar = (l) => {
+      const status = l.status && (l.status.value || l.status);
+      return String(l.title || "").startsWith("🚫") && status !== "descartei";
+    };
+    const mortas = existentes.filter(podeVoltar);
+    const ativas = existentes.filter((l) => !podeVoltar(l));
+
     /* Repetir casa que ela já viu é o que mais irrita — checa antes de gravar. */
-    const urls = new Set(existentes.map((l) => normalizarUrl(l.url)).filter(Boolean));
-    const uids = new Set(existentes.map((l) => (l.uid || "").toLowerCase()).filter(Boolean));
-    const assinaturas = new Set(
-      existentes.map((l) =>
-        [(l.city || "").toLowerCase(), (l.cond || "").toLowerCase(), l.price, l.area].join("|")
-      )
-    );
+    const urls = new Set(ativas.map((l) => normalizarUrl(l.url)).filter(Boolean));
+    const uids = new Set(ativas.map((l) => (l.uid || "").toLowerCase()).filter(Boolean));
+    const assinaturas = new Set(ativas.map(assinaturaDe));
     /* Descartes permanentes: o que ela ocultou/descartou não volta ao site,
      * mesmo reanunciado com URL e preço novos. */
     const descartadas = new Set(
@@ -284,6 +295,49 @@ export default async function handler(req, res) {
         continue;
       }
 
+      /* Bate com uma casa que tinha saído do ar? Reativa a mesma linha. */
+      const urlNova = normalizarUrl(casa.url);
+      const iMorta = mortas.findIndex(
+        (l) =>
+          (urlNova && normalizarUrl(l.url) === urlNova) ||
+          (l.uid || "").toLowerCase() === (casa.uid || "").toLowerCase() ||
+          (chaveD && chaveDescarte(l) === chaveD) ||
+          assinaturaDe(l) === assinatura
+      );
+      if (iMorta >= 0) {
+        const linha = mortas[iMorta];
+        const hoje = new Date().toLocaleDateString("pt-BR", { timeZone: "America/Sao_Paulo" });
+        const dados = { ...casa };
+        delete dados.uid; /* o uid antigo fica: é por ele que o site guarda o que ela anotou */
+        delete dados.cat; /* a categoria antiga fica (o limpar() põe "4q" quando não vem) */
+        if (dados.pet === "n/i") delete dados.pet;
+        for (const k of Object.keys(dados)) if (dados[k] === null || dados[k] === "") delete dados[k];
+        dados.title = String(linha.title || "").replace(/^🚫 INDISPONÍVEL — /, "") || casa.title || "";
+        dados.ficha = (
+          `✅ VOLTOU AO AR em ${hoje}: tinha saído do ar e reapareceu com anúncio novo. ` +
+          (casa.ficha || String(linha.ficha || "").split(" || 🚫")[0])
+        ).slice(0, 4000);
+        dados.hidden = false;
+        try {
+          const r = await baserow(
+            `/api/database/rows/table/${BASEROW_TABLE}/${linha.id}/?user_field_names=true`,
+            { method: "PATCH", body: JSON.stringify(dados) }
+          );
+          if (r.ok) {
+            resultado.voltaram++;
+            mortas.splice(iMorta, 1);
+            if (casa.url) urls.add(urlNova);
+            uids.add((linha.uid || "").toLowerCase());
+            assinaturas.add(assinatura);
+          } else {
+            resultado.falhas++;
+          }
+        } catch (e) {
+          resultado.falhas++;
+        }
+        continue;
+      }
+
       try {
         const r = await baserow(`/api/database/rows/table/${BASEROW_TABLE}/?user_field_names=true`, {
           method: "POST",
@@ -310,8 +364,13 @@ export default async function handler(req, res) {
       partes.push(
         `🏡 ${resultado.gravadas} ${resultado.gravadas === 1 ? "casa nova" : "casas novas"} no site`
       );
-    } else if (casas.length) {
+    } else if (casas.length && !resultado.voltaram) {
       partes.push("🏡 Nenhuma casa nova esta semana");
+    }
+    if (resultado.voltaram) {
+      partes.push(
+        `♻️ ${resultado.voltaram} ${resultado.voltaram === 1 ? "voltou ao ar" : "voltaram ao ar"}`
+      );
     }
     const jaConhecidas = resultado.repetidas + resultado.descartadas;
     if (jaConhecidas) partes.push(`(${jaConhecidas} já estavam lá)`);
